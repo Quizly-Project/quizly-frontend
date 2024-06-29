@@ -1,0 +1,46 @@
+.button {
+  padding: 0.5em 1em;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.wide {
+  width: 80%; /* 버튼을 부모 요소의 80% 너비로 설정 */
+  max-width: 400px; /* 최대 너비를 500px로 제한 */
+  margin-left: auto; /* 왼쪽 여백을 자동으로 설정하여 가운데 정렬 */
+  margin-right: auto; /* 오른쪽 여백을 자동으로 설정하여 가운데 정렬 */
+}
+
+.round {
+  border-radius: 20px; /* 큰 값으로 설정하여 둥근 모서리로 만듦 */
+}
+
+.large {
+  font-size: 1.25rem;
+}
+
+.medium {
+  font-size: 1rem;
+}
+
+.small {
+  font-size: 0.875rem;
+}
+
+.primary {
+  background-color: #464c91;
+  color: white;
+}
+
+.secondary {
+  background-color: #dedfeb;
+  color: #464c91;
+}
+
+.disabled {
+  background-color: #dedfeb;
+  color: #9e9e9e;
+  cursor: not-allowed;
+}
