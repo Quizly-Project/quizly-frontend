@@ -25,6 +25,10 @@
   font-size: 14px;
   margin-top: 4px;
 }
+/* errorMessage가 비어 있을 때 (에러 메시지가 없을 때) */
+.errorMessage:empty {
+  visibility: hidden;
+}
 
 /* 기존 스타일에 추가 */
 .inputFieldSmall {
@@ -70,4 +74,9 @@
 
 .round {
   border-radius: 20px; /* 큰 값으로 설정하여 둥근 모서리로 만듦 */
+}
+
+.center {
+  display: flex;
+  justify-content: center;
 }

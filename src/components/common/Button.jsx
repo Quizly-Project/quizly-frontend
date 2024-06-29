@@ -36,7 +36,7 @@ const Button = ({
   const className = `${styles.button} ${styles[color]} ${styles[size]} 
     ${disabled ? styles.disabled : ''} 
     ${wide ? styles.wide : ''} 
-    ${round ? styles.round : ''}`.trim();
+    ${round ? styles.round : ''} alignCenter`.trim();
 
   return (
     <button className={className} disabled={disabled} {...props}>

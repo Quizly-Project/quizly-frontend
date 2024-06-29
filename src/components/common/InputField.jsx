@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from './InputField.module.css';
-import { log } from 'three/examples/jsm/nodes/Nodes.js';
 
 /**
  * InputField 컴포넌트는 다양한 입력 필드를 생성합니다.
@@ -20,6 +19,7 @@ const InputField = ({
   label,
   name,
   type = 'text',
+  className,
   register,
   errors,
   placeholder,
@@ -33,32 +33,34 @@ const InputField = ({
     ? `${Component}${size.charAt(0).toUpperCase() + size.slice(1)}`
     : '';
 
-  const className =
-    `${type === 'textarea' ? styles.textarea : styles.inputField} ${styles[sizeClass]} ${round ? styles.round : ''}`.trim();
-  console.log(sizeClass);
+  const inputClassName =
+    `${className} ${type === 'textarea' ? styles.textarea : styles.inputField} ${styles[sizeClass]} ${round ? styles.round : ''}`.trim();
 
   return (
-    <div className={styles.inputContainer}>
-      {label && (
-        <label htmlFor={name} className={styles.label}>
-          {label}
-        </label>
-      )}
-      <Component
-        id={name}
-        name={name}
-        type={type !== 'textarea' ? type : undefined}
-        placeholder={placeholder}
-        className={className}
-        aria-invalid={errors[name] ? 'true' : 'false'}
-        {...register(name, { ...rest })}
-      />
+    <>
       {errors[name] && (
-        <p className={styles.errorMessage} role="alert">
+        <p className={`${styles.errorMessage} center`} role="alert">
           {errors[name].message}
         </p>
       )}
-    </div>
+      <div className={`${styles.inputContainer} alignCenter`}>
+        {label && (
+          <label htmlFor={name} className={styles.label}>
+            {label}
+          </label>
+        )}
+
+        <Component
+          id={name}
+          name={name}
+          type={type !== 'textarea' ? type : undefined}
+          placeholder={placeholder}
+          className={inputClassName}
+          aria-invalid={errors[name] ? 'true' : 'false'}
+          {...register(name, { ...rest })}
+        />
+      </div>
+    </>
   );
 };
 

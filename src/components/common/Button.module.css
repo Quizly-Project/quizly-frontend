@@ -4,11 +4,12 @@
   border-radius: 4px;
   cursor: pointer;
   font-size: 1rem;
+  margin-bottom: 16px;
 }
 
 .wide {
-  width: 80%; /* 버튼을 부모 요소의 80% 너비로 설정 */
-  max-width: 400px; /* 최대 너비를 500px로 제한 */
+  width: 100%; /* 버튼을 부모 요소의 80% 너비로 설정 */
+  max-width: 426px; /* 최대 너비를 500px로 제한 */
   margin-left: auto; /* 왼쪽 여백을 자동으로 설정하여 가운데 정렬 */
   margin-right: auto; /* 오른쪽 여백을 자동으로 설정하여 가운데 정렬 */
 }
