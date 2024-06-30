@@ -1,15 +1,17 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import Button from '../components/common/Button';
 import InputField from '../components/common/InputField';
 import Text from '../components/common/Text';
-
 const SignUp = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const navigate = useNavigate();
 
   const onSubmit = data => {
     console.log(data);
@@ -68,10 +70,16 @@ const SignUp = () => {
           회원가입
         </Button>
       </form>
-      <Button wide={true} round={true} color="secondary">
+      <Button
+        wide={true}
+        round={true}
+        color="secondary"
+        onClick={() => navigate('/signin')}
+      >
         로그인으로 이동
       </Button>
     </>
   );
 };
+
 export default SignUp;

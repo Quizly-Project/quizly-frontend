@@ -1,6 +1,59 @@
-/* Title.module.css */
+/* Text.module.css */
 .title {
-  font-size: 24px;
+  font-size: 2rem;
   font-weight: bold;
-  color: #717171;
+}
+.subtitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.body {
+  font-size: 1rem;
+}
+.caption {
+  font-size: 0.8rem;
+}
+
+.align-left {
+  text-align: left;
+}
+.align-center {
+  text-align: center;
+}
+.align-right {
+  text-align: right;
+}
+
+.color-primary {
+  color: #000;
+}
+.color-secondary {
+  color: #fff6c9;
+}
+.color-error {
+  color: #f00;
+}
+.color-success {
+  color: #464c91;
+}
+
+.color-white {
+  color: #fff;
+}
+
+.size-small {
+  font-size: 1em;
+}
+.size-medium {
+  font-size: 1.2em;
+}
+.size-large {
+  font-size: 1.5em;
+}
+
+.weight-normal {
+  font-weight: normal;
+}
+.weight-bold {
+  font-weight: bold;
 }
