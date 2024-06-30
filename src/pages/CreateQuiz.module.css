@@ -96,7 +96,7 @@
   width: 100%;
 }
 
-/* 공통 스타일 */
+/* 공통 스타일
 input[type='text'],
 input[type='number'],
 textarea {
@@ -104,17 +104,4 @@ textarea {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-}
-
-button {
-  padding: 10px 15px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
+} */

@@ -7,6 +7,10 @@
   margin-bottom: 16px;
 }
 
+.button:hover {
+  opacity: 0.9;
+}
+
 .wide {
   width: 100%; /* 버튼을 부모 요소의 80% 너비로 설정 */
   max-width: 426px; /* 최대 너비를 500px로 제한 */

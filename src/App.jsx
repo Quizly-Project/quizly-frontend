@@ -8,6 +8,7 @@ import {
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import CreateQuiz from './pages/CreateQuiz';
+import Landing from './pages/Landing.jsx';
 import Layout from './components/layout/Layout.jsx';
 import useAuthStore from './store/authStore';
 
@@ -32,6 +33,7 @@ function App() {
         <Route path="/" element={<Navigate to="/dashboard" />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/create/:quizType" element={<CreateQuiz />} />
+        <Route path="/landing" element={<Landing />} />
       </Routes>
     </Router>
   );
