@@ -1,10 +1,10 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import Button from '../components/common/Button';
-import InputField from '../components/common/InputField';
-import Text from '../components/common/Text';
-import useAuthStore from '../store/authStore';
+import Button from '../components/common/Button/Button.jsx';
+import InputField from '../components/common/InputField/InputField.jsx';
+import Text from '../components/common/Text/Text.jsx';
+import useAuthStore from '../store/authStore.js';
 
 const SignIn = () => {
   const {

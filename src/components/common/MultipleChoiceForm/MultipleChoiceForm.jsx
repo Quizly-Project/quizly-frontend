@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import InputField from './InputField';
-import Button from './Button';
+import InputField from '../InputField/InputField';
+import Button from '../Button/Button';
 
 const MultipleChoiceForm = () => {
   const {

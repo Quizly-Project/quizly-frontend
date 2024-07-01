@@ -5,11 +5,11 @@ import {
   Routes,
   Navigate,
 } from 'react-router-dom';
-import SignIn from './pages/SignIn';
-import SignUp from './pages/SignUp';
-import CreateQuiz from './pages/CreateQuiz';
-import Landing from './pages/Landing.jsx';
-import Layout from './components/layout/Layout.jsx';
+import SignIn from './pages/SignIn.jsx';
+import SignUp from './pages/SignUp.jsx';
+import CreateQuiz from './pages/CreateQuiz/CreateQuiz.jsx';
+import Landing from './pages/Landing';
+import Layout from './components/layout/Layout/Layout.jsx';
 import useAuthStore from './store/authStore';
 
 const PrivateRoute = ({ children }) => {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import useAuthStore from '../../store/authStore';
+import useAuthStore from '../../../store/authStore';
 import styles from './Sidebar.module.css';
-import Text from './Text';
+import Text from '../Text/Text';
 
 const Sidebar = ({ activeMenu, setActiveMenu }) => {
   const { user, logout } = useAuthStore();
@@ -42,7 +42,10 @@ const Sidebar = ({ activeMenu, setActiveMenu }) => {
             <span className={`${styles.icon}`} role="img" aria-label={text}>
               {icon}
             </span>
-            <Text color={activeMenu === 'secondary'} weight="bold">
+            <Text
+              color={activeMenu === text ? 'secondary' : 'white'}
+              weight="bold"
+            >
               {text}
             </Text>
           </li>

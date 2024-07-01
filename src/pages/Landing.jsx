@@ -1,8 +1,8 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import InputField from '../components/common/InputField';
-import Button from '../components/common/Button';
-import Text from '../components/common/Text';
+import InputField from '../components/common/InputField/InputField';
+import Button from '../components/common/Button/Button';
+import Text from '../components/common/Text/Text';
 import { log } from 'three/examples/jsm/nodes/Nodes.js';
 
 const Landing = () => {
