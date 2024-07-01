@@ -1,100 +1,75 @@
-import React, { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import InputField from '../InputField/InputField';
-import Button from '../Button/Button';
+import React, { useState } from 'react';
+import { useForm, useFieldArray } from 'react-hook-form';
+import OXQuizForm from '../OXQuizForm/OXQuizForm.jsx';
+import MultipleChoiceQuizForm from '../MultipleChoiceQuizForm/MultipleChoiceQuizForm.jsx';
+import Button from '../Button/Button.jsx';
+import styles from './MultipleChoiceForm.module.css';
+import Select from '../Select/Select.jsx';
 
 const MultipleChoiceForm = () => {
   const {
     register,
+    control,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      quizType: '1', // 기본값을 'O/X'로 설정
+      quizzes: [{ type: '1' }], // 초기 퀴즈 하나를 O/X 타입으로 설정
     },
   });
 
-  const quizType = watch('quizType'); // 선택된 퀴즈 타입을 실시간으로 관찰
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'quizzes',
+  });
 
   const onSubmit = data => {
     console.log(data); // 폼 제출 시 처리할 로직
   };
 
-  useEffect(() => {}, [quizType]);
+  const options = [
+    { value: '1', label: 'O/X' },
+    { value: '2', label: '4지선다' },
+  ];
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <select {...register('quizType')}>
-        <option value="1">O/X</option>
-        <option value="2">4지선다</option>
-      </select>
-
-      {quizType === '1' && (
-        <div>
-          <h3>O/X 문제</h3>
-          <input
-            {...register('question', { required: '질문을 입력해주세요.' })}
-            placeholder="질문"
+      {fields.map((field, index) => (
+        <div key={field.id} className={styles.quizForm}>
+          <Select
+            id={`quizType-${index}`}
+            label={`퀴즈 ${index + 1} 유형`}
+            {...register(`quizzes.${index}.type`, {
+              required: '퀴즈 유형을 선택해주세요',
+            })}
+            error={errors.quizzes?.[index]?.type}
+            options={options}
           />
-          {errors.question && <p>{errors.question.message}</p>}
-          <div>
-            <label>
-              <input
-                type="radio"
-                value="O"
-                {...register('answer', { required: '답을 선택해주세요.' })}
-              />{' '}
-              O
-            </label>
-            <label>
-              <input
-                type="radio"
-                value="X"
-                {...register('answer', { required: '답을 선택해주세요.' })}
-              />{' '}
-              X
-            </label>
-          </div>
-          {errors.answer && <p>{errors.answer.message}</p>}
+          {watch(`quizzes.${index}.type`) === '1' ? (
+            <OXQuizForm register={register} errors={errors} index={index} />
+          ) : (
+            <MultipleChoiceQuizForm
+              register={register}
+              errors={errors}
+              index={index}
+            />
+          )}
+          <Button type="button" color="secondary" onClick={() => remove(index)}>
+            - 퀴즈 삭제
+          </Button>
         </div>
-      )}
-
-      {quizType === '2' && (
-        <div>
-          <h3>4지선다 문제</h3>
-          <input
-            {...register('question', { required: '질문을 입력해주세요.' })}
-            placeholder="질문"
-          />
-          {errors.question && <p>{errors.question.message}</p>}
-          {[1, 2, 3, 4].map(num => (
-            <div key={num}>
-              <input
-                {...register(`option${num}`, {
-                  required: '모든 선택지를 입력해주세요.',
-                })}
-                placeholder={`선택지 ${num}`}
-              />
-              {errors[`option${num}`] && (
-                <p>{errors[`option${num}`].message}</p>
-              )}
-            </div>
-          ))}
-          <select
-            {...register('correctAnswer', { required: '정답을 선택해주세요.' })}
-          >
-            <option value="">정답 선택</option>
-            <option value="1">선택지 1</option>
-            <option value="2">선택지 2</option>
-            <option value="3">선택지 3</option>
-            <option value="4">선택지 4</option>
-          </select>
-          {errors.correctAnswer && <p>{errors.correctAnswer.message}</p>}
-        </div>
-      )}
-
-      <Button type="submit">퀴즈 만들기</Button>
+      ))}
+      <div className={styles.buttons}>
+        <Button
+          type="button"
+          color="primary"
+          onClick={() => append({ type: '1' })}
+        >
+          + 퀴즈 추가
+        </Button>
+        <Button type="submit">퀴즈 생성</Button>
+      </div>
     </form>
   );
 };

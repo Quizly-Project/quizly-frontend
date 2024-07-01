@@ -1,0 +1,12 @@
+.buttons {
+  display: flex;
+}
+
+.buttons button {
+  margin-right: 10px;
+}
+
+.quizForm {
+  display: flex;
+  align-items: center;
+}

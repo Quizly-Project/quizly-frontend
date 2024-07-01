@@ -46,28 +46,31 @@ const SignIn = () => {
           type="email"
           className="center"
           placeholder="이메일을 입력하세요."
-          register={register}
-          errors={errors}
+          {...register('email', {
+            required: '이메일을 입력해주세요.',
+            pattern: {
+              value: /^\S+@\S+$/i,
+              message: '올바른 이메일 주소를 입력해주세요.',
+            },
+          })}
+          error={errors.email}
           required="Email is required"
           round={true}
-          pattern={{
-            value: /^\S+@\S+$/i,
-            message: 'Invalid email address',
-          }}
         />
         <InputField
           name="password"
           type="password"
           className="center"
-          register={register}
+          {...register('password', {
+            required: '비밀번호를 입력해주세요.',
+            minLength: {
+              value: 8,
+              message: '비밀번호는 최소 8자 이상이어야 합니다.',
+            },
+          })}
           placeholder="비밀번호를 입력하세요."
-          errors={errors}
-          required="Password is required"
+          error={errors.password}
           round={true}
-          minLength={{
-            value: 8,
-            message: 'Password must be at least 8 characters',
-          }}
         />
 
         <Button wide={true} round={true} type="submit">

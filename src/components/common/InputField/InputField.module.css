@@ -80,3 +80,9 @@
   display: flex;
   justify-content: center;
 }
+
+.label {
+  white-space: nowrap;
+  width: 100%;
+  max-width: 40px;
+}
