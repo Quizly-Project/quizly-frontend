@@ -31,15 +31,18 @@ const Button = ({
   disabled = false,
   wide = false,
   round = false,
+  align = 'center',
   ...props
 }) => {
-  const className = `${styles.button} ${styles[color]} ${styles[size]} 
+  const alignment = `align-${align}`;
+
+  const buttonClassName = `${styles.button} ${styles[color]} ${styles[size]} 
     ${disabled ? styles.disabled : ''} 
     ${wide ? styles.wide : ''} 
-    ${round ? styles.round : ''} alignCenter`.trim();
+    ${round ? styles.round : ''} ${styles[alignment]}`.trim();
 
   return (
-    <button className={className} disabled={disabled} {...props}>
+    <button className={`${buttonClassName}`} disabled={disabled} {...props}>
       {children}
     </button>
   );

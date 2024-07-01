@@ -7,6 +7,10 @@
   margin-bottom: 16px;
 }
 
+.button:hover {
+  opacity: 0.9;
+}
+
 .wide {
   width: 100%; /* 버튼을 부모 요소의 80% 너비로 설정 */
   max-width: 426px; /* 최대 너비를 500px로 제한 */
@@ -44,4 +48,22 @@
   background-color: #dedfeb;
   color: #9e9e9e;
   cursor: not-allowed;
+}
+
+.align-center {
+  display: flex;
+  justify-content: center; /* 수평 중앙 정렬 */
+  align-items: center; /* 수직 중앙 정렬 추가 */
+}
+
+.align-left {
+  display: flex;
+  float: left;
+  align-items: center; /* 수직 중앙 정렬 추가 */
+}
+
+.align-right {
+  display: flex;
+  float: right;
+  align-items: center; /* 수직 중앙 정렬 추가 */
 }

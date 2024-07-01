@@ -1,0 +1,64 @@
+.sidebar {
+  background-color: #464775;
+  color: white;
+  width: 250px;
+  height: 100vh;
+  padding: 20px 0;
+}
+
+.menu {
+  list-style-type: none;
+  padding: 0;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  margin: 5px 0;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  border-radius: 5px;
+}
+
+.menuItem:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.menuItem::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: #ffd700; /* 금색 막대 */
+  transform: scaleY(0);
+  /* transition: transform 0.2s ease; */
+  transition: background-color 0.1s ease;
+}
+
+.menuItem.active::before {
+  transform: scaleY(1);
+}
+
+.menuItem.active {
+  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  transform: translateY(1px);
+}
+
+.icon {
+  margin-right: 10px;
+  font-size: 1.2em;
+}
+
+.li {
+  list-style-type: none;
+  display: flex;
+  align-items: left;
+}
+
+.username {
+  margin-left: 20px;
+}
