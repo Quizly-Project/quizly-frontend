@@ -1,0 +1,50 @@
+.selectWrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 16px;
+  margin-right: 8px;
+}
+
+.label {
+  margin: 0 8px;
+}
+
+.customSelect {
+  display: block;
+  width: 100%;
+  max-width: 100px;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #555;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition:
+    border-color 0.15s ease-in-out,
+    box-shadow 0.15s ease-in-out;
+}
+
+.customSelect:hover {
+  border-color: #888;
+}
+
+.customSelect:focus {
+  border-color: #464c91;
+  outline: none;
+}
+
+/* 옵션 스타일링 (브라우저 지원이 제한적임) */
+.customSelect option {
+  padding: 10px;
+}
+
+/* Firefox에서 화살표 제거 */
+.customSelect {
+  -moz-appearance: none;
+  text-indent: 0.01px;
+  text-overflow: '';
+}
