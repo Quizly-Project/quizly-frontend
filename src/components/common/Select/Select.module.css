@@ -44,7 +44,6 @@
 
 /* Firefox에서 화살표 제거 */
 .customSelect {
-  -moz-appearance: none;
   text-indent: 0.01px;
   text-overflow: '';
 }

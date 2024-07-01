@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import OXQuizForm from '../OXQuizForm/OXQuizForm.jsx';
 import MultipleChoiceQuizForm from '../MultipleChoiceQuizForm/MultipleChoiceQuizForm.jsx';

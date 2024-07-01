@@ -1,0 +1,23 @@
+.quizForm {
+  display: flex;
+  justify-content: start;
+}
+
+.index {
+  margin: 8px 4px;
+}
+.question {
+  margin-right: 10px;
+}
+
+.answer {
+  margin-right: 18px;
+}
+
+.buttons {
+  display: flex;
+}
+
+.buttons button {
+  margin-right: 10px;
+}
