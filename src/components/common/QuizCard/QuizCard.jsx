@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './QuizCard.module.css';
-import Text from './Text';
-import Button from './Button';
+import Text from '../Text/Text.jsx';
+import Button from '../Button/Button.jsx';
 
 const QuizCard = ({ title, description, ...props }) => {
   return (

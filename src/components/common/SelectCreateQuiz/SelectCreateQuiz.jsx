@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './SelectCreateQuiz.module.css';
-import Text from './Text';
-import Button from './Button';
+import Text from '../Text/Text';
+import Button from '../Button/Button';
 
 const SelectCreateQuiz = () => {
   const [quizSelect, setQuizSelect] = useState(null);
@@ -15,7 +15,7 @@ const SelectCreateQuiz = () => {
       urlPath: 'multiple-choice',
     },
     {
-      type: '주관식',
+      type: '도전 골든벨',
       image: '/images/short-answer.png',
       urlPath: 'short-answer',
     },

@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
-import Sidebar from '../common/Sidebar';
-import Dashboard from '../../pages/Dashboard';
-import SelectCreateQuiz from '../common/SelectCreateQuiz';
+import Sidebar from '../../common/Sidebar/Sidebar.jsx';
+import Dashboard from '../../../pages/Dashboard/Dashboard.jsx';
+import SelectCreateQuiz from '../../common/SelectCreateQuiz/SelectCreateQuiz.jsx';
 import styles from './Layout.module.css';
 
 const Layout = () => {
@@ -21,7 +21,7 @@ const Layout = () => {
         return <Dashboard />;
     }
   }, [activeMenu]);
-  console.log('activeMenu:', activeMenu);
+
   return (
     <div className={styles.layout}>
       <Sidebar activeMenu={activeMenu} setActiveMenu={setActiveMenu} />

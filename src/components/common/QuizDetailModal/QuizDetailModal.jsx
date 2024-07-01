@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './QuizDetailModal.module.css';
-import Button from './Button';
-import Text from './Text';
+import Button from '../Button/Button.jsx';
+import Text from '../Text/Text.jsx';
 
 const QuizDetailModal = ({ quiz, onClose, onCreateRoom }) => {
   if (!quiz) return null;

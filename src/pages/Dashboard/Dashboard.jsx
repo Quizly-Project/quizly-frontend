@@ -1,9 +1,9 @@
 // src/pages/Dashboard.jsx
 import React, { useState } from 'react';
-import SearchBar from '../components/common/SearchBar';
-import QuizCard from '../components/common/QuizCard';
-import Text from '../components/common/Text';
-import QuizDetailModal from '../components/common/QuizDetailModal';
+import SearchBar from '../../components/common/SearchBar/SearchBar.jsx';
+import QuizCard from '../../components/common/QuizCard/QuizCard.jsx';
+import Text from '../../components/common/Text/Text.jsx';
+import QuizDetailModal from '../../components/common/QuizDetailModal/QuizDetailModal.jsx';
 import styles from './Dashboard.module.css';
 
 const Dashboard = () => {

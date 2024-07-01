@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './Text.module.css';
-import '../../styles/App.css';
+import '../../../styles/App.css';
 
 /**
  * Text 컴포넌트는 다양한 스타일 옵션을 가진 텍스트 요소를 렌더링합니다.
@@ -15,7 +15,7 @@ import '../../styles/App.css';
  * @param {React.ReactNode} props.children - 텍스트 내용
  * @param {'left'|'center'|'right'} [props.align='left'] - 텍스트 정렬
  * @param {'title'|'subtitle'|'body'|'caption'} [props.type='body'] - 텍스트 유형
- * @param {'primary'|'secondary'|'error'|'success'} [props.color='primary'] - 텍스트 색상
+ * @param {'primary'|'secondary'|'error'|'success'|'white'} [props.color='primary'] - 텍스트 색상
  * @param {'small'|'medium'|'large'} [props.size='medium'] - 텍스트 크기
  * @param {'normal'|'bold'} [props.weight='normal'] - 텍스트 두께
  * @param {React.ElementType} [props.as='p'] - 렌더링할 HTML 요소
@@ -57,7 +57,7 @@ Text.propTypes = {
   children: PropTypes.node.isRequired,
   align: PropTypes.oneOf(['left', 'center', 'right']),
   type: PropTypes.oneOf(['title', 'subtitle', 'body', 'caption']),
-  color: PropTypes.oneOf(['primary', 'secondary', 'error', 'success']),
+  color: PropTypes.oneOf(['primary', 'secondary', 'error', 'success', 'white']),
   size: PropTypes.oneOf(['small', 'medium', 'large']),
   weight: PropTypes.oneOf(['normal', 'bold']),
   as: PropTypes.elementType,

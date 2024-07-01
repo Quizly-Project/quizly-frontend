@@ -1,8 +1,8 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './CreateQuiz.module.css';
-import Text from '../components/common/Text';
-import MultipleChoiceForm from '../components/common/MultipleChoiceForm';
+import Text from '../../components/common/Text/Text';
+import MultipleChoiceForm from '../../components/common/MultipleChoiceForm/MultipleChoiceForm';
 // import ShortAnswerForm from './ShortAnswerForm';
 
 const CreateQuiz = () => {

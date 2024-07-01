@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import styles from './SearchBar.module.css';
-import InputField from './InputField';
+import InputField from '../InputField/InputField.jsx';
 
 const SearchBar = () => {
   const {

@@ -1,9 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import Button from '../components/common/Button';
-import InputField from '../components/common/InputField';
-import Text from '../components/common/Text';
+import Button from '../components/common/Button/Button.jsx';
+import InputField from '../components/common/InputField/InputField.jsx';
+import Text from '../components/common/Text/Text.jsx';
 const SignUp = () => {
   const {
     register,
