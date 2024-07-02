@@ -11,6 +11,9 @@ import CreateQuiz from './pages/CreateQuiz/CreateQuiz.jsx';
 import Landing from './pages/Landing';
 import Layout from './components/layout/Layout/Layout.jsx';
 import useAuthStore from './store/authStore';
+import Game from './pages/Game.jsx';
+import { Canvas } from '@react-three/fiber';
+import { KeyboardControls } from '@react-three/drei';
 
 const PrivateRoute = ({ children }) => {
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
@@ -34,6 +37,24 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/create/:quizType" element={<CreateQuiz />} />
         <Route path="/landing" element={<Landing />} />
+        <Route
+          path="/game"
+          element={
+            <KeyboardControls
+              map={[
+                { name: 'forward', keys: ['ArrowUp', 'KeyW'] },
+                { name: 'backward', keys: ['ArrowDown', 'KeyS'] },
+                { name: 'leftward', keys: ['ArrowLeft', 'KeyA'] },
+                { name: 'rightward', keys: ['ArrowRight', 'KeyD'] },
+                { name: 'jump', keys: ['Space'] },
+              ]}
+            >
+              <Canvas>
+                <Game />
+              </Canvas>
+            </KeyboardControls>
+          }
+        />
       </Routes>
     </Router>
   );
