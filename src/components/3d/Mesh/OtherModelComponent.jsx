@@ -1,8 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Html } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
+import { Html, useGLTF } from '@react-three/drei';
 
-const OtherCube = React.memo(({ nickname, pos }) => {
+const OtherModelComponent = React.memo(({ path, matName, nickname, pos }) => {
+  console.log(nickname, pos);
+  const { nodes, materials } = useGLTF(`./Character/${path}`);
+
   const meshRef = useRef();
 
   const [myPos, setMyPos] = useState({ x: pos.x, y: pos.y, z: pos.z });
@@ -33,16 +36,29 @@ const OtherCube = React.memo(({ nickname, pos }) => {
     }
   });
 
-  // console.log(meshRef.current.position.x, meshRef.current.position.y, meshRef.current.position.z);
+  useGLTF.preload(`./Character/${path}`);
+
   return (
-    <mesh ref={meshRef} position={[myPos.x, myPos.y, myPos.z]}>
-      <boxGeometry />
-      <meshStandardMaterial color="orange" />
-      <Html position={[0, 1, 0]} wrapperClass="label" center distanceFactor={8}>
-        👤{nickname}
-      </Html>
-    </mesh>
+    <group ref={meshRef} dispose={null} position={[myPos.x, myPos.y, myPos.z]}>
+      <group name="Rig" scale={0.4}>
+        <skinnedMesh
+          name="Mesh"
+          geometry={nodes.Mesh.geometry}
+          material={materials[matName]}
+          skeleton={nodes.Mesh.skeleton}
+        />
+        <primitive object={nodes.root} />
+        <Html
+          position={[0, 4, 0]}
+          wrapperClass="label"
+          center
+          distanceFactor={8}
+        >
+          👤{nickname}
+        </Html>
+      </group>
+    </group>
   );
 });
 
-export default OtherCube;
+export default OtherModelComponent;

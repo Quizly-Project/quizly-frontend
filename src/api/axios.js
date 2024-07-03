@@ -2,11 +2,11 @@ import axios from 'axios';
 import useAuthStore from '../store/authStore';
 
 // const baseURL = process.env.REACT_APP_API_URL || 'http://192.168.0.98:8080';
-const baseURL = 'http://192.168.0.111:8080';
+const baseURL = 'http://172.30.1.64:8080';
 
 const api = axios.create({
   baseURL: baseURL,
-  // timeout: 5000, // 5초 타임아웃 설정
+  timeout: 5000, // 5초 타임아웃 설정
   headers: {
     'Content-Type': 'application/json',
   },

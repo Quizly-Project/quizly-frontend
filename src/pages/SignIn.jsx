@@ -19,10 +19,9 @@ const SignIn = () => {
   const onSubmit = data => {
     // 여기서 실제로는 백엔드 API를 호출해야 하지만,
     // 지금은 간단한 검증만 수행합니다.
-    if (data.email === 'test@example.com' && data.password === 'password123') {
-      const userData = { id: 1, email: data.email, name: '디테일' };
-      login(userData);
-      navigate('/dashboard');
+    if (login(data.username, data.password)) {
+      console.log('Login successful');
+      navigate('/');
     } else {
       setError('email', {
         type: 'manual',
@@ -43,15 +42,15 @@ const SignIn = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <InputField
           name="email"
-          type="email"
+          type="id"
           className="center"
           placeholder="이메일을 입력하세요."
-          {...register('email', {
+          {...register('username', {
             required: '이메일을 입력해주세요.',
-            pattern: {
-              value: /^\S+@\S+$/i,
-              message: '올바른 이메일 주소를 입력해주세요.',
-            },
+            // pattern: {
+            //   value: /^\S+@\S+$/i,
+            //   message: '올바른 이메일 주소를 입력해주세요.',
+            // },
           })}
           error={errors.email}
           required="Email is required"
@@ -64,7 +63,7 @@ const SignIn = () => {
           {...register('password', {
             required: '비밀번호를 입력해주세요.',
             minLength: {
-              value: 8,
+              value: 4,
               message: '비밀번호는 최소 8자 이상이어야 합니다.',
             },
           })}

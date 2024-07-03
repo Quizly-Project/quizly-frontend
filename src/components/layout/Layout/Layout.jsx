@@ -1,7 +1,9 @@
 import React, { useState, useCallback } from 'react';
 import Sidebar from '../../common/Sidebar/Sidebar.jsx';
+// import Dashboard from '../../../pages/Dashboard/Dashboard.jsx';
 import Dashboard from '../../../pages/Dashboard/Dashboard.jsx';
 import SelectCreateQuiz from '../../common/SelectCreateQuiz/SelectCreateQuiz.jsx';
+import MyQuiz from '../../common/MyQuiz/MyQuiz.jsx';
 import styles from './Layout.module.css';
 
 const Layout = () => {
@@ -14,7 +16,7 @@ const Layout = () => {
       case '퀴즈 만들기':
         return <SelectCreateQuiz />;
       case '내 퀴즈':
-        return <div>내 퀴즈</div>;
+        return <MyQuiz />;
       case '설정':
         return <div>설정</div>;
       default:
