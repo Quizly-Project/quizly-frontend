@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Html, useGLTF } from '@react-three/drei';
+import { Html, Clone, useGLTF } from '@react-three/drei';
 
 const OtherSquid = React.memo(({ nickname, pos }) => {
   console.log(nickname, pos);

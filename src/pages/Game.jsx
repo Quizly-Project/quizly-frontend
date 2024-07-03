@@ -15,7 +15,7 @@ import OtherSquid from '../components/3d/Mesh/OtherSquid.jsx';
 
 export default function Game() {
   // useState로 관리해야 브라우저당 한 번만 접속한다.
-  const [socket] = useState(() => io('http://localhost:81/quizly'));
+  const [socket, setSocket] = useState(null); // 소켓 연결 시도를 useEffect 내에서 처리한다.
   const [nickname] = useState(() => Math.floor(Math.random() * 10000));
 
   /* client의 좌표 */
@@ -36,14 +36,23 @@ export default function Game() {
 
   // 리스너를 마운트 될 때 한 번만 생성한다.
   useEffect(() => {
-    socket.emit('room', nickname, 1); // 1번 방에 nickname으로 입장했다고 서버에 전달
+    // 한 브라우저는 한 번만 소켓에 연결한다.
+    if (isConnected) return;
+
+    // 소켓에 연결
+    const newSocket = io('http://localhost:81/quizly');
+    console.log('Connected to socket.');
+    setSocket(newSocket);
+
+    newSocket.emit('room', nickname, 1); // 1번 방에 nickname으로 입장했다고 서버에 전달
 
     /* 연결 성공 */
-    socket.on('connect', () => {
+    newSocket.on('connect', () => {
       console.log({ nickname }, 'connected.');
+      setIsConnected(true);
     });
 
-    socket.on('roomIn', data => {
+    newSocket.on('roomIn', data => {
       // state 변수가 아닌 다른 변수에 for문을 돌며 저장해준 후
       // for이 끝나면 그때 clientCoords를 setState 한다.
       console.log(data);
@@ -62,7 +71,7 @@ export default function Game() {
 
     /* 다른 클라이언트 입장 
       서버가 보내주는 데이터: (새로운 클라이언트의 nickname) */
-    socket.on('comeOn', data => {
+    newSocket.on('comeOn', data => {
       // 좌표 저장 (초기 위치는 (0,0,0))
       console.log(data, defaultPos);
 
@@ -74,14 +83,14 @@ export default function Game() {
 
     /* 다른 클라이언트가 이동했을 때
       서버가 보내주는 데이터: (이동한 클라이언트의 nickname, 이동한 위치 (x, y, z)) */
-    socket.on(1, data => {
+    newSocket.on(1, data => {
       setClientCoords(prevCoords => {
         return { ...prevCoords, [data[0]]: data[1] };
       });
     });
 
     /* 다른 클라이언트가 연결 해제 */
-    socket.on('roomOut', data => {
+    newSocket.on('roomOut', data => {
       console.log('roomOut', data);
       setClientCoords(prevCoords => {
         const newCoords = { ...prevCoords };
@@ -91,14 +100,16 @@ export default function Game() {
     });
 
     /* 연결 해제 */
-    socket.on('disconnect', data => {
+    newSocket.on('disconnect', data => {
       console.log({ nickname }, 'disconnected.');
-      console.log(data);
-      socket.disconnect();
+      newSocket.disconnect();
     });
 
-    setIsConnected(true);
-  }, [socket, nickname]);
+    return () => {
+      setIsConnected(false);
+      setSocket(null);
+    };
+  }, []);
 
   return (
     <>
@@ -109,7 +120,7 @@ export default function Game() {
       <Lights />
       <Level />
 
-      <Squid nickname={nickname} socket={socket} scale={2} />
+      {isConnected && <Squid nickname={nickname} socket={socket} scale={2} />}
       {isConnected &&
         Object.keys(clientCoords).map(key => {
           if (key != nickname) {
