@@ -9,6 +9,7 @@ import SignIn from './pages/SignIn.jsx';
 import SignUp from './pages/SignUp.jsx';
 import CreateQuiz from './pages/CreateQuiz/CreateQuiz.jsx';
 import Landing from './pages/Landing';
+import TeacherQuizDashboard from './pages/TeacherQuizDashboard/TeacherQuizDashboard.jsx';
 import Layout from './components/layout/Layout/Layout.jsx';
 import useAuthStore from './store/authStore';
 
@@ -30,9 +31,24 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route path="/" element={<Navigate to="/dashboard" />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/create/:quizType" element={<CreateQuiz />} />
+        <Route
+          path="/create/:quizType"
+          element={
+            <PrivateRoute>
+              <CreateQuiz />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/teacher/dashboard"
+          element={
+            <PrivateRoute>
+              <TeacherQuizDashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route path="/" element={<Navigate to="/dashboard" />} />
         <Route path="/landing" element={<Landing />} />
       </Routes>
     </Router>
