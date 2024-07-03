@@ -12,6 +12,9 @@ import Landing from './pages/Landing';
 import TeacherQuizDashboard from './pages/TeacherQuizDashboard/TeacherQuizDashboard.jsx';
 import Layout from './components/layout/Layout/Layout.jsx';
 import useAuthStore from './store/authStore';
+import Game from './pages/Game.jsx';
+import { Canvas } from '@react-three/fiber';
+import { KeyboardControls } from '@react-three/drei';
 
 const PrivateRoute = ({ children }) => {
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
@@ -50,6 +53,24 @@ function App() {
         />
         <Route path="/" element={<Navigate to="/dashboard" />} />
         <Route path="/landing" element={<Landing />} />
+        <Route
+          path="/game"
+          element={
+            <KeyboardControls
+              map={[
+                { name: 'forward', keys: ['ArrowUp', 'KeyW'] },
+                { name: 'backward', keys: ['ArrowDown', 'KeyS'] },
+                { name: 'leftward', keys: ['ArrowLeft', 'KeyA'] },
+                { name: 'rightward', keys: ['ArrowRight', 'KeyD'] },
+                { name: 'jump', keys: ['Space'] },
+              ]}
+            >
+              <Canvas>
+                <Game />
+              </Canvas>
+            </KeyboardControls>
+          }
+        />
       </Routes>
     </Router>
   );
