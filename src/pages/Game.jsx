@@ -3,15 +3,10 @@ import { Sky, OrbitControls } from '@react-three/drei';
 import { Perf } from 'r3f-perf';
 import io from 'socket.io-client';
 import Lights from '../components/3d/Environment/Lights.jsx';
-import Cube from '../components/3d/Mesh/Cube.jsx';
 import Level from '../components/3d/Environment/Level.jsx';
-import OtherCube from '../components/3d/Mesh/OtherCube.jsx';
-import Squid from '../components/3d/Mesh/Squid.jsx';
-import { useLoader } from '@react-three/fiber';
-import { GLTFLoader } from 'three/examples/jsm/Addons.js';
+import ModelComponent from '../components/3d/Mesh/ModelComponent.jsx';
+import OtherModelComponent from '../components/3d/Mesh/OtherModelComponent.jsx';
 import '../styles/game.css';
-import SparrowAnimations from '../components/3d/Mesh/SparrowAnimation.jsx';
-import OtherSquid from '../components/3d/Mesh/OtherSquid.jsx';
 
 export default function Game() {
   // useState로 관리해야 브라우저당 한 번만 접속한다.
@@ -28,6 +23,37 @@ export default function Game() {
     y: 0,
     z: 0,
   };
+
+  /* 동물 모델의 배열 */
+  const animalModels = [
+    'Gecko_Animations.glb',
+    'Herring_Animations.glb',
+    'Inkfish_Animations.glb',
+    'Muskrat_Animations.glb',
+    'Pudu_Animations.glb',
+    'Sparrow_Animations.glb',
+    'Taipan_Animations.glb',
+  ];
+
+  const animalMaterials = [
+    'M_Gecko',
+    'M_Herring',
+    'M_Inkfish',
+    'M_Muskrat',
+    'M_Pudu',
+    'M_Sparrow',
+    'M_Taipan',
+  ];
+
+  /* 임시 원숭이 배열 */
+  const colobusModels = [
+    'Colobus_Animations2.glb',
+    'Colobus_Animations3.glb',
+    'Colobus_Animations4.glb',
+    'Colobus_Animations5.glb',
+    'Colobus_Animations6.glb',
+    'Colobus_Animations7.glb',
+  ];
 
   /* ------- events ------- */
   useEffect(() => {
@@ -120,17 +146,38 @@ export default function Game() {
       <Lights />
       <Level />
 
-      {isConnected && <Squid nickname={nickname} socket={socket} scale={2} />}
+      {isConnected && (
+        <ModelComponent
+          path="Colobus_Animations.glb"
+          matName="M_Colobus"
+          nickname={nickname}
+          pos={[0, 0, 0]}
+          socket={socket}
+          scale={2}
+        />
+      )}
+
       {isConnected &&
-        Object.keys(clientCoords).map(key => {
+        Object.keys(clientCoords).map((key, modelIdx) => {
           if (key != nickname) {
+            console.log(
+              key,
+              modelIdx,
+              colobusModels[modelIdx],
+              clientCoords[key]
+            );
             return (
-              <OtherSquid key={key} nickname={key} pos={clientCoords[key]} />
+              <OtherModelComponent
+                key={key}
+                path={colobusModels[modelIdx++]}
+                matName="M_Colobus"
+                nickname={key}
+                pos={clientCoords[key]}
+                scale={2}
+              />
             );
           }
         })}
-
-      {/* <SparrowAnimations scale={2} /> */}
     </>
   );
 }
