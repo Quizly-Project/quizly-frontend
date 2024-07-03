@@ -1,16 +1,33 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import axios from 'axios';
+import api from '../api/axios';
 
-// API 관련 함수들
 const authAPI = {
-  login: async (email, password) => {
-    const response = await axios.post('/api/login', { email, password });
-    return response.data;
+  login: async (username, password) => {
+    try {
+      const response = await api.post('/login', { username, password });
+      return response.data;
+    } catch (error) {
+      console.error('Login failed:', error);
+      throw error;
+    }
   },
-  signup: async userData => {
-    const response = await axios.post('/api/signup', userData);
-    return response.data;
+  signup: async data => {
+    try {
+      const response = await api.post('/join', data);
+      return response.data;
+    } catch (error) {
+      console.error('Signup failed:', error);
+      throw error;
+    }
+  },
+  logout: async () => {
+    try {
+      await api.post('/logout'); // 서버에 로그아웃 요청 (필요한 경우)
+    } catch (error) {
+      console.error('Logout failed:', error);
+      // 로그아웃은 클라이언트에서 처리할 수 있으므로 에러를 던지지 않음
+    }
   },
   // 다른 API 호출 함수들...
 };
@@ -19,43 +36,61 @@ const useAuthStore = create(
   persist(
     (set, get) => ({
       user: null,
-      token: null,
       isAuthenticated: false,
-      // login: async (email, password) => {
-      //   try {
-      //     const { user, token } = await authAPI.login(email, password);
-      //     set({ user, token, isAuthenticated: true });
-      //     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      //     return true;
-      //   } catch (error) {
-      //     console.error('Login failed:', error);
-      //     return false;
-      //   }
-      // },
-      login: userData => set({ user: userData, isAuthenticated: true }),
-      logout: () => {
-        set({ user: null, token: null, isAuthenticated: false });
-        delete axios.defaults.headers.common['Authorization'];
-      },
-      signup: async userData => {
+      token: null,
+      login: async (username, password) => {
         try {
-          const { user, token } = await authAPI.signup(userData);
-          set({ user, token, isAuthenticated: true });
-          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+          const data = await authAPI.login(username, password);
+          set({
+            user: data.username,
+            isAuthenticated: true,
+            token: data.token,
+          });
+          api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
           return true;
         } catch (error) {
-          console.error('Signup failed:', error);
+          console.error('Login failed in store:', error);
           return false;
         }
       },
-      updateUser: userData =>
+      logout: async () => {
+        try {
+          await authAPI.logout();
+        } finally {
+          set({ user: null, isAuthenticated: false, token: null });
+          delete api.defaults.headers.common['Authorization'];
+        }
+      },
+      signup: async userData => {
+        try {
+          const data = await authAPI.signup(userData);
+          set({
+            user: userData.username,
+            isAuthenticated: true,
+            token: data.token,
+          });
+          api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+          return true;
+        } catch (error) {
+          console.error('Signup failed in store:', error);
+          return false;
+        }
+      },
+      updateUser: userData => {
         set(state => ({
-          user: state.user ? { ...state.user, ...userData } : null,
-        })),
+          user: { ...state.user, ...userData },
+        }));
+      },
+      getToken: () => get().token,
     }),
     {
       name: 'auth-storage',
       storage: createJSONStorage(() => localStorage),
+      partialize: state => ({
+        user: state.user,
+        isAuthenticated: state.isAuthenticated,
+        token: state.token,
+      }),
     }
   )
 );

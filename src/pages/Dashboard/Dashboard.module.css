@@ -7,9 +7,3 @@
   padding: 20px;
   background-color: #f5f5f5;
 }
-
-.quizGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
-}

@@ -1,15 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import useAuthStore from '../../../store/authStore.js';
 import OXQuizForm from '../OXQuizForm/OXQuizForm.jsx';
 import MultipleChoiceQuizForm from '../MultipleChoiceQuizForm/MultipleChoiceQuizForm.jsx';
 import InputField from '../InputField/InputField.jsx';
 import Button from '../Button/Button.jsx';
-import styles from './MultipleChoiceForm.module.css';
 import Select from '../Select/Select.jsx';
+import styles from './MultipleChoiceForm.module.css';
+import { createQuiz } from '../../../api/axios.js';
 
 const MultipleChoiceForm = () => {
   const user = useAuthStore(state => state.user);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
   const {
     register,
     control,
@@ -38,11 +43,11 @@ const MultipleChoiceForm = () => {
     name: 'quizzes',
   });
 
-  const onSubmit = data => {
-    console.log(data); // 폼 제출 시 처리할 로직
+  const onSubmit = async data => {
+    setIsSubmitting(true);
     const formattedData = {
       ...data,
-      creator: user.id,
+      creator: user,
       quizzes: data.quizzes.map(quiz => {
         if (quiz.type === '2') {
           const { option1, option2, option3, option4, ...restQuiz } = quiz;
@@ -61,7 +66,18 @@ const MultipleChoiceForm = () => {
       }),
     };
 
-    console.log(formattedData);
+    try {
+      const result = await createQuiz(formattedData);
+      console.log(result);
+      navigate(`/`); // 퀴즈 상세 페이지로 이동
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+          '퀴즈 생성에 실패했습니다. 다시 시도해주세요.'
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const quizOptions = [
@@ -150,7 +166,9 @@ const MultipleChoiceForm = () => {
         >
           + 퀴즈 추가
         </Button>
-        <Button type="submit">퀴즈 생성</Button>
+        <Button type="submit">
+          {isSubmitting ? '생성 중...' : '퀴즈 생성'}
+        </Button>
       </div>
     </form>
   );

@@ -15,11 +15,9 @@ const QuizDetailModal = ({ quiz, onClose, onCreateRoom }) => {
     <div className={styles.modalOverlay} onClick={handleOverlayClick}>
       <div className={styles.modalContent}>
         <Text type="title" weight="bold" size="large">
-          {quiz.title}
+          {quiz.quizTitle}
         </Text>
-        <Text type="p" size="medium">
-          {quiz.description}
-        </Text>
+        <Text size="medium">{quiz.quizDescription}</Text>
         <div className={styles.buttonContainer}>
           <Button onClick={onCreateRoom}>퀴즈 방 만들기</Button>
           <Button color="secondary" onClick={onClose}>
