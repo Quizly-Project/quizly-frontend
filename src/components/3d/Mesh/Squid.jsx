@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { useGLTF, Html, useKeyboardControls } from '@react-three/drei';
+import { Clone, useGLTF, Html, useKeyboardControls } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 
 const Squid = React.memo(({ nickname, socket }) => {
