@@ -1,11 +1,17 @@
 import { useEffect, useState } from 'react';
-import { OrbitControls } from '@react-three/drei';
+import { Sky, OrbitControls } from '@react-three/drei';
+import { Perf } from 'r3f-perf';
 import io from 'socket.io-client';
 import Lights from '../components/3d/Environment/Lights.jsx';
 import Cube from '../components/3d/Mesh/Cube.jsx';
 import Level from '../components/3d/Environment/Level.jsx';
 import OtherCube from '../components/3d/Mesh/OtherCube.jsx';
+import Squid from '../components/3d/Mesh/Squid.jsx';
+import { useLoader } from '@react-three/fiber';
+import { GLTFLoader } from 'three/examples/jsm/Addons.js';
 import '../styles/game.css';
+import SparrowAnimations from '../components/3d/Mesh/SparrowAnimation.jsx';
+import OtherSquid from '../components/3d/Mesh/OtherSquid.jsx';
 
 export default function Game() {
   // useState로 관리해야 브라우저당 한 번만 접속한다.
@@ -96,19 +102,24 @@ export default function Game() {
 
   return (
     <>
-      <OrbitControls />
+      <Perf />
 
+      <OrbitControls />
+      <Sky />
       <Lights />
-      <Cube nickname={nickname} socket={socket} />
+      <Level />
+
+      <Squid nickname={nickname} socket={socket} scale={2} />
       {isConnected &&
         Object.keys(clientCoords).map(key => {
           if (key != nickname) {
             return (
-              <OtherCube key={key} nickname={key} pos={clientCoords[key]} />
+              <OtherSquid key={key} nickname={key} pos={clientCoords[key]} />
             );
           }
         })}
-      <Level />
+
+      {/* <SparrowAnimations scale={2} /> */}
     </>
   );
 }
