@@ -5,7 +5,7 @@ import Text from '../Text/Text';
 
 const Sidebar = ({ activeMenu, setActiveMenu }) => {
   const { user, logout } = useAuthStore();
-
+  console.log('user', user);
   const handleLogout = () => {
     logout();
   };
@@ -27,7 +27,7 @@ const Sidebar = ({ activeMenu, setActiveMenu }) => {
         size="large"
         weight="bold"
       >
-        {user?.name} 선생님
+        {user} 선생님
       </Text>
       <ul className={`${styles.menu}`}>
         {menuItems.map(({ icon, text, onClick }) => (
