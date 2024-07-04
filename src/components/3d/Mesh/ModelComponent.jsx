@@ -1,16 +1,18 @@
 import React, { useRef, useEffect, useState } from 'react';
 import {
-  Clone,
   useGLTF,
   Html,
   useKeyboardControls,
   useAnimations,
 } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
+import { RigidBody } from '@react-three/rapier';
 
 const ModelComponent = React.memo(
   ({ path, matName, nickname, pos, socket }) => {
     const group = useRef();
+    const body = useRef();
+
     const { nodes, materials, animations } = useGLTF(`./Character/${path}`);
     const { actions } = useAnimations(animations, group);
 
@@ -66,7 +68,7 @@ const ModelComponent = React.memo(
     return (
       <group ref={group} dispose={null}>
         <group name="Scene">
-          <group name="Rig" scale={0.4}>
+          <group name="Rig" scale={0.5}>
             <skinnedMesh
               name="Mesh"
               geometry={nodes.Mesh.geometry}
@@ -80,7 +82,7 @@ const ModelComponent = React.memo(
               center
               distanceFactor={8}
             >
-              👤{nickname}
+              👤 {nickname}
             </Html>
           </group>
         </group>
