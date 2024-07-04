@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Html, useGLTF } from '@react-three/drei';
+import { Html, useGLTF, useAnimations } from '@react-three/drei';
+import { RigidBody } from '@react-three/rapier';
 
 const OtherModelComponent = React.memo(({ path, matName, nickname, pos }) => {
-  console.log(nickname, pos);
-  const { nodes, materials } = useGLTF(`./Character/${path}`);
+  const group = useRef();
+  const body = useRef();
 
-  const meshRef = useRef();
+  const { nodes, materials, animations } = useGLTF(`./Character/${path}`);
+  const { actions } = useAnimations(animations, group);
 
   const [myPos, setMyPos] = useState({ x: pos.x, y: pos.y, z: pos.z });
 
@@ -21,15 +23,15 @@ const OtherModelComponent = React.memo(({ path, matName, nickname, pos }) => {
 
   useFrame(() => {
     const mypos = {
-      x: meshRef.current.position.x,
-      y: meshRef.current.position.y,
-      z: meshRef.current.position.z,
+      x: group.current.position.x,
+      y: group.current.position.y,
+      z: group.current.position.z,
     };
 
     // set mesh position
-    meshRef.current.position.x = pos.x;
-    meshRef.current.position.y = pos.y;
-    meshRef.current.position.z = pos.z;
+    group.current.position.x = pos.x;
+    group.current.position.y = pos.y;
+    group.current.position.z = pos.z;
 
     if (detectMovement(mypos, pos)) {
       setMyPos(mypos);
@@ -39,8 +41,8 @@ const OtherModelComponent = React.memo(({ path, matName, nickname, pos }) => {
   useGLTF.preload(`./Character/${path}`);
 
   return (
-    <group ref={meshRef} dispose={null} position={[myPos.x, myPos.y, myPos.z]}>
-      <group name="Rig" scale={0.4}>
+    <group ref={group} dispose={null} position={[myPos.x, myPos.y, myPos.z]}>
+      <group name="Rig" scale={0.5}>
         <skinnedMesh
           name="Mesh"
           geometry={nodes.Mesh.geometry}
@@ -54,7 +56,7 @@ const OtherModelComponent = React.memo(({ path, matName, nickname, pos }) => {
           center
           distanceFactor={8}
         >
-          👤{nickname}
+          👤 {nickname}
         </Html>
       </group>
     </group>

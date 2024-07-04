@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Sky, OrbitControls } from '@react-three/drei';
+import { Physics, RigidBody } from '@react-three/rapier';
 import { Perf } from 'r3f-perf';
 import io from 'socket.io-client';
 import Lights from '../components/3d/Environment/Lights.jsx';
-import Level from '../components/3d/Environment/Level.jsx';
 import ModelComponent from '../components/3d/Mesh/ModelComponent.jsx';
 import OtherModelComponent from '../components/3d/Mesh/OtherModelComponent.jsx';
+import OLevel from '../components/3d/Environment/OLevel.jsx';
+import XLevel from '../components/3d/Environment/XLevel.jsx';
 import '../styles/game.css';
 
 export default function Game() {
@@ -23,27 +25,6 @@ export default function Game() {
     y: 0,
     z: 0,
   };
-
-  /* 동물 모델의 배열 */
-  const animalModels = [
-    'Gecko_Animations.glb',
-    'Herring_Animations.glb',
-    'Inkfish_Animations.glb',
-    'Muskrat_Animations.glb',
-    'Pudu_Animations.glb',
-    'Sparrow_Animations.glb',
-    'Taipan_Animations.glb',
-  ];
-
-  const animalMaterials = [
-    'M_Gecko',
-    'M_Herring',
-    'M_Inkfish',
-    'M_Muskrat',
-    'M_Pudu',
-    'M_Sparrow',
-    'M_Taipan',
-  ];
 
   /* 임시 원숭이 배열 */
   const colobusModels = [
@@ -66,7 +47,7 @@ export default function Game() {
     if (isConnected) return;
 
     // 소켓에 연결
-    const newSocket = io('http://localhost:81/quizly');
+    const newSocket = io('http://192.168.0.136:81/quizly');
     console.log('Connected to socket.');
     setSocket(newSocket);
 
@@ -139,19 +120,19 @@ export default function Game() {
 
   return (
     <>
-      <Perf />
-
       <OrbitControls />
       <Sky />
       <Lights />
-      <Level />
+
+      <OLevel />
+      <XLevel />
 
       {isConnected && (
         <ModelComponent
           path="Colobus_Animations.glb"
           matName="M_Colobus"
           nickname={nickname}
-          pos={[0, 0, 0]}
+          pos={[0, 100, 0]}
           socket={socket}
           scale={2}
         />
