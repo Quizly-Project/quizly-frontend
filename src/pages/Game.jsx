@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Sky, OrbitControls } from '@react-three/drei';
-import { Physics, RigidBody } from '@react-three/rapier';
+import { Physics } from '@react-three/rapier';
 import { Perf } from 'r3f-perf';
 import io from 'socket.io-client';
 import Lights from '../components/3d/Environment/Lights.jsx';
@@ -47,11 +47,11 @@ export default function Game() {
     if (isConnected) return;
 
     // 소켓에 연결
-    const newSocket = io('http://192.168.0.136:81/quizly');
+    const newSocket = io('http://localhost:81/quizly');
     console.log('Connected to socket.');
     setSocket(newSocket);
 
-    newSocket.emit('room', nickname, 1); // 1번 방에 nickname으로 입장했다고 서버에 전달
+    newSocket.emit('room', nickname, 1); // 1번 방에 nickname으로 입장했다고 서버에 전달 // joinRoom 필요데이터: {roomCode, nickName}
 
     /* 연결 성공 */
     newSocket.on('connect', () => {
@@ -60,6 +60,7 @@ export default function Game() {
     });
 
     newSocket.on('roomIn', data => {
+      // everyonePosition: 모든 유저의 식별자: {닉네임, {x, y, z}}
       // state 변수가 아닌 다른 변수에 for문을 돌며 저장해준 후
       // for이 끝나면 그때 clientCoords를 setState 한다.
       console.log(data);
@@ -79,6 +80,7 @@ export default function Game() {
     /* 다른 클라이언트 입장 
       서버가 보내주는 데이터: (새로운 클라이언트의 nickname) */
     newSocket.on('comeOn', data => {
+      // -> newClientPosition: {닉네임, {0, 0, 0}}
       // 좌표 저장 (초기 위치는 (0,0,0))
       console.log(data, defaultPos);
 
@@ -91,6 +93,7 @@ export default function Game() {
     /* 다른 클라이언트가 이동했을 때
       서버가 보내주는 데이터: (이동한 클라이언트의 nickname, 이동한 위치 (x, y, z)) */
     newSocket.on(1, data => {
+      // theyMove: {nickName, {x, y, z}}
       setClientCoords(prevCoords => {
         return { ...prevCoords, [data[0]]: data[1] };
       });
@@ -98,6 +101,7 @@ export default function Game() {
 
     /* 다른 클라이언트가 연결 해제 */
     newSocket.on('roomOut', data => {
+      // -> exitRoom: {닉네임}
       console.log('roomOut', data);
       setClientCoords(prevCoords => {
         const newCoords = { ...prevCoords };
@@ -120,45 +124,44 @@ export default function Game() {
 
   return (
     <>
+      <Perf />
+
       <OrbitControls />
       <Sky />
       <Lights />
 
-      <OLevel />
-      <XLevel />
+      <Physics debug>
+        <OLevel />
+        <XLevel />
 
-      {isConnected && (
-        <ModelComponent
-          path="Colobus_Animations.glb"
-          matName="M_Colobus"
-          nickname={nickname}
-          pos={[0, 100, 0]}
-          socket={socket}
-          scale={2}
-        />
-      )}
+        {isConnected && (
+          <ModelComponent
+            path="Colobus_Animations.glb"
+            matName="M_Colobus"
+            nickname={nickname}
+            pos={[0, 0, 0]}
+            socket={socket}
+            scale={2}
+          />
+        )}
 
-      {isConnected &&
-        Object.keys(clientCoords).map((key, modelIdx) => {
-          if (key != nickname) {
-            console.log(
-              key,
-              modelIdx,
-              colobusModels[modelIdx],
-              clientCoords[key]
-            );
-            return (
-              <OtherModelComponent
-                key={key}
-                path={colobusModels[modelIdx++]}
-                matName="M_Colobus"
-                nickname={key}
-                pos={clientCoords[key]}
-                scale={2}
-              />
-            );
-          }
-        })}
+        {isConnected &&
+          Object.keys(clientCoords).map((key, modelIdx) => {
+            if (key != nickname) {
+              console.log(clientCoords[key]);
+              return (
+                <OtherModelComponent
+                  key={key}
+                  path={colobusModels[modelIdx++]}
+                  matName="M_Colobus"
+                  nickname={key}
+                  pos={clientCoords[key]}
+                  scale={2}
+                />
+              );
+            }
+          })}
+      </Physics>
     </>
   );
 }
