@@ -6,7 +6,7 @@ import {
   useAnimations,
 } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
-import { RigidBody } from '@react-three/rapier';
+import { CapsuleCollider, RigidBody } from '@react-three/rapier';
 
 const ModelComponent = React.memo(
   ({ path, matName, nickname, pos, socket }) => {
@@ -20,7 +20,7 @@ const ModelComponent = React.memo(
 
     const [myPos, setMyPos] = useState({ x: 0, y: 0, z: 0 });
 
-    const detectMovement = (oldPos, newPos, threshold = 0.3) => {
+    const detectMovement = (oldPos, newPos, threshold = 0.5) => {
       // 임계점 이상일 때만 렌더링한다.
       return (
         Math.abs(oldPos.x - newPos.x) > threshold ||
@@ -31,34 +31,58 @@ const ModelComponent = React.memo(
 
     // 내 위치가 바뀌면 서버에 위치를 전송한다.
     useEffect(() => {
-      socket.emit('send', 1, nickname, myPos);
+      socket.emit('send', 1, nickname, myPos); // iMove: 보내줄 데이터 {roomCode, nickName, {x, y, z}}
     }, [myPos]);
+
+    const MOVEMENT_SPEED = 30;
+    const MOVEMENT_SPEED_LOW = 15;
+    const JUMP_FORCE = 3;
+    const MAX_LINVEL = 5;
 
     // 움직일 수 있는 경우 (나)
     useFrame(() => {
       const { forward, backward, leftward, rightward } = getKeys();
 
-      const alpha = 1;
-      if (forward) {
-        group.current.position.z -= 0.1 * alpha;
+      const impulse = { x: 0, y: 0, z: 0 };
+      const linvel = body.current.linvel(); // 너무 빨라지지 않도록
+
+      let changeRotation = false;
+
+      if (forward && linvel.z > -MAX_LINVEL) {
+        impulse.z -= MOVEMENT_SPEED;
+        changeRotation = true;
       }
-      if (backward) {
-        group.current.position.z += 0.1 * alpha;
+      if (backward && linvel.z < MAX_LINVEL) {
+        impulse.z += MOVEMENT_SPEED;
+        changeRotation = true;
       }
-      if (leftward) {
-        group.current.position.x -= 0.1 * alpha;
+      if (leftward && linvel.x > -MAX_LINVEL) {
+        impulse.x -= MOVEMENT_SPEED;
+        changeRotation = true;
       }
-      if (rightward) {
-        group.current.position.x += 0.1 * alpha;
+      if (rightward && linvel.x < MAX_LINVEL) {
+        impulse.x += MOVEMENT_SPEED;
+        changeRotation = true;
       }
 
+      // 얼굴 돌리기
+      body.current.applyImpulse(impulse);
+      if (changeRotation) {
+        const angle = Math.atan2(linvel.x, linvel.z);
+        group.current.rotation.y = angle;
+      }
+
+      // rigidbody의 위치로 Position을 업데이트
+      const bodyPos = body.current.translation();
+
       const mypos = {
-        x: group.current.position.x,
-        y: group.current.position.y,
-        z: group.current.position.z,
+        x: bodyPos.x,
+        y: bodyPos.y,
+        z: bodyPos.z,
       };
 
       if (detectMovement(myPos, mypos)) {
+        console.log('New pos!', mypos);
         setMyPos(mypos);
       }
     });
@@ -66,27 +90,36 @@ const ModelComponent = React.memo(
     useGLTF.preload(`./Character/${path}`);
 
     return (
-      <group ref={group} dispose={null}>
-        <group name="Scene">
-          <group name="Rig" scale={0.5}>
-            <skinnedMesh
-              name="Mesh"
-              geometry={nodes.Mesh.geometry}
-              material={materials[matName]}
-              skeleton={nodes.Mesh.skeleton}
-            />
-            <primitive object={nodes.root} />
-            <Html
-              position={[0, 4, 0]}
-              wrapperClass="label"
-              center
-              distanceFactor={8}
-            >
-              👤 {nickname}
-            </Html>
+      <RigidBody
+        ref={body}
+        colliders={false}
+        canSleep={false}
+        enabledRotations={[false, false, false]}
+      >
+        <CapsuleCollider args={[0.2, 1]} position={[0, 1.25, 0]} />
+        <group ref={group} dispose={null}>
+          <group name="Scene">
+            <group name="Rig">
+              <skinnedMesh
+                castShadow
+                geometry={nodes.Mesh.geometry}
+                material={materials[matName]}
+                skeleton={nodes.Mesh.skeleton}
+                scale={2}
+              />
+              <primitive object={nodes.root} />
+              <Html
+                position={[0, 3, 0]}
+                wrapperClass="label"
+                center
+                distanceFactor={8}
+              >
+                👤 {nickname}
+              </Html>
+            </group>
           </group>
         </group>
-      </group>
+      </RigidBody>
     );
   }
 );
