@@ -1,27 +1,20 @@
 import React, { useRef, useEffect, useState } from 'react';
-import {
-  useGLTF,
-  Html,
-  useKeyboardControls,
-  useAnimations,
-} from '@react-three/drei';
+import { useKeyboardControls } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { CapsuleCollider, RigidBody } from '@react-three/rapier';
+import Character from './Character';
 
-const ModelComponent = React.memo(
-  ({ path, matName, nickname, pos, socket }) => {
-    const group = useRef();
-    const body = useRef();
-
-    const { nodes, materials, animations } = useGLTF(`./Character/${path}`);
-    const { actions } = useAnimations(animations, group);
+const CharacterController = React.memo(
+  ({ path, matName, nickname, socket }) => {
+    const rigidbody = useRef();
+    const character = useRef();
 
     const [subscribeKeys, getKeys] = useKeyboardControls();
 
     const [myPos, setMyPos] = useState({ x: 0, y: 0, z: 0 });
 
+    // 임계점 이상일 때만 렌더링한다.
     const detectMovement = (oldPos, newPos, threshold = 0.5) => {
-      // 임계점 이상일 때만 렌더링한다.
       return (
         Math.abs(oldPos.x - newPos.x) > threshold ||
         Math.abs(oldPos.y - newPos.y) > threshold ||
@@ -35,16 +28,15 @@ const ModelComponent = React.memo(
     }, [myPos]);
 
     const MOVEMENT_SPEED = 30;
-    const MOVEMENT_SPEED_LOW = 15;
     const JUMP_FORCE = 3;
     const MAX_LINVEL = 5;
 
-    // 움직일 수 있는 경우 (나)
+    // 키보드 상하좌우로 움직인다.
     useFrame(() => {
       const { forward, backward, leftward, rightward } = getKeys();
 
       const impulse = { x: 0, y: 0, z: 0 };
-      const linvel = body.current.linvel(); // 너무 빨라지지 않도록
+      const linvel = rigidbody.current.linvel(); // 너무 빨라지지 않도록
 
       let changeRotation = false;
 
@@ -65,15 +57,15 @@ const ModelComponent = React.memo(
         changeRotation = true;
       }
 
-      // 얼굴 돌리기
-      body.current.applyImpulse(impulse);
+      // 바라보는 방향으로 얼굴 돌리기
+      rigidbody.current.applyImpulse(impulse);
       if (changeRotation) {
         const angle = Math.atan2(linvel.x, linvel.z);
-        group.current.rotation.y = angle;
+        character.current.rotation.y = angle;
       }
 
       // rigidbody의 위치로 Position을 업데이트
-      const bodyPos = body.current.translation();
+      const bodyPos = rigidbody.current.translation();
 
       const mypos = {
         x: bodyPos.x,
@@ -87,41 +79,25 @@ const ModelComponent = React.memo(
       }
     });
 
-    useGLTF.preload(`./Character/${path}`);
-
     return (
       <RigidBody
-        ref={body}
+        ref={rigidbody}
         colliders={false}
         canSleep={false}
         enabledRotations={[false, false, false]}
       >
-        <CapsuleCollider args={[0.2, 1]} position={[0, 1.25, 0]} />
-        <group ref={group} dispose={null}>
-          <group name="Scene">
-            <group name="Rig">
-              <skinnedMesh
-                castShadow
-                geometry={nodes.Mesh.geometry}
-                material={materials[matName]}
-                skeleton={nodes.Mesh.skeleton}
-                scale={2}
-              />
-              <primitive object={nodes.root} />
-              <Html
-                position={[0, 3, 0]}
-                wrapperClass="label"
-                center
-                distanceFactor={8}
-              >
-                👤 {nickname}
-              </Html>
-            </group>
-          </group>
+        <CapsuleCollider args={[0.5, 0.7]} position={[0, 1.25, 0]} />
+        <group ref={character}>
+          <Character
+            path={path}
+            matName={matName}
+            nickname={nickname}
+            scale={2}
+          />
         </group>
       </RigidBody>
     );
   }
 );
 
-export default ModelComponent;
+export default CharacterController;

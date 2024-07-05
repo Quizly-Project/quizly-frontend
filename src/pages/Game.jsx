@@ -4,10 +4,10 @@ import { Physics } from '@react-three/rapier';
 import { Perf } from 'r3f-perf';
 import io from 'socket.io-client';
 import Lights from '../components/3d/Environment/Lights.jsx';
-import ModelComponent from '../components/3d/Mesh/ModelComponent.jsx';
-import OtherModelComponent from '../components/3d/Mesh/OtherModelComponent.jsx';
 import OLevel from '../components/3d/Environment/OLevel.jsx';
 import XLevel from '../components/3d/Environment/XLevel.jsx';
+import CharacterController from '../components/3d/Mesh/CharacterController.jsx';
+import OtherCharacterController from '../components/3d/Mesh/OtherCharacterController.jsx';
 import '../styles/game.css';
 
 export default function Game() {
@@ -124,33 +124,37 @@ export default function Game() {
 
   return (
     <>
+      {/* debugging tools */}
       <Perf />
 
+      {/* camera controls */}
       <OrbitControls />
+
+      {/* environment */}
       <Sky />
       <Lights />
 
       <Physics debug>
+        {/* fixed elements */}
         <OLevel />
         <XLevel />
 
+        {/* me */}
         {isConnected && (
-          <ModelComponent
+          <CharacterController
             path="Colobus_Animations.glb"
             matName="M_Colobus"
             nickname={nickname}
-            pos={[0, 0, 0]}
             socket={socket}
-            scale={2}
           />
         )}
 
+        {/* others */}
         {isConnected &&
           Object.keys(clientCoords).map((key, modelIdx) => {
             if (key != nickname) {
-              console.log(clientCoords[key]);
               return (
-                <OtherModelComponent
+                <OtherCharacterController
                   key={key}
                   path={colobusModels[modelIdx++]}
                   matName="M_Colobus"
