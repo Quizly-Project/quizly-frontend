@@ -19,6 +19,7 @@ export default function Game() {
   const [clientCoords, setClientCoords] = useState({});
   const [isConnected, setIsConnected] = useState(false);
 
+  /* Constants */
   /* 초기 위치 */
   const defaultPos = {
     x: 0,
@@ -36,11 +37,68 @@ export default function Game() {
     'Colobus_Animations7.glb',
   ];
 
-  /* ------- events ------- */
-  useEffect(() => {
-    console.log(clientCoords);
-  }, [clientCoords]);
+  const ROOM_CODE = 1;
 
+  /* ------- Socket events ------- */
+  // 연결 성공
+  const handleConnect = () => {
+    console.log({ nickname }, 'connected.');
+    setIsConnected(true);
+  };
+
+  // 기존 접속중인 클라이언트의 위치 저장
+  // data: [식별자: {nickName, {x, y, z}}, ...]
+  const handleEveryonePosition = data => {
+    console.log('everyone pos', data);
+    setClientCoords(prevCoords => {
+      const newCoords = { ...prevCoords }; // clientCoords의 불변성을 지키기 위해 newCoords 사용
+      Object.keys(data).forEach(key => {
+        const [name, coord] = data[key];
+        if (name !== nickname) {
+          newCoords[name] = coord;
+        }
+      });
+
+      return newCoords;
+    });
+  };
+
+  // 다른 클라이언트 입장
+  // data: {nickName, {0, 0, 0}}
+  const handleNewClientPosition = data => {
+    console.log('new client pos', data);
+    setClientCoords(prevCoords => {
+      return { ...prevCoords, [data[0]]: data[1] };
+    });
+  };
+
+  // 다른 클라이언트가 이동
+  // data: {nickName, {x, y, z}}
+  const handleTheyMove = data => {
+    console.log('they move', data);
+    setClientCoords(prevCoords => {
+      return { ...prevCoords, [data[0]]: data[1] };
+    });
+  };
+
+  // 다른 클라이언트가 연결 해제
+  // data: {nickName}
+  const handleSomeoneExit = data => {
+    setClientCoords(prevCoords => {
+      const newCoords = { ...prevCoords };
+      delete newCoords[data];
+      return newCoords;
+    });
+  };
+
+  // 연결 해제
+  const handleDisconnect = () => {
+    console.log({ nickname }, 'disconnected.');
+    setIsConnected(false);
+    setSocket(null);
+  };
+
+  /* ------- Socket listeners ------- */
   // 리스너를 마운트 될 때 한 번만 생성한다.
   useEffect(() => {
     // 한 브라우저는 한 번만 소켓에 연결한다.
@@ -51,74 +109,36 @@ export default function Game() {
     console.log('Connected to socket.');
     setSocket(newSocket);
 
-    newSocket.emit('room', nickname, 1); // 1번 방에 nickname으로 입장했다고 서버에 전달 // joinRoom 필요데이터: {roomCode, nickName}
+    /* 클라이언트 -> 서버 */
+    newSocket.emit('joinRoom', { roomCode: ROOM_CODE, nickName: nickname });
 
-    /* 연결 성공 */
-    newSocket.on('connect', () => {
-      console.log({ nickname }, 'connected.');
-      setIsConnected(true);
-    });
+    /* 서버 -> 클라이언트 */
+    // 연결 성공
+    newSocket.on('connect', handleConnect);
 
-    newSocket.on('roomIn', data => {
-      // everyonePosition: 모든 유저의 식별자: {닉네임, {x, y, z}}
-      // state 변수가 아닌 다른 변수에 for문을 돌며 저장해준 후
-      // for이 끝나면 그때 clientCoords를 setState 한다.
-      console.log(data);
-      setClientCoords(prevCoords => {
-        const newCoords = { ...prevCoords };
-        Object.keys(data).forEach(key => {
-          const [name, coord] = data[key];
-          if (name !== nickname) {
-            newCoords[name] = coord;
-          }
-        });
+    // 기존 접속중인 클라이언트의 위치 저장
+    newSocket.on('everyonePosition', handleEveryonePosition);
 
-        return newCoords;
-      });
-    });
+    // 다른 클라이언트 입장
+    newSocket.on('newClientPosition', handleNewClientPosition);
 
-    /* 다른 클라이언트 입장 
-      서버가 보내주는 데이터: (새로운 클라이언트의 nickname) */
-    newSocket.on('comeOn', data => {
-      // -> newClientPosition: {닉네임, {0, 0, 0}}
-      // 좌표 저장 (초기 위치는 (0,0,0))
-      console.log(data, defaultPos);
+    // 다른 클라이언트가 이동했을 때
+    newSocket.on('theyMove', handleTheyMove);
 
-      setClientCoords(prevCoords => {
-        return { ...prevCoords, [data]: defaultPos };
-      });
-      console.log('new client!');
-    });
+    // 다른 클라이언트가 연결 해제
+    newSocket.on('someoneExit', handleSomeoneExit);
 
-    /* 다른 클라이언트가 이동했을 때
-      서버가 보내주는 데이터: (이동한 클라이언트의 nickname, 이동한 위치 (x, y, z)) */
-    newSocket.on(1, data => {
-      // theyMove: {nickName, {x, y, z}}
-      setClientCoords(prevCoords => {
-        return { ...prevCoords, [data[0]]: data[1] };
-      });
-    });
+    // 연결 해제
+    newSocket.on('disconnect', handleDisconnect);
 
-    /* 다른 클라이언트가 연결 해제 */
-    newSocket.on('roomOut', data => {
-      // -> exitRoom: {닉네임}
-      console.log('roomOut', data);
-      setClientCoords(prevCoords => {
-        const newCoords = { ...prevCoords };
-        delete newCoords[data];
-        return newCoords;
-      });
-    });
-
-    /* 연결 해제 */
-    newSocket.on('disconnect', data => {
-      console.log({ nickname }, 'disconnected.');
-      newSocket.disconnect();
-    });
-
+    // 컴포넌트 언마운트 시 이벤트 리스너 제거
     return () => {
-      setIsConnected(false);
-      setSocket(null);
+      newSocket.off('everyonePosition', handleEveryonePosition);
+      newSocket.off('newClientPosition', handleNewClientPosition);
+      newSocket.off('theyMove', handleTheyMove);
+      newSocket.off('someoneExit', handleSomeoneExit);
+      newSocket.off('disconnect', handleDisconnect);
+      newSocket.off('connect', handleConnect);
     };
   }, []);
 

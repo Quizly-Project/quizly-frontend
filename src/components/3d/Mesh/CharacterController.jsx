@@ -24,7 +24,7 @@ const CharacterController = React.memo(
 
     // 내 위치가 바뀌면 서버에 위치를 전송한다.
     useEffect(() => {
-      socket.emit('send', 1, nickname, myPos); // iMove: 보내줄 데이터 {roomCode, nickName, {x, y, z}}
+      socket.emit('iMove', { nickName: nickname, position: myPos }); // 보내줄 데이터 {nickName, {x, y, z}}
     }, [myPos]);
 
     const MOVEMENT_SPEED = 30;
