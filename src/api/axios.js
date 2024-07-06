@@ -2,7 +2,7 @@ import axios from 'axios';
 import useAuthStore from '../store/authStore';
 
 // const baseURL = process.env.REACT_APP_API_URL || 'http://192.168.0.98:8080';
-const baseURL = 'http://172.30.1.64:8080';
+const baseURL = 'http://192.168.1.107:8080';
 
 const api = axios.create({
   baseURL: baseURL,
@@ -64,7 +64,7 @@ export const createQuiz = async quizData => {
 
 export const getQuizzes = async () => {
   try {
-    const response = await api.get(`/quizgroup/list`);
+    const response = await api.get(`/quizgroup`);
     return response.data;
   } catch (error) {
     console.error('퀴즈 조회 중 오류 발생:', error);

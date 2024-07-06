@@ -51,10 +51,10 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route path="/" element={<Navigate to="/dashboard" />} />
+        <Route path="/" element={<Navigate to="/landing" />} />
         <Route path="/landing" element={<Landing />} />
         <Route
-          path="/game"
+          path="/game/:code"
           element={
             <KeyboardControls
               map={[

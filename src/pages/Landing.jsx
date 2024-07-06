@@ -1,9 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import InputField from '../components/common/InputField/InputField';
 import Button from '../components/common/Button/Button';
 import Text from '../components/common/Text/Text';
-import { log } from 'three/examples/jsm/nodes/Nodes.js';
 
 const Landing = () => {
   const {
@@ -13,8 +13,11 @@ const Landing = () => {
     formState: { errors },
   } = useForm();
 
+  const navigate = useNavigate();
+
   const onSubmit = data => {
     console.log(data);
+    navigate(`/game/${data.code}`);
   };
   return (
     <div>
@@ -24,7 +27,10 @@ const Landing = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <InputField
           name="code"
-          register={register}
+          type="text"
+          {...register('code', {
+            required: '방 코드를 입력해주세요.',
+          })}
           errors={errors}
           placeholder="방 코드를 입력하세요"
           round={true}

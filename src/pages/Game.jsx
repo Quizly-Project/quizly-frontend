@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Sky, OrbitControls, Html } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
 import { Perf } from 'r3f-perf';
@@ -12,6 +13,7 @@ import '../styles/game.css';
 import Button from '../components/common/Button/Button.jsx';
 
 export default function Game() {
+  const { code } = useParams();
   // useState로 관리해야 브라우저당 한 번만 접속한다.
   const [socket, setSocket] = useState(null); // 소켓 연결 시도를 useEffect 내에서 처리한다.
   const [nickname] = useState(() => Math.floor(Math.random() * 10000));
@@ -38,7 +40,7 @@ export default function Game() {
     'Colobus_Animations7.glb',
   ];
 
-  const ROOM_CODE = 1;
+  const ROOM_CODE = code;
 
   /* ------- Socket events ------- */
   // 연결 성공
@@ -120,7 +122,7 @@ export default function Game() {
     }, 1000);
   };
 
-  const handleTimerEnd = () => {
+  const handleTimeOut = () => {
     console.log('타이머 종료');
   };
   /* ------- Socket listeners ------- */
@@ -163,7 +165,7 @@ export default function Game() {
     newSocket.on('timerStart', handleTimerStart);
 
     // 타이머 종료
-    newSocket.on('timeout', handleTimerEnd);
+    newSocket.on('timeout', handleTimeOut);
     // 컴포넌트 언마운트 시 이벤트 리스너 제거
     return () => {
       newSocket.off('everyonePosition', handleEveryonePosition);
@@ -174,7 +176,7 @@ export default function Game() {
       newSocket.off('connect', handleConnect);
       newSocket.off('quiz', handleQuiz);
       newSocket.off('timerStart', handleTimerStart);
-      newSocket.off('timeout', handleTimerEnd);
+      newSocket.off('timeout', handleTimeOut);
     };
   }, []);
 

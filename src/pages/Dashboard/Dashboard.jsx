@@ -7,11 +7,12 @@ import QuizDetailModal from '../../components/common/QuizDetailModal/QuizDetailM
 import styles from './Dashboard.module.css';
 import QuizList from '../../components/common/QuizList/QuizList';
 import api, { getQuizzes } from '../../api/axios.js';
+import io from 'socket.io-client';
 
 const Dashboard = () => {
   const [selectQuiz, setSelectQuiz] = useState(null);
-
   const [quizItems, setQuizItems] = useState([]);
+  const [quizId, setQuizId] = useState(null);
 
   useEffect(() => {
     getQuizzes().then(res => {
@@ -22,6 +23,7 @@ const Dashboard = () => {
 
   const handleQuizClick = quiz => {
     console.log('퀴즈 클릭');
+    setQuizId(quiz.quizGroup);
     setSelectQuiz(quiz);
   };
 
@@ -31,6 +33,11 @@ const Dashboard = () => {
 
   const handleCreateRoom = () => {
     // 퀴즈 방 만들기
+    const socket = io('http://localhost:81/quizly');
+    socket.emit('createRoom', { quizGroup: quizId });
+    socket.on('roomCode', roomCode => {
+      console.log('roomCode', roomCode);
+    });
     console.log('퀴즈 방 만들기');
   };
 
