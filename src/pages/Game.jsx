@@ -54,9 +54,9 @@ export default function Game() {
     setClientCoords(prevCoords => {
       const newCoords = { ...prevCoords }; // clientCoords의 불변성을 지키기 위해 newCoords 사용
       Object.keys(data).forEach(key => {
-        const [name, coord] = data[key];
-        if (name !== nickname) {
-          newCoords[name] = coord;
+        const { nickName, position } = data[key];
+        if (nickName !== nickname && nickName !== 'teacher') {
+          newCoords[nickName] = position;
         }
       });
 
@@ -78,7 +78,7 @@ export default function Game() {
   const handleTheyMove = data => {
     console.log('they move', data);
     setClientCoords(prevCoords => {
-      return { ...prevCoords, [data[0]]: data[1] };
+      return { ...prevCoords, [data.nickName]: data.position };
     });
   };
 
