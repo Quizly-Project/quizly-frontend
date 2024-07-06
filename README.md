@@ -10,38 +10,105 @@ quizly-frontend
 ├─ package-lock.json
 ├─ package.json
 ├─ public
+│  └─ Character
+│     ├─ Colobus_Animations.glb
+│     ├─ Colobus_Animations2.glb
+│     ├─ Colobus_Animations3.glb
+│     ├─ Colobus_Animations4.glb
+│     ├─ Colobus_Animations5.glb
+│     ├─ Colobus_Animations6.glb
+│     ├─ Colobus_Animations7.glb
+│     ├─ Gecko_Animations.glb
+│     ├─ Herring_Animations.glb
+│     ├─ Inkfish_Animations.glb
+│     ├─ Muskrat_Animations.glb
+│     ├─ Pudu_Animations.glb
+│     ├─ Sparrow_Animations.glb
+│     └─ Taipan_Animations.glb
 ├─ src
 │  ├─ App.jsx
+│  ├─ api
+│  │  └─ axios.js
 │  ├─ assets
 │  ├─ components
+│  │  ├─ 3d
+│  │  │  ├─ Environment
+│  │  │  │  ├─ Level.jsx
+│  │  │  │  ├─ Lights.jsx
+│  │  │  │  ├─ OLevel.jsx
+│  │  │  │  └─ XLevel.jsx
+│  │  │  └─ Mesh
+│  │  │     ├─ Character.jsx
+│  │  │     ├─ CharacterController.jsx
+│  │  │     └─ OtherCharacterController.jsx
 │  │  └─ common
-│  │     ├─ Button.jsx
-│  │     ├─ Button.module.css
-│  │     ├─ InputField.jsx
-│  │     ├─ InputField.module.css
-│  │     ├─ QuizCard.jsx
-│  │     ├─ QuizCard.module.css
-│  │     ├─ SearchBar.jsx
-│  │     ├─ SearchBar.module.css
-│  │     ├─ SelectCreateQuiz.jsx
-│  │     ├─ SelectCreateQuiz.module.css
-│  │     ├─ Sidebar.jsx
-│  │     ├─ Sidebar.module.css
-│  │     ├─ Text.jsx
-│  │     └─ Text.module.css
+│  │     ├─ Button
+│  │     │  ├─ Button.jsx
+│  │     │  └─ Button.module.css
+│  │     ├─ CountTimer
+│  │     │  └─ CountTimer.jsx
+│  │     ├─ InputField
+│  │     │  ├─ InputField.jsx
+│  │     │  └─ InputField.module.css
+│  │     ├─ MultipleChoiceForm
+│  │     │  ├─ MultipleChoiceForm.jsx
+│  │     │  └─ MultipleChoiceForm.module.css
+│  │     ├─ MultipleChoiceQuizForm
+│  │     │  ├─ MultipleChoiceQuizForm.jsx
+│  │     │  └─ MultipleChoiceQuizForm.module.css
+│  │     ├─ MyQuiz
+│  │     │  ├─ MyQuiz.jsx
+│  │     │  └─ MyQuiz.module.css
+│  │     ├─ OXQuizForm
+│  │     │  ├─ OXQuizForm.jsx
+│  │     │  └─ OXQuizForm.module.css
+│  │     ├─ QuizCard
+│  │     │  ├─ QuizCard.jsx
+│  │     │  └─ QuizCard.module.css
+│  │     ├─ QuizDetailModal
+│  │     │  ├─ QuizDetailModal.jsx
+│  │     │  └─ QuizDetailModal.module.css
+│  │     ├─ QuizList
+│  │     │  ├─ QuizList.jsx
+│  │     │  └─ QuizList.module.css
+│  │     ├─ SearchBar
+│  │     │  ├─ SearchBar.jsx
+│  │     │  └─ SearchBar.module.css
+│  │     ├─ Select
+│  │     │  ├─ Select.jsx
+│  │     │  └─ Select.module.css
+│  │     ├─ SelectCreateQuiz
+│  │     │  ├─ SelectCreateQuiz.jsx
+│  │     │  └─ SelectCreateQuiz.module.css
+│  │     ├─ ShortAnswerForm
+│  │     │  ├─ ShortAnswerForm.jsx
+│  │     │  └─ ShortAnswerForm.module.css
+│  │     ├─ Sidebar
+│  │     │  ├─ Sidebar.jsx
+│  │     │  └─ Sidebar.module.css
+│  │     └─ Text
+│  │        ├─ Text.jsx
+│  │        └─ Text.module.css
 │  ├─ main.jsx
 │  ├─ pages
-│  │  ├─ CreateQuiz.jsx
-│  │  ├─ Dashboard.jsx
-│  │  ├─ Dashboard.module.css
+│  │  ├─ CreateQuiz
+│  │  │  ├─ CreateQuiz.jsx
+│  │  │  └─ CreateQuiz.module.css
+│  │  ├─ Dashboard
+│  │  │  ├─ Dashboard.jsx
+│  │  │  └─ Dashboard.module.css
+│  │  ├─ Game.jsx
+│  │  ├─ Landing.jsx
 │  │  ├─ SignIn.jsx
-│  │  └─ SignUp.jsx
-│  ├─ services
-│  │  └─ auth.js
+│  │  ├─ SignUp.jsx
+│  │  └─ TeacherQuizDashboard
+│  │     ├─ TeacherQuizDashboard.jsx
+│  │     └─ TeacherQuizDashboard.module.css
 │  ├─ store
 │  │  └─ authStore.js
 │  ├─ styles
 │  │  ├─ App.css
+│  │  ├─ game.css
 │  │  └─ index.css
 │  └─ utils
 └─ vite.config.js

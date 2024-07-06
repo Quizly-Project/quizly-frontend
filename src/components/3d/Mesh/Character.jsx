@@ -4,10 +4,10 @@ import { useGLTF, Html, useAnimations } from '@react-three/drei';
 const Character = React.memo(({ path, matName, nickname }) => {
   const group = useRef();
 
-  const { nodes, materials, animations } = useGLTF(`./Character/${path}`);
+  const { nodes, materials, animations } = useGLTF(`/Character/${path}`);
   const { actions } = useAnimations(animations, group);
 
-  useGLTF.preload(`./Character/${path}`);
+  useGLTF.preload(`/Character/${path}`);
 
   return (
     <group ref={group} dispose={null}>
