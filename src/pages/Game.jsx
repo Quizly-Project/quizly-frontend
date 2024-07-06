@@ -4,13 +4,18 @@ import { Sky, OrbitControls, Html } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
 import { Perf } from 'r3f-perf';
 import io from 'socket.io-client';
+
+// components
 import Lights from '../components/3d/Environment/Lights.jsx';
 import OLevel from '../components/3d/Environment/OLevel.jsx';
 import XLevel from '../components/3d/Environment/XLevel.jsx';
 import CharacterController from '../components/3d/Mesh/CharacterController.jsx';
 import OtherCharacterController from '../components/3d/Mesh/OtherCharacterController.jsx';
+
+// style
 import '../styles/game.css';
-import Button from '../components/common/Button/Button.jsx';
+import Question from './Game/Question.jsx';
+import QuizStartButton from './Game/QuizStartButton.jsx';
 
 export default function Game() {
   const { code } = useParams();
@@ -21,6 +26,10 @@ export default function Game() {
   /* client의 좌표 */
   const [clientCoords, setClientCoords] = useState({});
   const [isConnected, setIsConnected] = useState(false);
+
+  /* 퀴즈 정보 */
+  const [quiz, setQuiz] = useState(null);
+  const [isStarted, setIsStarted] = useState(false);
 
   /* Constants */
   /* 초기 위치 */
@@ -52,7 +61,7 @@ export default function Game() {
   // 기존 접속중인 클라이언트의 위치 저장
   // data: [식별자: {nickName, {x, y, z}}, ...]
   const handleEveryonePosition = data => {
-    console.log('everyone pos', data);
+    // console.log('everyone pos', data);
     setClientCoords(prevCoords => {
       const newCoords = { ...prevCoords }; // clientCoords의 불변성을 지키기 위해 newCoords 사용
       Object.keys(data).forEach(key => {
@@ -69,7 +78,7 @@ export default function Game() {
   // 다른 클라이언트 입장
   // data: {nickName, {0, 0, 0}}
   const handleNewClientPosition = data => {
-    console.log('new client pos', data);
+    // console.log('new client pos', data);
     setClientCoords(prevCoords => {
       return { ...prevCoords, [data.nickName]: data.position };
     });
@@ -78,7 +87,7 @@ export default function Game() {
   // 다른 클라이언트가 이동
   // data: {nickName, {x, y, z}}
   const handleTheyMove = data => {
-    console.log('they move', data);
+    // console.log('they move', data);
     setClientCoords(prevCoords => {
       return { ...prevCoords, [data.nickName]: data.position };
     });
@@ -108,6 +117,8 @@ export default function Game() {
 
   const handleQuiz = data => {
     console.log('퀴즈 시작', data);
+    setQuiz(data);
+    setIsStarted(true);
   };
 
   const handleTimerStart = duration => {
@@ -124,6 +135,7 @@ export default function Game() {
 
   const handleTimeOut = () => {
     console.log('타이머 종료');
+    setIsStarted(false);
   };
   /* ------- Socket listeners ------- */
   // 리스너를 마운트 될 때 한 번만 생성한다.
@@ -224,17 +236,10 @@ export default function Game() {
             }
           })}
       </Physics>
-      <Html>
-        <Button
-          type="button"
-          size="large"
-          wide={true}
-          round={true}
-          onClick={handleQuizStart}
-        >
-          퀴즈 시작
-        </Button>
-      </Html>
+
+      <QuizStartButton toggleQuizStart={handleQuizStart} />
+
+      {isStarted ? <Question quizData={quiz} /> : <group></group>}
     </>
   );
 }
