@@ -54,7 +54,7 @@ const Text = ({
 };
 
 Text.propTypes = {
-  children: PropTypes.node.isRequired,
+  // children: PropTypes.node.isRequired,
   align: PropTypes.oneOf(['left', 'center', 'right']),
   type: PropTypes.oneOf(['title', 'subtitle', 'body', 'caption']),
   color: PropTypes.oneOf(['primary', 'secondary', 'error', 'success', 'white']),
