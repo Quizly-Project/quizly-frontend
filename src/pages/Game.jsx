@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Sky, OrbitControls } from '@react-three/drei';
+import { Sky, OrbitControls, Html } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
 import { Perf } from 'r3f-perf';
 import io from 'socket.io-client';
@@ -9,6 +9,7 @@ import XLevel from '../components/3d/Environment/XLevel.jsx';
 import CharacterController from '../components/3d/Mesh/CharacterController.jsx';
 import OtherCharacterController from '../components/3d/Mesh/OtherCharacterController.jsx';
 import '../styles/game.css';
+import Button from '../components/common/Button/Button.jsx';
 
 export default function Game() {
   // useState로 관리해야 브라우저당 한 번만 접속한다.
@@ -53,9 +54,9 @@ export default function Game() {
     setClientCoords(prevCoords => {
       const newCoords = { ...prevCoords }; // clientCoords의 불변성을 지키기 위해 newCoords 사용
       Object.keys(data).forEach(key => {
-        const [name, coord] = data[key];
-        if (name !== nickname) {
-          newCoords[name] = coord;
+        const { nickName, position } = data[key];
+        if (nickName !== nickname && nickName !== 'teacher') {
+          newCoords[nickName] = position;
         }
       });
 
@@ -68,7 +69,7 @@ export default function Game() {
   const handleNewClientPosition = data => {
     console.log('new client pos', data);
     setClientCoords(prevCoords => {
-      return { ...prevCoords, [data[0]]: data[1] };
+      return { ...prevCoords, [data.nickName]: data.position };
     });
   };
 
@@ -77,7 +78,7 @@ export default function Game() {
   const handleTheyMove = data => {
     console.log('they move', data);
     setClientCoords(prevCoords => {
-      return { ...prevCoords, [data[0]]: data[1] };
+      return { ...prevCoords, [data.nickName]: data.position };
     });
   };
 
@@ -98,6 +99,30 @@ export default function Game() {
     setSocket(null);
   };
 
+  const handleQuizStart = () => {
+    console.log('퀴즈 시작');
+    socket.emit('start', { roomCode: ROOM_CODE });
+  };
+
+  const handleQuiz = data => {
+    console.log('퀴즈 시작', data);
+  };
+
+  const handleTimerStart = duration => {
+    console.log('타이머 시작', duration);
+    duration--;
+    const interval = setInterval(() => {
+      console.log('타이머', duration);
+      duration--;
+      if (duration < 0) {
+        clearInterval(interval);
+      }
+    }, 1000);
+  };
+
+  const handleTimerEnd = () => {
+    console.log('타이머 종료');
+  };
   /* ------- Socket listeners ------- */
   // 리스너를 마운트 될 때 한 번만 생성한다.
   useEffect(() => {
@@ -131,6 +156,14 @@ export default function Game() {
     // 연결 해제
     newSocket.on('disconnect', handleDisconnect);
 
+    // 퀴즈를 받아옴
+    newSocket.on('quiz', handleQuiz);
+
+    // 타이머 시작
+    newSocket.on('timerStart', handleTimerStart);
+
+    // 타이머 종료
+    newSocket.on('timeout', handleTimerEnd);
     // 컴포넌트 언마운트 시 이벤트 리스너 제거
     return () => {
       newSocket.off('everyonePosition', handleEveryonePosition);
@@ -139,6 +172,9 @@ export default function Game() {
       newSocket.off('someoneExit', handleSomeoneExit);
       newSocket.off('disconnect', handleDisconnect);
       newSocket.off('connect', handleConnect);
+      newSocket.off('quiz', handleQuiz);
+      newSocket.off('timerStart', handleTimerStart);
+      newSocket.off('timeout', handleTimerEnd);
     };
   }, []);
 
@@ -186,6 +222,17 @@ export default function Game() {
             }
           })}
       </Physics>
+      <Html>
+        <Button
+          type="button"
+          size="large"
+          wide={true}
+          round={true}
+          onClick={handleQuizStart}
+        >
+          퀴즈 시작
+        </Button>
+      </Html>
     </>
   );
 }
