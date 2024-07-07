@@ -4,6 +4,7 @@ import io from 'socket.io-client';
 const useSocketStore = create((set, get) => ({
   socket: null,
   isConnected: false,
+  isTeacher: false,
   initSocket: () => {
     const socket = io('http://localhost:81/quizly');
 
@@ -18,6 +19,9 @@ const useSocketStore = create((set, get) => ({
     });
 
     set({ socket });
+  },
+  setTeacher: isTeacher => {
+    set({ isTeacher });
   },
   getSocket: () => get().socket,
   disconnectSocket: () => {

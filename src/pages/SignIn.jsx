@@ -21,7 +21,7 @@ const SignIn = () => {
     // 지금은 간단한 검증만 수행합니다.
     if (login(data.username, data.password)) {
       console.log('Login successful');
-      navigate('/');
+      navigate('/dashboard');
     } else {
       setError('email', {
         type: 'manual',
