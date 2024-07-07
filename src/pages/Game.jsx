@@ -89,8 +89,6 @@ export default function Game() {
     if (!storedData.isTeacher) {
       setSocketData(ROOM_CODE, nickname, false);
       sessionStorage.setItem('nickname', nickname);
-    } else {
-      setTeacher(true);
     }
   }, []);
 
@@ -110,7 +108,7 @@ export default function Game() {
 
     // 다른 클라이언트가 연결 해제
     socket.on('someoneExit', handleSomeoneExit);
-
+    console.log('socket 소캣', socket);
     // 퀴즈를 받아옴
     socket.on('quiz', handleQuiz);
 
@@ -129,15 +127,16 @@ export default function Game() {
       socket.off('timerStart', handleTimerStart);
       socket.off('timeout', handleTimeOut);
     };
-  }, [socket]);
+  }, [socket, isConnected]);
 
   // 방 입장
   useEffect(() => {
     if (socket && isConnected && !isTeacher) {
+      console.log('joinRoom', ROOM_CODE, nickname);
       /* 클라이언트 -> 서버 */
       socket.emit('joinRoom', { roomCode: ROOM_CODE, nickName: nickname });
     }
-  }, [socket, isConnected, isTeacher, ROOM_CODE, nickname]);
+  }, [socket, isConnected, ROOM_CODE, nickname]);
   return (
     <>
       {/* debugging tools */}
