@@ -21,9 +21,19 @@ import QuizStartButton from './Game/QuizStartButton.jsx';
 export default function Game() {
   const { code } = useParams();
   // useState로 관리해야 브라우저당 한 번만 접속한다.
-  const [nickname] = useState(() => Math.floor(Math.random() * 10000));
-  const { socket, initSocket, isConnected, disconnectSocket, isTeacher } =
-    useSocketStore(); // 소켓 연결 시도를 useEffect 내에서 처리한다.
+  const [nickname] = useState(
+    () =>
+      sessionStorage.getItem('nickname') ||
+      Math.floor(Math.random() * 10000).toString()
+  );
+  const {
+    socket,
+    initSocket,
+    setSocketData,
+    isConnected,
+    isTeacher,
+    setTeacher,
+  } = useSocketStore(); // 소켓 연결 시도를 useEffect 내에서 처리한다.
 
   /* client의 좌표 */
   const [clientCoords, setClientCoords] = useState({});
@@ -72,13 +82,17 @@ export default function Game() {
     socket.emit('start', { roomCode: ROOM_CODE });
   };
 
+  // 소켓 초기화 및 데이터 설정
   useEffect(() => {
-    // 한 브라우저는 한 번만 소켓에 연결한다.
-    if (!socket && !isTeacher) {
-      initSocket();
-      console.log('Connected to socket.');
+    initSocket();
+    const storedData = JSON.parse(sessionStorage.getItem('socketData')) || {};
+    if (!storedData.isTeacher) {
+      setSocketData(ROOM_CODE, nickname, false);
+      sessionStorage.setItem('nickname', nickname);
+    } else {
+      setTeacher(true);
     }
-  }, [socket, initSocket]);
+  }, []);
 
   /* ------- Socket listeners ------- */
   // 리스너를 마운트 될 때 한 번만 생성한다.
@@ -114,29 +128,16 @@ export default function Game() {
       socket.off('quiz', handleQuiz);
       socket.off('timerStart', handleTimerStart);
       socket.off('timeout', handleTimeOut);
-      // 소캣 종료
-      disconnectSocket();
     };
-  }, [
-    socket,
-    isConnected,
-    handleEveryonePosition,
-    handleNewClientPosition,
-    handleTheyMove,
-    handleSomeoneExit,
-    handleQuiz,
-    handleTimerStart,
-    handleTimeOut,
-    disconnectSocket,
-  ]);
+  }, [socket]);
 
+  // 방 입장
   useEffect(() => {
     if (socket && isConnected && !isTeacher) {
       /* 클라이언트 -> 서버 */
       socket.emit('joinRoom', { roomCode: ROOM_CODE, nickName: nickname });
     }
-  }, [socket, isConnected, code, nickname]);
-
+  }, [socket, isConnected, isTeacher, ROOM_CODE, nickname]);
   return (
     <>
       {/* debugging tools */}
