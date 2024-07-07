@@ -22,7 +22,7 @@ export default function Game() {
   const { code } = useParams();
   // useState로 관리해야 브라우저당 한 번만 접속한다.
   const [nickname] = useState(() => Math.floor(Math.random() * 10000));
-  const { socket, initSocket, isConnected, disconnectSocket } =
+  const { socket, initSocket, isConnected, disconnectSocket, isTeacher } =
     useSocketStore(); // 소켓 연결 시도를 useEffect 내에서 처리한다.
 
   /* client의 좌표 */
@@ -74,7 +74,7 @@ export default function Game() {
 
   useEffect(() => {
     // 한 브라우저는 한 번만 소켓에 연결한다.
-    if (!socket) {
+    if (!socket && !isTeacher) {
       initSocket();
       console.log('Connected to socket.');
     }
@@ -131,7 +131,7 @@ export default function Game() {
   ]);
 
   useEffect(() => {
-    if (socket && isConnected) {
+    if (socket && isConnected && !isTeacher) {
       /* 클라이언트 -> 서버 */
       socket.emit('joinRoom', { roomCode: ROOM_CODE, nickName: nickname });
     }
@@ -155,7 +155,7 @@ export default function Game() {
         <XLevel />
 
         {/* me */}
-        {isConnected && (
+        {isConnected && !isTeacher && (
           <CharacterController
             path="Colobus_Animations.glb"
             matName="M_Colobus"
@@ -182,7 +182,7 @@ export default function Game() {
           })}
       </Physics>
 
-      <QuizStartButton toggleQuizStart={handleClickQuizStart} />
+      {isTeacher && <QuizStartButton toggleQuizStart={handleClickQuizStart} />}
 
       {isStarted ? <Question quizData={quiz} /> : <group></group>}
     </>
