@@ -15,6 +15,7 @@ const Dashboard = () => {
   const [roomCode, setRoomCode] = useState(null);
   const [quizItems, setQuizItems] = useState([]);
   const [quizId, setQuizId] = useState(null);
+  const [btnDisabled, setBtnDisabled] = useState(false);
   const {
     socket,
     initSocket,
@@ -49,15 +50,18 @@ const Dashboard = () => {
   };
 
   const handleCreateRoom = () => {
+    if (btnDisabled) return;
     // 퀴즈 방 만들기
     if (!isConnected) {
       initSocket();
     }
     setTeacher(true); // 방을 만드는 사람을 선생님으로 설정
+    setBtnDisabled(true);
   };
 
   const handlerRoomClose = () => {
     setRoomCode(null);
+    setBtnDisabled(false);
     disconnectSocket();
   };
 
@@ -69,6 +73,10 @@ const Dashboard = () => {
     if (!isConnected) return;
     socket.emit('createRoom', { quizGroup: quizId });
     socket.on('roomCode', handleRoomCode);
+    return () => {
+      socket.off('roomCode', handleRoomCode);
+      setBtnDisabled(false);
+    };
   }, [isConnected, socket]);
 
   useEffect(() => {
