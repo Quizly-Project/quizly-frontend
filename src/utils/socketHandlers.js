@@ -5,7 +5,10 @@ export const createSocketHandlers = (
   nickname,
   setQuizResult,
   setTimer,
-  setIsQuizEnded
+  setIsQuizEnded,
+  setParticipants,
+  setQuizCnt,
+  setQuizIndex
 ) => {
   /* ------- Socket events ------- */
   // 기존 접속중인 클라이언트의 위치 저장
@@ -13,6 +16,8 @@ export const createSocketHandlers = (
   const handleEveryonePosition = data => {
     console.log('everyone pos', data);
     const { userlocations, clientInfo, quizCnt } = data;
+    setParticipants(clientInfo.clientCnt);
+    setQuizCnt(quizCnt);
     setClientCoords(prevCoords => {
       const newCoords = { ...prevCoords }; // clientCoords의 불변성을 지키기 위해 newCoords 사용
       Object.keys(userlocations).forEach(key => {
@@ -48,17 +53,21 @@ export const createSocketHandlers = (
   // data: {nickName}
   const handleSomeoneExit = data => {
     console.log('someone exit', data);
+    const { nickName, clientInfo } = data;
+    setParticipants(clientInfo.clientCnt);
     setClientCoords(prevCoords => {
       const newCoords = { ...prevCoords };
-      delete newCoords[data];
+      delete newCoords[nickName];
       return newCoords;
     });
   };
 
   const handleQuiz = data => {
+    const { currentQuizIndex, quiz } = data;
     console.log('퀴즈 시작', data);
-    setQuiz(data);
+    setQuiz(quiz);
     setIsStarted(true);
+    setQuizIndex(currentQuizIndex + 1);
     setQuizResult(null);
   };
 

@@ -1,0 +1,12 @@
+.quizStartButton {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}
+
+.teacherUI {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
