@@ -1,7 +1,42 @@
+import * as THREE from 'three';
+import { useEffect, useRef } from 'react';
+import { useFrame, useThree } from '@react-three/fiber';
+
 export default function Lights() {
+  const lightRef = useRef();
+  const shadowCameraRef = useRef();
+  const scene = useThree(state => state.scene);
+
+  useEffect(() => {
+    shadowCameraRef.current = new THREE.CameraHelper(
+      lightRef.current.shadow.camera
+    );
+    scene.add(shadowCameraRef.current);
+
+    // toggle camera helper
+    shadowCameraRef.current.visible = false;
+
+    return () => {
+      scene.remove(shadowCameraRef.current);
+    };
+  }, [lightRef.current]);
+
   return (
     <>
-      <directionalLight position={[1, 2, 3]} intensity={4.5} />
+      <directionalLight
+        ref={lightRef}
+        position={[-200, 200, 0]}
+        castShadow
+        intensity={4.5}
+        shadow-mapSize-width={8192}
+        shadow-mapSize-height={8192}
+        shadow-camera-near={200}
+        shadow-camera-far={400}
+        shadow-camera-left={-160}
+        shadow-camera-right={100}
+        shadow-camera-top={100}
+        shadow-camera-bottom={-100}
+      />
       <ambientLight intensity={1.5} />
     </>
   );

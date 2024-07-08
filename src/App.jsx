@@ -66,7 +66,7 @@ function App() {
                 { name: 'jump', keys: ['Space'] },
               ]}
             >
-              <Canvas>
+              <Canvas shadows>
                 <Game />
               </Canvas>
             </KeyboardControls>
