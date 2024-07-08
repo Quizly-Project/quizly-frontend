@@ -21,7 +21,7 @@ export const createSocketHandlers = (
     setClientCoords(prevCoords => {
       const newCoords = { ...prevCoords }; // clientCoords의 불변성을 지키기 위해 newCoords 사용
       Object.keys(userlocations).forEach(key => {
-        const { nickName, position } = data[key];
+        const { nickName, position } = userlocations[key];
         if (nickName !== nickname && nickName !== 'teacher') {
           newCoords[nickName] = position;
         }
