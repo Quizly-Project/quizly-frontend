@@ -1,10 +1,10 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
-import { Sky, OrbitControls, Html } from '@react-three/drei';
+import { Sky, OrbitControls, PointerLockControls } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
 import { Perf } from 'r3f-perf';
-import useSocketStore from '../store/socketStore.js';
 import { createSocketHandlers } from '../utils/socketHandlers.js';
+import useSocketStore from '../store/socketStore.js';
 
 // components
 import Lights from '../components/3d/Environment/Lights.jsx';
@@ -12,11 +12,12 @@ import OLevel from '../components/3d/Environment/OLevel.jsx';
 import XLevel from '../components/3d/Environment/XLevel.jsx';
 import CharacterController from '../components/3d/Mesh/CharacterController.jsx';
 import OtherCharacterController from '../components/3d/Mesh/OtherCharacterController.jsx';
+import Question from './Game/Question.jsx';
+import QuizStartButton from './Game/QuizStartButton.jsx';
+import Beachside from '../components/3d/Environment/Beachside.jsx';
 
 // style
 import '../styles/game.css';
-import Question from './Game/Question.jsx';
-import QuizStartButton from './Game/QuizStartButton.jsx';
 
 export default function Game() {
   const { code } = useParams();
@@ -151,8 +152,9 @@ export default function Game() {
 
       <Physics debug>
         {/* fixed elements */}
-        <OLevel />
-        <XLevel />
+        <Beachside position-y="-30" rotation-y={-Math.PI / 2} />
+        {/* <OLevel /> */}
+        {/* <XLevel /> */}
 
         {/* me */}
         {isConnected && !isTeacher && (
