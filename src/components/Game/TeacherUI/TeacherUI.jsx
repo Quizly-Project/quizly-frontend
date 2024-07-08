@@ -1,8 +1,9 @@
-import QuizStartButton from './QuizStartButton';
+import QuizStartButton from '../QuizStartButton';
+import styles from './TeacherUI.module.css';
 
 const TeacherUI = ({ handleClickQuizStart, isStarted, isQuizEnded }) => {
   return (
-    <div className="teacher-ui">
+    <div className={styles.teacherUI}>
       {!isStarted && !isQuizEnded && (
         <QuizStartButton toggleQuizStart={handleClickQuizStart} />
       )}

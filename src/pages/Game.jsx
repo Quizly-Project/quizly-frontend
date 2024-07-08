@@ -44,7 +44,17 @@ export default function Game() {
   /* 퀴즈 타이머 */
   const [timer, setTimer] = useState(0);
 
+  /* 퀴즈 종료 여부 */
   const [isQuizEnded, setIsQuizEnded] = useState(false);
+
+  /* 참가자수 */
+  const [participants, setParticipants] = useState(0);
+
+  /* 퀴즈 갯수 */
+  const [quizCnt, setQuizCnt] = useState(0);
+
+  /* 퀴즈 인덱스 */
+  const [quizIndex, setQuizIndex] = useState(1);
 
   /* Constants */
   /* 초기 위치 */
@@ -84,7 +94,10 @@ export default function Game() {
         nickname,
         setQuizResult,
         setTimer,
-        setIsQuizEnded
+        setIsQuizEnded,
+        setParticipants,
+        setQuizCnt,
+        setQuizIndex
       ),
     [setClientCoords, setQuiz, setIsStarted, nickname]
   );
@@ -209,6 +222,9 @@ export default function Game() {
         handleClickQuizStart={handleClickQuizStart}
         timer={timer}
         isQuizEnded={isQuizEnded}
+        participants={participants}
+        quizCnt={quizCnt}
+        quizIndex={quizIndex}
       />
     </>
   );
