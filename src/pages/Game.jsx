@@ -131,7 +131,7 @@ export default function Game() {
 
   // 방 입장
   useEffect(() => {
-    if (socket && isConnected && !isTeacher) {
+    if (socket && isConnected) {
       console.log('joinRoom', ROOM_CODE, nickname);
       /* 클라이언트 -> 서버 */
       socket.emit('joinRoom', { roomCode: ROOM_CODE, nickName: nickname });
