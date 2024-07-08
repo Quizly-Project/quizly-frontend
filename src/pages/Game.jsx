@@ -12,9 +12,8 @@ import OLevel from '../components/3d/Environment/OLevel.jsx';
 import XLevel from '../components/3d/Environment/XLevel.jsx';
 import CharacterController from '../components/3d/Mesh/CharacterController.jsx';
 import OtherCharacterController from '../components/3d/Mesh/OtherCharacterController.jsx';
-import Question from './Game/Question.jsx';
-import QuizStartButton from './Game/QuizStartButton.jsx';
 import Beachside from '../components/3d/Environment/Beachside.jsx';
+import GameUserInterface from '../components/Game/GameUserInterface.jsx';
 
 // style
 import '../styles/game.css';
@@ -27,21 +26,20 @@ export default function Game() {
       sessionStorage.getItem('nickname') ||
       Math.floor(Math.random() * 10000).toString()
   );
-  const {
-    socket,
-    initSocket,
-    setSocketData,
-    isConnected,
-    isTeacher,
-    setTeacher,
-  } = useSocketStore(); // 소켓 연결 시도를 useEffect 내에서 처리한다.
+  const { socket, initSocket, setSocketData, isConnected, isTeacher } =
+    useSocketStore(); // 소켓 연결 시도를 useEffect 내에서 처리한다.
 
   /* client의 좌표 */
   const [clientCoords, setClientCoords] = useState({});
 
   /* 퀴즈 정보 */
   const [quiz, setQuiz] = useState(null);
+
+  /* 퀴즈 한문제 시작 여부 */
   const [isStarted, setIsStarted] = useState(false);
+
+  /* 퀴즈 결과 */
+  const [quizResult, setQuizResult] = useState(null);
 
   /* Constants */
   /* 초기 위치 */
@@ -73,7 +71,13 @@ export default function Game() {
     handleTimeOut,
   } = useMemo(
     () =>
-      createSocketHandlers(setClientCoords, setQuiz, setIsStarted, nickname),
+      createSocketHandlers(
+        setClientCoords,
+        setQuiz,
+        setIsStarted,
+        nickname,
+        setQuizResult
+      ),
     [setClientCoords, setQuiz, setIsStarted, nickname]
   );
 
@@ -109,7 +113,7 @@ export default function Game() {
 
     // 다른 클라이언트가 연결 해제
     socket.on('someoneExit', handleSomeoneExit);
-    console.log('socket 소캣', socket);
+
     // 퀴즈를 받아옴
     socket.on('quiz', handleQuiz);
 
@@ -184,9 +188,15 @@ export default function Game() {
           })}
       </Physics>
 
-      {isTeacher && <QuizStartButton toggleQuizStart={handleClickQuizStart} />}
-
-      {isStarted ? <Question quizData={quiz} /> : <group></group>}
+      {/* game UI */}
+      <GameUserInterface
+        isTeacher={isTeacher}
+        isConnected={isConnected}
+        isStarted={isStarted}
+        quiz={quiz}
+        quizResult={quizResult}
+        handleClickQuizStart={handleClickQuizStart}
+      />
     </>
   );
 }
