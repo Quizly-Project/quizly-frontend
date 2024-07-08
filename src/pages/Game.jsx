@@ -206,9 +206,6 @@ export default function Game() {
     joinRoom();
   }, [socket, isConnected, ROOM_CODE, nickname]);
 
-  if (!isJoined) {
-    return;
-  }
   return (
     <>
       {/* debugging tools */}
@@ -228,7 +225,7 @@ export default function Game() {
         {/* <XLevel /> */}
 
         {/* me */}
-        {isConnected && !isTeacher && (
+        {isConnected && !isTeacher && isJoined && (
           <CharacterController
             path="Colobus_Animations.glb"
             matName="M_Colobus"
@@ -239,6 +236,7 @@ export default function Game() {
 
         {/* others */}
         {isConnected &&
+          isJoined &&
           Object.keys(clientCoords).map((key, modelIdx) => {
             if (key != nickname) {
               return (
