@@ -56,6 +56,9 @@ export default function Game() {
   /* 퀴즈 인덱스 */
   const [quizIndex, setQuizIndex] = useState(1);
 
+  /* joinRoom */
+  const [isJoined, setIsJoined] = useState(false);
+
   /* Constants */
   /* 초기 위치 */
   const defaultPos = {
@@ -158,14 +161,51 @@ export default function Game() {
     };
   }, [socket, isConnected]);
 
-  // 방 입장
-  useEffect(() => {
+  const joinRoom = async () => {
     if (socket && isConnected) {
-      console.log('joinRoom', ROOM_CODE, nickname);
-      /* 클라이언트 -> 서버 */
-      socket.emit('joinRoom', { roomCode: ROOM_CODE, nickName: nickname });
+      console.log('Attempting to join room', ROOM_CODE, nickname);
+      try {
+        const response = await new Promise((resolve, reject) => {
+          socket.emit(
+            'joinRoom',
+            { roomCode: ROOM_CODE, nickName: nickname },
+            response => {
+              console.log('Received response from server:', response);
+              if (response.success) {
+                resolve(response);
+              } else {
+                reject(new Error(response.message));
+              }
+            }
+          );
+
+          // 10초 후에도 응답이 없으면 타임아웃
+          setTimeout(() => {
+            reject(new Error('Join room request timed out'));
+          }, 10000);
+        });
+
+        console.log('Successfully joined room', response);
+        setIsJoined(true);
+
+        // 서버 응답에 따른 추가 처리
+        if (response.message === 'User already connected, positions sent') {
+          // 다른 사용자들의 위치 정보 처리
+          // 예: setClientCoords(response.positions);
+        } else if (response.message === 'Joined room and broadcast position') {
+          // 새 사용자 입장 처리
+          // 예: handleNewUserJoined(response.newUser);
+        }
+      } catch (error) {
+        console.error('Failed to join room', error);
+      }
     }
+  };
+
+  useEffect(() => {
+    joinRoom();
   }, [socket, isConnected, ROOM_CODE, nickname]);
+
   return (
     <>
       {/* debugging tools */}
@@ -185,7 +225,7 @@ export default function Game() {
         {/* <XLevel /> */}
 
         {/* me */}
-        {isConnected && !isTeacher && (
+        {isConnected && !isTeacher && isJoined && (
           <CharacterController
             path="Colobus_Animations.glb"
             matName="M_Colobus"
@@ -196,6 +236,7 @@ export default function Game() {
 
         {/* others */}
         {isConnected &&
+          isJoined &&
           Object.keys(clientCoords).map((key, modelIdx) => {
             if (key != nickname) {
               return (

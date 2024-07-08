@@ -1,3 +1,5 @@
+import { set } from 'react-hook-form';
+
 export const createSocketHandlers = (
   setClientCoords,
   setQuiz,
@@ -31,12 +33,17 @@ export const createSocketHandlers = (
     });
   };
 
-  // 다른 클라이언트 입장
+  // 다른 클라이언트 입장ㄱ
   // data: {nickName, {0, 0, 0}}
   const handleNewClientPosition = data => {
     console.log('new client pos', data);
+    const { clientInfo, userlocations } = data;
+    setParticipants(clientInfo.clientCnt);
     setClientCoords(prevCoords => {
-      return { ...prevCoords, [data.nickName]: data.position };
+      return {
+        ...prevCoords,
+        [userlocations.nickName]: userlocations.position,
+      };
     });
   };
 
