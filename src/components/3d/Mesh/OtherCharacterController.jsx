@@ -64,6 +64,7 @@ const OtherCharacterController = React.memo(
             matName={matName}
             nickname={nickname}
             scale={2}
+            actionType="Idle_A"
           />
         </group>
       </RigidBody>

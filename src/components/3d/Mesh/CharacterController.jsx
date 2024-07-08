@@ -12,7 +12,10 @@ const CharacterController = React.memo(
 
     const [subscribeKeys, getKeys] = useKeyboardControls();
 
+    // World Position
     const [myPos, setMyPos] = useState({ x: 0, y: 0, z: 0 });
+    // Action
+    const [action, setAction] = useState('Idle_A');
 
     useEffect(() => {
       rigidbody.current.setTranslation({ x: 0, y: 0, z: 0 });
@@ -31,12 +34,18 @@ const CharacterController = React.memo(
       socket.emit('iMove', { nickName: nickname, position: myPos }); // 보내줄 데이터 {nickName, {x, y, z}}
     }, [myPos]);
 
+    useEffect(() => {
+      console.log(action);
+    }, [action]);
+
     const MOVEMENT_SPEED = 50;
-    const JUMP_FORCE = 1;
+    const JUMP_FORCE = 2;
     const MAX_LINVEL = 5;
 
     // 키보드 상하좌우로 움직인다.
     useFrame(() => {
+      setAction('Idle_A'); // default action
+
       const { forward, backward, leftward, rightward, jump } = getKeys();
 
       const impulse = { x: 0, y: 0, z: 0 };
@@ -45,22 +54,27 @@ const CharacterController = React.memo(
       let changeRotation = false;
 
       if (forward && linvel.z > -MAX_LINVEL) {
+        setAction('Walk');
         impulse.z -= MOVEMENT_SPEED;
         changeRotation = true;
       }
       if (backward && linvel.z < MAX_LINVEL) {
+        setAction('Walk');
         impulse.z += MOVEMENT_SPEED;
         changeRotation = true;
       }
       if (leftward && linvel.x > -MAX_LINVEL) {
+        setAction('Walk');
         impulse.x -= MOVEMENT_SPEED;
         changeRotation = true;
       }
       if (rightward && linvel.x < MAX_LINVEL) {
+        setAction('Walk');
         impulse.x += MOVEMENT_SPEED;
         changeRotation = true;
       }
       if (jump) {
+        setAction('Jump');
         impulse.y += JUMP_FORCE;
       }
 
@@ -81,7 +95,7 @@ const CharacterController = React.memo(
       };
 
       if (detectMovement(myPos, mypos)) {
-        console.log('New pos!', myPos, 'to', mypos);
+        // console.log('New pos!', myPos, 'to', mypos);
         setMyPos(mypos);
       }
 
@@ -105,23 +119,27 @@ const CharacterController = React.memo(
 
     return (
       <>
-        <CameraControls ref={controls} />
+        {/* <CameraControls ref={controls} /> */}
         <RigidBody
           ref={rigidbody}
           colliders={false}
           canSleep={false}
           enabledRotations={[false, false, false]}
           mass={10}
+          gravityScale={1.6}
         >
           {/* collider 내 position: 모델으로부터의 상대적 위치 */}
           <CapsuleCollider args={[0.5, 0.7]} position={[0, 1.25, 0]} />
           <group ref={character}>
-            <Character
-              path={path}
-              matName={matName}
-              nickname={nickname}
-              scale={2}
-            />
+            {action && (
+              <Character
+                path={path}
+                matName={matName}
+                nickname={nickname}
+                scale={2}
+                actionType={action}
+              />
+            )}
           </group>
         </RigidBody>
       </>

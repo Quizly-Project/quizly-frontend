@@ -1,13 +1,23 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useGLTF, Html, useAnimations } from '@react-three/drei';
 
-const Character = React.memo(({ path, matName, nickname }) => {
+const Character = React.memo(({ path, matName, nickname, actionType }) => {
   const group = useRef();
 
   const { nodes, materials, animations } = useGLTF(`/Character/${path}`);
   const { actions } = useAnimations(animations, group);
 
   useGLTF.preload(`/Character/${path}`);
+
+  useEffect(() => {
+    // play action
+    actions[actionType].reset().fadeIn(0.5).play();
+
+    // stop action
+    return () => {
+      actions[actionType].fadeOut(0.5);
+    };
+  }, [actionType]);
 
   return (
     <group ref={group} dispose={null}>
