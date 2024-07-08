@@ -53,6 +53,7 @@ function App() {
         />
         <Route path="/" element={<Navigate to="/landing" />} />
         <Route path="/landing" element={<Landing />} />
+        <Route path="/game" element={<Navigate to="/landing" />} />
         <Route
           path="/game/:code"
           element={
