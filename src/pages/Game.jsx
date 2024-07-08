@@ -40,6 +40,11 @@ export default function Game() {
   /* 퀴즈 결과 */
   const [quizResult, setQuizResult] = useState(null);
 
+  /* 퀴즈 타이머 */
+  const [timer, setTimer] = useState(0);
+
+  const [isQuizEnded, setIsQuizEnded] = useState(false);
+
   /* Constants */
   /* 초기 위치 */
   const defaultPos = {
@@ -68,6 +73,7 @@ export default function Game() {
     handleQuiz,
     handleTimerStart,
     handleTimeOut,
+    handleQuizEnd,
   } = useMemo(
     () =>
       createSocketHandlers(
@@ -75,7 +81,9 @@ export default function Game() {
         setQuiz,
         setIsStarted,
         nickname,
-        setQuizResult
+        setQuizResult,
+        setTimer,
+        setIsQuizEnded
       ),
     [setClientCoords, setQuiz, setIsStarted, nickname]
   );
@@ -121,6 +129,9 @@ export default function Game() {
 
     // 타이머 종료
     socket.on('timeout', handleTimeOut);
+
+    // 퀴즈 종료
+    socket.on('quizEnd', handleQuizEnd);
     // 컴포넌트 언마운트 시 이벤트 리스너 제거
     return () => {
       socket.off('everyonePosition', handleEveryonePosition);
@@ -194,6 +205,8 @@ export default function Game() {
         quiz={quiz}
         quizResult={quizResult}
         handleClickQuizStart={handleClickQuizStart}
+        timer={timer}
+        isQuizEnded={isQuizEnded}
       />
     </>
   );
