@@ -12,7 +12,7 @@ const Character = React.memo(({ path, matName, nickname }) => {
   return (
     <group ref={group} dispose={null}>
       <group name="Scene">
-        <group name="Rig">
+        <group name="Rig" castShadow>
           <skinnedMesh
             castShadow
             geometry={nodes.Mesh.geometry}
