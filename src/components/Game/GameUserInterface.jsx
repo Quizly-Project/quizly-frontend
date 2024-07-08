@@ -8,15 +8,24 @@ const GameUserInterface = ({
   isStarted,
   quiz,
   quizResult,
+  timer,
+  isQuizEnded,
 }) => {
   return (
     <Html fullscreen>
       <div className="game-ui">
-        <CommonUI quizResult={quizResult} isStarted={isStarted} quiz={quiz} />
+        <CommonUI
+          quizResult={quizResult}
+          isStarted={isStarted}
+          quiz={quiz}
+          timer={timer}
+          isQuizEnded={isQuizEnded}
+        />
         {isTeacher ? (
           <TeacherUI
             handleClickQuizStart={handleClickQuizStart}
             isStarted={isStarted}
+            isQuizEnded={isQuizEnded}
           />
         ) : (
           <StudentUI />

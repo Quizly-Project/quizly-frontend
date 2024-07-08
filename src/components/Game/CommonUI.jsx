@@ -1,12 +1,13 @@
 import QuizResultText from './QuizResultText';
 import Question from './Question';
 
-const CommonUI = ({ quizResult, isStarted, quiz }) => {
+const CommonUI = ({ quizResult, isStarted, quiz, timer, isQuizEnded }) => {
   return (
     <div className="common-ui">
-      {quizResult && <QuizResultText quizResult={quizResult} />}
       {isStarted && <Question quizData={quiz} />}
-      {/* 다른 공통 UI 요소들 */}
+      {quizResult && <QuizResultText quizResult={`정답: ${quizResult}`} />}
+      {timer > 0 ? <QuizResultText quizResult={timer} /> : null}
+      {isQuizEnded && <QuizResultText quizResult="퀴즈 종료" />}
     </div>
   );
 };

@@ -3,16 +3,19 @@ export const createSocketHandlers = (
   setQuiz,
   setIsStarted,
   nickname,
-  setQuizResult
+  setQuizResult,
+  setTimer,
+  setIsQuizEnded
 ) => {
   /* ------- Socket events ------- */
   // 기존 접속중인 클라이언트의 위치 저장
   // data: [식별자: {nickName, {x, y, z}}, ...]
   const handleEveryonePosition = data => {
-    // console.log('everyone pos', data);
+    console.log('everyone pos', data);
+    const { userlocations, clientInfo, quizCnt } = data;
     setClientCoords(prevCoords => {
       const newCoords = { ...prevCoords }; // clientCoords의 불변성을 지키기 위해 newCoords 사용
-      Object.keys(data).forEach(key => {
+      Object.keys(userlocations).forEach(key => {
         const { nickName, position } = data[key];
         if (nickName !== nickname && nickName !== 'teacher') {
           newCoords[nickName] = position;
@@ -26,7 +29,7 @@ export const createSocketHandlers = (
   // 다른 클라이언트 입장
   // data: {nickName, {0, 0, 0}}
   const handleNewClientPosition = data => {
-    // console.log('new client pos', data);
+    console.log('new client pos', data);
     setClientCoords(prevCoords => {
       return { ...prevCoords, [data.nickName]: data.position };
     });
@@ -44,6 +47,7 @@ export const createSocketHandlers = (
   // 다른 클라이언트가 연결 해제
   // data: {nickName}
   const handleSomeoneExit = data => {
+    console.log('someone exit', data);
     setClientCoords(prevCoords => {
       const newCoords = { ...prevCoords };
       delete newCoords[data];
@@ -60,11 +64,12 @@ export const createSocketHandlers = (
 
   const handleTimerStart = duration => {
     console.log('타이머 시작', duration);
-    duration--;
+    setTimer(duration);
     const interval = setInterval(() => {
       console.log('타이머', duration);
       duration--;
-      if (duration < 0) {
+      setTimer(duration);
+      if (duration <= 0) {
         clearInterval(interval);
       }
     }, 1000);
@@ -76,6 +81,12 @@ export const createSocketHandlers = (
     setQuizResult(data);
   };
 
+  const handleQuizEnd = data => {
+    console.log('퀴즈 종료', data);
+    setQuizResult(data);
+    setIsQuizEnded(true);
+  };
+
   return {
     handleEveryonePosition,
     handleNewClientPosition,
@@ -84,5 +95,6 @@ export const createSocketHandlers = (
     handleQuiz,
     handleTimerStart,
     handleTimeOut,
+    handleQuizEnd,
   };
 };
