@@ -2,7 +2,8 @@ export const createSocketHandlers = (
   setClientCoords,
   setQuiz,
   setIsStarted,
-  nickname
+  nickname,
+  setQuizResult
 ) => {
   /* ------- Socket events ------- */
   // 기존 접속중인 클라이언트의 위치 저장
@@ -54,6 +55,7 @@ export const createSocketHandlers = (
     console.log('퀴즈 시작', data);
     setQuiz(data);
     setIsStarted(true);
+    setQuizResult(null);
   };
 
   const handleTimerStart = duration => {
@@ -68,9 +70,10 @@ export const createSocketHandlers = (
     }, 1000);
   };
 
-  const handleTimeOut = () => {
-    console.log('타이머 종료');
+  const handleTimeOut = data => {
+    console.log('타이머 종료', data);
     setIsStarted(false);
+    setQuizResult(data);
   };
 
   return {
