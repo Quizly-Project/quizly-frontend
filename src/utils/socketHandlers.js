@@ -1,5 +1,3 @@
-import { set } from 'react-hook-form';
-
 export const createSocketHandlers = (
   setClientCoords,
   setQuiz,
@@ -10,7 +8,8 @@ export const createSocketHandlers = (
   setIsQuizEnded,
   setParticipants,
   setQuizCnt,
-  setQuizIndex
+  setQuizIndex,
+  isTeacher
 ) => {
   /* ------- Socket events ------- */
   // 기존 접속중인 클라이언트의 위치 저장
@@ -94,7 +93,25 @@ export const createSocketHandlers = (
   const handleTimeOut = data => {
     console.log('타이머 종료', data);
     setIsStarted(false);
-    setQuizResult(data);
+    if (isTeacher) {
+      /*
+       * nickName: {
+       *    result:[(0:틀림, 1:정답)], // 문제별 정답여부
+       *    selectOption:[(0:무효 1~4:선택한 답)], // 문제별 선택한 답
+       *    totalScore:0, // 총점
+       * }
+       */
+      setQuizResult(result);
+    } else {
+      /* anwer: 유저 대답(0:무효, 1~4:선택한 답)
+       * correntAnswerList: 정답자 리스트
+       * nickName: 내이름
+       * quizScore: 퀴즈점수
+       * result: 정답여부(0:틀림 1:정답)
+       * totalScore:내 점수 */
+      const { answer, result, totalScore } = data;
+      setQuizResult(result);
+    }
   };
 
   const handleQuizEnd = data => {
