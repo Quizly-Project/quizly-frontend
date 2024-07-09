@@ -14,9 +14,12 @@ import CharacterController from '../components/3d/Mesh/CharacterController.jsx';
 import OtherCharacterController from '../components/3d/Mesh/OtherCharacterController.jsx';
 import Beachside from '../components/3d/Environment/Beachside.jsx';
 import GameUserInterface from '../components/Game/GameUserInterface.jsx';
+import Crab from '../components/3d/Environment/Crab.jsx';
 
 // style
 import '../styles/game.css';
+import OBubble from '../components/3d/Environment/OBubble.jsx';
+import XBubble from '../components/3d/Environment/XBubble.jsx';
 
 export default function Game() {
   const { code } = useParams();
@@ -221,10 +224,13 @@ export default function Game() {
       {/* environment */}
       <Sky />
       <Lights />
+      <OBubble position-x={-25} position-y={-20} position-z={-100} scale={20} />
+      <XBubble position-x={55} position-y={-20} position-z={-100} scale={20} />
 
       <Physics debug>
         {/* fixed elements */}
-        <Beachside position-y="-30" rotation-y={-Math.PI / 2} />
+        <Beachside position-y="-20" rotation-y={-Math.PI / 2} />
+        <Crab position-z="35" position-y="-7" />
         {/* <OLevel /> */}
         {/* <XLevel /> */}
 
@@ -242,7 +248,6 @@ export default function Game() {
         {isConnected &&
           isJoined &&
           Object.keys(clientCoords).map(key => {
-            console.log(modelIdx);
             if (key != nickname) {
               return (
                 <OtherCharacterController

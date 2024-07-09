@@ -129,7 +129,7 @@ const CharacterController = ({ path, matName, nickname, socket }) => {
 
   return (
     <>
-      <CameraControls ref={controls} />
+      {/* <CameraControls ref={controls} /> */}
       <RigidBody
         ref={rigidbody}
         colliders={false}
