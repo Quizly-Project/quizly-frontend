@@ -15,6 +15,7 @@ import useAuthStore from './store/authStore';
 import Game from './pages/Game.jsx';
 import { Canvas } from '@react-three/fiber';
 import { KeyboardControls } from '@react-three/drei';
+import GameContainer from './components/Game/GameContainer/GameContainer.jsx';
 
 const PrivateRoute = ({ children }) => {
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
@@ -54,24 +55,7 @@ function App() {
         <Route path="/" element={<Navigate to="/landing" />} />
         <Route path="/landing" element={<Landing />} />
         <Route path="/game" element={<Navigate to="/landing" />} />
-        <Route
-          path="/game/:code"
-          element={
-            <KeyboardControls
-              map={[
-                { name: 'forward', keys: ['ArrowUp', 'KeyW'] },
-                { name: 'backward', keys: ['ArrowDown', 'KeyS'] },
-                { name: 'leftward', keys: ['ArrowLeft', 'KeyA'] },
-                { name: 'rightward', keys: ['ArrowRight', 'KeyD'] },
-                { name: 'jump', keys: ['Space'] },
-              ]}
-            >
-              <Canvas shadows>
-                <Game />
-              </Canvas>
-            </KeyboardControls>
-          }
-        />
+        <Route path="/game/:code" element={<GameContainer />} />
       </Routes>
     </Router>
   );

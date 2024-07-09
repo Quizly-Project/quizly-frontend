@@ -1,0 +1,94 @@
+.inputContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 400px;
+  padding: 12px;
+  text-align: center;
+}
+
+.inputField {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #333;
+  background-color: #fff;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.2s ease-in-out;
+}
+
+.inputField:focus {
+  border-color: #464c91;
+  outline: none;
+}
+
+.errorMessage {
+  color: #d9534f;
+  font-size: 14px;
+  margin-top: 4px;
+}
+/* errorMessage가 비어 있을 때 (에러 메시지가 없을 때) */
+.errorMessage:empty {
+  visibility: hidden;
+}
+
+/* 기존 스타일에 추가 */
+.inputFieldSmall {
+  padding: 4px 8px;
+  font-size: 14px;
+}
+
+.inputFieldMedium {
+  padding: 8px 12px;
+  font-size: 16px;
+}
+
+.inputFieldLarge {
+  padding: 12px 16px;
+  font-size: 18px;
+}
+
+.textarea {
+  width: 100%;
+  max-width: 800px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #333;
+  background-color: #fff;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.2s ease-in-out;
+  resize: none; /* 사용자가 크기 조정할 수 없도록 설정 */
+}
+
+.textareaSmall {
+  height: 70px; /* 작은 크기의 높이 설정 */
+}
+
+.textareaMedium {
+  height: 100px; /* 중간 크기의 높이 설정 */
+}
+
+.textareaLarge {
+  height: 200px; /* 큰 크기의 높이 설정 */
+}
+
+.round {
+  border-radius: 20px; /* 큰 값으로 설정하여 둥근 모서리로 만듦 */
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+}
+
+.label {
+  white-space: nowrap;
+  width: 100%;
+  max-width: 40px;
+}

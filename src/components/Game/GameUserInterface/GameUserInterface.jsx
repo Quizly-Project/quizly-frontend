@@ -1,7 +1,9 @@
-import { Html } from '@react-three/drei';
-import CommonUI from './CommonUI';
-import TeacherUI from './TeacherUI/TeacherUI';
-import StudentUI from './StudentUI';
+import CommonUI from '../CommonUI.jsx';
+import TeacherUI from '../TeacherUI/TeacherUI.jsx';
+import StudentUI from '../StudentUI.jsx';
+
+import styles from './GameUserInterface.module.css';
+
 const GameUserInterface = ({
   isTeacher,
   handleClickQuizStart,
@@ -15,8 +17,8 @@ const GameUserInterface = ({
   quizIndex,
 }) => {
   return (
-    <Html fullscreen={isTeacher}>
-      <div className="game-ui">
+    <>
+      <div className={styles.gameUI}>
         <CommonUI
           quizResult={quizResult}
           isStarted={isStarted}
@@ -37,7 +39,7 @@ const GameUserInterface = ({
           <StudentUI />
         )}
       </div>
-    </Html>
+    </>
   );
 };
 
