@@ -5,10 +5,12 @@ import { RigidBody, CapsuleCollider } from '@react-three/rapier';
 import Character from './Character';
 
 const OtherCharacterController = ({ path, matName, nickname, pos }) => {
+  console.log('position', pos);
   const rigidbody = useRef();
   const character = useRef();
 
   const [myPos, setMyPos] = useState({ x: pos.x, y: pos.y, z: pos.z });
+  console.log('MyPos', myPos);
 
   // model loading을 한 번만 수행한다.
   const model = useMemo(() => {
@@ -42,25 +44,27 @@ const OtherCharacterController = ({ path, matName, nickname, pos }) => {
     };
     rigidbody.current.setTranslation(worldPos);
     setMyPos(worldPos);
-  }, [pos]);
+  }, []);
 
   // 이동한 위치로 클라이언트 모델 다시 렌더링
   useFrame(() => {
     // myPos: 기존 position, pos: 새로운 position
     let changeRotation = false;
-
+    // console.log(myPos, pos);
     const diff = {
       x: myPos.x - pos.x,
       y: myPos.y - pos.y,
       z: myPos.z - pos.z,
     };
 
+    // console.log(diff.x, diff.y, diff.z);
     if (diff.x != 0 || diff.z != 0) {
       changeRotation = true;
     }
 
     // 바라보는 방향으로 얼굴 돌리기
     if (changeRotation) {
+      console.log('change');
       const angle = Math.atan2(diff.x, diff.z);
       character.current.rotation.y = Math.PI + angle;
     }
@@ -68,7 +72,7 @@ const OtherCharacterController = ({ path, matName, nickname, pos }) => {
     // pos로 위치 갱신
     if (detectMovement(myPos, pos)) {
       // console.log('New pos!', myPos, 'to', mypos);
-      // rigidbody.current.setTranslation(pos);
+      rigidbody.current.setTranslation(pos);
       setMyPos(pos);
     }
   }, []);
