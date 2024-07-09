@@ -15,7 +15,9 @@ const Character = React.memo(({ path, matName, nickname, actionType }) => {
 
     // stop action
     return () => {
-      actions[actionType].fadeOut(0.5);
+      if (actions[actionType]) {
+        actions[actionType].fadeOut(0.5);
+      }
     };
   }, [actionType]);
 
@@ -29,15 +31,17 @@ const Character = React.memo(({ path, matName, nickname, actionType }) => {
             material={materials[matName]}
             skeleton={nodes.Mesh.skeleton}
             scale={2}
+            frustumCulled={false}
           />
           <primitive object={nodes.root} />
           <Html
             position={[0, 3, 0]}
             wrapperClass="label"
             center
-            distanceFactor={8}
+            distanceFactor={10}
+            scale={200}
           >
-            👤 {nickname}
+            {nickname}
           </Html>
         </group>
       </group>
