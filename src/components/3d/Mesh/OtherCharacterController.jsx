@@ -1,75 +1,91 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import { RigidBody, CapsuleCollider } from '@react-three/rapier';
 import Character from './Character';
 
-const OtherCharacterController = React.memo(
-  ({ path, matName, nickname, pos }) => {
-    const rigidbody = useRef();
-    const character = useRef();
+const OtherCharacterController = ({ path, matName, nickname, pos }) => {
+  const rigidbody = useRef();
+  const character = useRef();
 
-    const [myPos, setMyPos] = useState({ x: pos.x, y: pos.y, z: pos.z });
+  const [myPos, setMyPos] = useState({ x: pos.x, y: pos.y, z: pos.z });
 
-    useEffect(() => {
-      const impulse = {
-        x: (myPos.x - pos.x) * 0.1,
-        y: (myPos.y - pos.y) * 0.1,
-        z: (myPos.z - pos.z) * 0.1,
-      };
-
-      // angle 변경
-      const angle = Math.atan2(impulse.x, impulse.z);
-      character.current.rotation.y = Math.PI + angle;
-
-      // position 변경
-      setMyPos({ x: pos.x, y: pos.y, z: pos.z });
-    }, [pos]);
-
-    useFrame(() => {
-      const bodyPos = rigidbody.current.translation();
-
-      const mypos = {
-        x: bodyPos.x,
-        y: bodyPos.y,
-        z: bodyPos.z,
-      };
-
-      rigidbody.current.setTranslation(myPos);
-      // 움직임이 감지되었을 때 applyImpulse 호출
-      const impulse = {
-        x: (mypos.x - pos.x) * 0.1,
-        y: (mypos.y - pos.y) * 0.1,
-        z: (mypos.z - pos.z) * 0.1,
-      };
-
-      // 이동
-      const newPos = { x: mypos.x, y: mypos.y, z: mypos.z };
-      rigidbody.current.applyImpulse(impulse, newPos);
-    });
-
-    useGLTF.preload(`./Character/${path}`);
-
+  // model loading을 한 번만 수행한다.
+  const model = useMemo(() => {
+    console.log(`Loading model for ${nickname} from ${path}`);
     return (
-      <RigidBody
-        ref={rigidbody}
-        colliders={false}
-        canSleep={false}
-        enabledRotations={[false, false, false]}
-      >
-        <CapsuleCollider args={[0.5, 0.7]} position={[0, 1.25, 0]} />
-        <group ref={character}>
-          <Character
-            path={path}
-            matName={matName}
-            nickname={nickname}
-            scale={2}
-            actionType="Idle_A"
-          />
-        </group>
-      </RigidBody>
+      <Character
+        path={path}
+        matName={matName}
+        nickname={nickname}
+        scale={2}
+        actionType="Idle_A"
+      />
     );
-  }
-);
+  }, [path, matName, nickname]);
+
+  // 임계점 이상일 때만 렌더링한다.
+  const detectMovement = (oldPos, newPos, threshold = 0.3) => {
+    return (
+      Math.abs(oldPos.x - newPos.x) > threshold ||
+      Math.abs(oldPos.y - newPos.y) > threshold ||
+      Math.abs(oldPos.z - newPos.z) > threshold
+    );
+  };
+
+  // 첫 렌더링 시 스폰 위치
+  useEffect(() => {
+    const worldPos = {
+      x: pos.x,
+      y: pos.y,
+      z: pos.z,
+    };
+    rigidbody.current.setTranslation(worldPos);
+    setMyPos(worldPos);
+  }, [pos]);
+
+  // 이동한 위치로 클라이언트 모델 다시 렌더링
+  useFrame(() => {
+    // myPos: 기존 position, pos: 새로운 position
+    let changeRotation = false;
+
+    const diff = {
+      x: myPos.x - pos.x,
+      y: myPos.y - pos.y,
+      z: myPos.z - pos.z,
+    };
+
+    if (diff.x != 0 || diff.z != 0) {
+      changeRotation = true;
+    }
+
+    // 바라보는 방향으로 얼굴 돌리기
+    if (changeRotation) {
+      const angle = Math.atan2(diff.x, diff.z);
+      character.current.rotation.y = Math.PI + angle;
+    }
+
+    // pos로 위치 갱신
+    if (detectMovement(myPos, pos)) {
+      // console.log('New pos!', myPos, 'to', mypos);
+      // rigidbody.current.setTranslation(pos);
+      setMyPos(pos);
+    }
+  }, []);
+
+  useGLTF.preload(`./Character/${path}`);
+
+  return (
+    <RigidBody
+      ref={rigidbody}
+      colliders={false}
+      canSleep={false}
+      enabledRotations={[false, false, false]}
+    >
+      <CapsuleCollider args={[0.5, 0.7]} position={[0, 1.25, 0]} />
+      <group ref={character}>{model}</group>
+    </RigidBody>
+  );
+};
 
 export default OtherCharacterController;

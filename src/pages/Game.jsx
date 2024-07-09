@@ -68,14 +68,17 @@ export default function Game() {
   };
 
   /* 임시 원숭이 배열 */
-  const colobusModels = [
-    'Colobus_Animations2.glb',
-    'Colobus_Animations3.glb',
-    'Colobus_Animations4.glb',
-    'Colobus_Animations5.glb',
-    'Colobus_Animations6.glb',
-    'Colobus_Animations7.glb',
-  ];
+  const colobusModels = useMemo(
+    () => [
+      'Colobus_Animations2.glb',
+      'Colobus_Animations3.glb',
+      'Colobus_Animations4.glb',
+      'Colobus_Animations5.glb',
+      'Colobus_Animations6.glb',
+      'Colobus_Animations7.glb',
+    ],
+    []
+  );
 
   const ROOM_CODE = code;
 
@@ -206,6 +209,7 @@ export default function Game() {
     joinRoom();
   }, [socket, isConnected, ROOM_CODE, nickname]);
 
+  let modelIdx = 0;
   return (
     <>
       {/* debugging tools */}
@@ -237,7 +241,8 @@ export default function Game() {
         {/* others */}
         {isConnected &&
           isJoined &&
-          Object.keys(clientCoords).map((key, modelIdx) => {
+          Object.keys(clientCoords).map(key => {
+            console.log(modelIdx);
             if (key != nickname) {
               return (
                 <OtherCharacterController
