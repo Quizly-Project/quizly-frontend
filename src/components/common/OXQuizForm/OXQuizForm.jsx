@@ -4,8 +4,8 @@ import styles from './OXQuizForm.module.css';
 
 const OXQuizForm = ({ register, errors, index }) => {
   const options = [
-    { value: 'O', label: 'O' },
-    { value: 'X', label: 'X' },
+    { value: '1', label: 'O' },
+    { value: '2', label: 'X' },
   ];
   return (
     <div className={styles.quiz}>
