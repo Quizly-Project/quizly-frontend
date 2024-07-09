@@ -231,8 +231,8 @@ export default function Game() {
         {/* me */}
         {isConnected && !isTeacher && isJoined && (
           <CharacterController
-            path="Colobus_Animations.glb"
-            matName="M_Colobus"
+            path="Turtle_Animations.glb"
+            matName="M_Turtle"
             nickname={nickname}
             socket={socket}
           />

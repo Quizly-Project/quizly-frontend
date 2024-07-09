@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react';
-import { useKeyboardControls } from '@react-three/drei';
+import { useKeyboardControls, CameraControls } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { CapsuleCollider, RigidBody, vec3, euler } from '@react-three/rapier';
 import Character from './Character';
@@ -129,7 +129,7 @@ const CharacterController = ({ path, matName, nickname, socket }) => {
 
   return (
     <>
-      {/* <CameraControls ref={controls} /> */}
+      <CameraControls ref={controls} />
       <RigidBody
         ref={rigidbody}
         colliders={false}
