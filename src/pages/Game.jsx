@@ -75,8 +75,8 @@ export default function Game({
         {/* me */}
         {isConnected && !isTeacher && isJoined && (
           <CharacterController
-            path="Turtle_Animations.glb"
-            matName="M_Turtle"
+            path={model}
+            matName={texture}
             nickname={nickname}
             socket={socket}
             isChatFocused={isChatFocused}
