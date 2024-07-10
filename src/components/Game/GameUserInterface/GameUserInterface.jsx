@@ -15,6 +15,7 @@ const GameUserInterface = ({
   participants,
   quizCnt,
   quizIndex,
+  quizAnswerer,
 }) => {
   return (
     <>
@@ -28,15 +29,17 @@ const GameUserInterface = ({
           participants={participants}
           quizCnt={quizCnt}
           quizIndex={quizIndex}
+          quizAnswerer={quizAnswerer}
         />
         {isTeacher ? (
           <TeacherUI
             handleClickQuizStart={handleClickQuizStart}
             isStarted={isStarted}
             isQuizEnded={isQuizEnded}
+            quizResult={quizResult}
           />
         ) : (
-          <StudentUI />
+          <StudentUI quizResult={quizResult} />
         )}
       </div>
     </>
