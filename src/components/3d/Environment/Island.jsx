@@ -78,112 +78,6 @@ export default function Island(props) {
             />
           </group>
         </group>
-        <group
-          name="FlatingIsland1"
-          position={[-0.226, 137.334, 0.948]}
-          scale={4.404}
-        >
-          <mesh
-            name="Node-Mesh"
-            castShadow
-            receiveShadow
-            geometry={nodes['Node-Mesh'].geometry}
-            material={materials.mat22}
-          />
-          <mesh
-            name="Node-Mesh_1"
-            castShadow
-            receiveShadow
-            geometry={nodes['Node-Mesh_1'].geometry}
-            material={materials.mat10}
-          />
-          <mesh
-            name="Node-Mesh_2"
-            castShadow
-            receiveShadow
-            geometry={nodes['Node-Mesh_2'].geometry}
-            material={materials.mat9}
-          />
-          <mesh
-            name="Node-Mesh_3"
-            castShadow
-            receiveShadow
-            geometry={nodes['Node-Mesh_3'].geometry}
-            material={materials.mat18}
-          />
-          <mesh
-            name="Node-Mesh_4"
-            castShadow
-            receiveShadow
-            geometry={nodes['Node-Mesh_4'].geometry}
-            material={materials.mat21}
-          />
-          <mesh
-            name="Node-Mesh_5"
-            castShadow
-            receiveShadow
-            geometry={nodes['Node-Mesh_5'].geometry}
-            material={materials.mat6}
-          />
-          <mesh
-            name="Node-Mesh_6"
-            castShadow
-            receiveShadow
-            geometry={nodes['Node-Mesh_6'].geometry}
-            material={materials.mat4}
-          />
-          <mesh
-            name="Node-Mesh_7"
-            castShadow
-            receiveShadow
-            geometry={nodes['Node-Mesh_7'].geometry}
-            material={materials.mat8}
-          />
-          <mesh
-            name="Node-Mesh_8"
-            castShadow
-            receiveShadow
-            geometry={nodes['Node-Mesh_8'].geometry}
-            material={materials.mat13}
-          />
-          <mesh
-            name="Node-Mesh_9"
-            castShadow
-            receiveShadow
-            geometry={nodes['Node-Mesh_9'].geometry}
-            material={materials.mat12}
-          />
-          <mesh
-            name="Node-Mesh_10"
-            castShadow
-            receiveShadow
-            geometry={nodes['Node-Mesh_10'].geometry}
-            material={materials.mat0}
-          />
-          <mesh
-            name="Node-Mesh_11"
-            castShadow
-            receiveShadow
-            geometry={nodes['Node-Mesh_11'].geometry}
-            material={materials.mat15}
-          />
-        </group>
-        <group
-          name="FloatingIsland"
-          position={[-0.226, -7.566, 0.948]}
-          scale={4.404}
-        >
-          <mesh
-            name="Leaves251"
-            castShadow
-            receiveShadow
-            geometry={nodes.Leaves251.geometry}
-            material={materials['Texture.001']}
-            position={[-25.331, 59.056, -45.611]}
-            rotation={[-Math.PI / 2, 0, -0.459]}
-            scale={147.116}
-          />
-        </group>
         <group name="SignO" position={[-0.226, 25.707, 0.948]} scale={4.404}>
           <group name="Sign5" scale={100}>
             <mesh
@@ -240,130 +134,128 @@ export default function Island(props) {
           scale={4.404}
         />
         <mesh
-          name="Cloud"
-          castShadow
-          receiveShadow
-          geometry={nodes.Cloud.geometry}
-          material={materials.lambert2SG}
-          position={[298.334, 18.899, -111.516]}
-          rotation={[0, -1.204, 0]}
-          scale={4.404}
+          name="Transparent"
+          geometry={nodes.Transparent.geometry}
+          material={materials['Transparent.001']}
+          position={[0, 22.283, 1.656]}
         />
         <mesh
-          name="Cloud001"
-          castShadow
-          receiveShadow
-          geometry={nodes.Cloud001.geometry}
-          material={materials.lambert2SG}
-          position={[323.852, 101.87, -160.467]}
-          rotation={[0, -1.202, 0]}
-          scale={4.404}
+          name="Transparent001"
+          geometry={nodes.Transparent001.geometry}
+          material={materials['Transparent.001']}
+          position={[0, 22.283, 35.852]}
         />
         <mesh
-          name="Cloud002"
-          castShadow
-          receiveShadow
-          geometry={nodes.Cloud002.geometry}
-          material={materials.lambert2SG}
-          position={[237.987, 65.531, -197.313]}
-          rotation={[0, -0.762, 0]}
-          scale={4.404}
+          name="Transparent002"
+          geometry={nodes.Transparent002.geometry}
+          material={materials['Transparent.001']}
+          position={[35.497, 22.283, 42.54]}
+          rotation={[0, 0.015, 0]}
         />
         <mesh
-          name="Cloud003"
-          castShadow
-          receiveShadow
-          geometry={nodes.Cloud003.geometry}
-          material={materials.lambert2SG}
-          position={[152.739, 31.516, -219.649]}
-          rotation={[0, -0.762, 0]}
-          scale={4.404}
+          name="Transparent003"
+          geometry={nodes.Transparent003.geometry}
+          material={materials['Transparent.001']}
+          position={[63.485, 22.283, 47.452]}
+          rotation={[0, 0.815, 0]}
         />
         <mesh
-          name="Cloud004"
-          castShadow
-          receiveShadow
-          geometry={nodes.Cloud004.geometry}
-          material={materials.lambert2SG}
-          position={[131.225, 177.43, -317.453]}
-          rotation={[0, -0.762, 0]}
-          scale={4.404}
+          name="Transparent004"
+          geometry={nodes.Transparent004.geometry}
+          material={materials['Transparent.001']}
+          position={[88.421, 22.283, 34.991]}
+          rotation={[-Math.PI, 1.501, -Math.PI]}
         />
         <mesh
-          name="Cloud005"
-          castShadow
-          receiveShadow
-          geometry={nodes.Cloud005.geometry}
-          material={materials.lambert2SG}
-          position={[-60.391, 55.73, -268.414]}
-          scale={4.404}
+          name="Transparent005"
+          geometry={nodes.Transparent005.geometry}
+          material={materials['Transparent.001']}
+          position={[114.113, 22.283, 22.57]}
+          rotation={[-Math.PI, 1.501, -Math.PI]}
         />
         <mesh
-          name="Cloud006"
-          castShadow
-          receiveShadow
-          geometry={nodes.Cloud006.geometry}
-          material={materials.lambert2SG}
-          position={[33.1, 81.593, -281.297]}
-          scale={4.404}
+          name="Transparent006"
+          geometry={nodes.Transparent006.geometry}
+          material={materials['Transparent.001']}
+          position={[118.963, 22.283, -8.657]}
+          rotation={[-Math.PI, 0.878, -Math.PI]}
         />
         <mesh
-          name="Cloud007"
-          castShadow
-          receiveShadow
-          geometry={nodes.Cloud007.geometry}
-          material={materials.lambert2SG}
-          position={[96.786, 123.029, -280.637]}
-          scale={4.404}
+          name="Transparent007"
+          geometry={nodes.Transparent007.geometry}
+          material={materials['Transparent.001']}
+          position={[88.705, 22.283, -27.337]}
+          rotation={[-Math.PI, 1.501, -Math.PI]}
         />
         <mesh
-          name="Cloud008"
-          castShadow
-          receiveShadow
-          geometry={nodes.Cloud008.geometry}
-          material={materials.lambert2SG}
-          position={[-33.287, 163.869, -273.878]}
-          scale={4.404}
+          name="Transparent008"
+          geometry={nodes.Transparent008.geometry}
+          material={materials['Transparent.001']}
+          position={[63.304, 22.283, -18.541]}
+          rotation={[-Math.PI, 1.501, -Math.PI]}
         />
         <mesh
-          name="Cloud009"
-          castShadow
-          receiveShadow
-          geometry={nodes.Cloud009.geometry}
-          material={materials.lambert2SG}
-          position={[-245.948, 143.179, -178.76]}
-          rotation={[0, 0.77, 0]}
-          scale={4.404}
+          name="Transparent009"
+          geometry={nodes.Transparent009.geometry}
+          material={materials['Transparent.001']}
+          position={[46.393, 22.283, -6.325]}
+          rotation={[-Math.PI, 1.501, -Math.PI]}
         />
         <mesh
-          name="Cloud010"
-          castShadow
-          receiveShadow
-          geometry={nodes.Cloud010.geometry}
-          material={materials.lambert2SG}
-          position={[-261.749, 78.723, -144.715]}
-          rotation={[0, 0.934, 0]}
-          scale={4.404}
+          name="Transparent010"
+          geometry={nodes.Transparent010.geometry}
+          material={materials['Transparent.001']}
+          position={[-15.59, 22.283, 38.734]}
+          rotation={[-Math.PI, 1.401, -Math.PI]}
         />
         <mesh
-          name="Cloud011"
-          castShadow
-          receiveShadow
-          geometry={nodes.Cloud011.geometry}
-          material={materials.lambert2SG}
-          position={[-321.138, 109.065, -131.261]}
-          rotation={[0, 0.934, 0]}
-          scale={4.404}
+          name="Transparent011"
+          geometry={nodes.Transparent011.geometry}
+          material={materials['Transparent.001']}
+          position={[-32.331, 22.283, 50.778]}
+          rotation={[-Math.PI, 1.401, -Math.PI]}
         />
         <mesh
-          name="Cloud012"
-          castShadow
-          receiveShadow
-          geometry={nodes.Cloud012.geometry}
-          material={materials.lambert2SG}
-          position={[-285.253, 180.975, -160.374]}
-          rotation={[0, 0.77, 0]}
-          scale={4.404}
+          name="Transparent012"
+          geometry={nodes.Transparent012.geometry}
+          material={materials['Transparent.001']}
+          position={[-55.112, 22.283, 44.851]}
+          rotation={[-Math.PI, 1.401, -Math.PI]}
+        />
+        <mesh
+          name="Transparent013"
+          geometry={nodes.Transparent013.geometry}
+          material={materials['Transparent.001']}
+          position={[-63.79, 22.283, 20.068]}
+          rotation={[-Math.PI, 1.401, -Math.PI]}
+        />
+        <mesh
+          name="Transparent014"
+          geometry={nodes.Transparent014.geometry}
+          material={materials['Transparent.001']}
+          position={[-62.313, 22.283, -9.09]}
+          rotation={[-Math.PI, 1.401, -Math.PI]}
+        />
+        <mesh
+          name="Transparent015"
+          geometry={nodes.Transparent015.geometry}
+          material={materials['Transparent.001']}
+          position={[-37.877, 22.283, -20.801]}
+          rotation={[-Math.PI, 1.401, -Math.PI]}
+        />
+        <mesh
+          name="Transparent016"
+          geometry={nodes.Transparent016.geometry}
+          material={materials['Transparent.001']}
+          position={[-17.305, 22.283, -16.001]}
+          rotation={[-Math.PI, 1.401, -Math.PI]}
+        />
+        <mesh
+          name="Transparent017"
+          geometry={nodes.Transparent017.geometry}
+          material={materials['Transparent.001']}
+          position={[-13.588, 22.283, -8.347]}
+          rotation={[-Math.PI, 1.401, -Math.PI]}
         />
       </group>
     </RigidBody>
