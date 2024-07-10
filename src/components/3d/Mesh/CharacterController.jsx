@@ -19,8 +19,12 @@ const CharacterController = ({
 
   // World Position
   const [myPos, setMyPos] = useState({ x: 0, y: 0, z: 0 });
+  // console.log('MyPos', myPos);
+
   // Action
   const [action, setAction] = useState('Idle_A');
+  // Jump only once
+  const [isJumped, setIsJumped] = useState(false);
 
   // model loading을 한 번만 수행한다.
   const model = useMemo(() => {
@@ -40,7 +44,7 @@ const CharacterController = ({
   useEffect(() => {
     const defaultPos = {
       x: 0,
-      y: 0,
+      y: 20,
       z: 0,
     };
     rigidbody.current.setTranslation(defaultPos);
@@ -62,7 +66,7 @@ const CharacterController = ({
   }, [myPos]);
 
   const MOVEMENT_SPEED = 50;
-  const JUMP_FORCE = 2;
+  const JUMP_FORCE = 5;
   const MAX_LINVEL = 5;
 
   // 키보드 상하좌우로 움직인다.
@@ -97,9 +101,15 @@ const CharacterController = ({
       impulse.x += MOVEMENT_SPEED;
       changeRotation = true;
     }
-    if (jump) {
+    if (!isJumped && jump) {
       setAction('Jump');
+      setIsJumped(true);
       impulse.y += JUMP_FORCE;
+    }
+
+    // 바닥에 닿았는지 확인하고, 닿았다면 점프 상태 해제
+    if (rigidbody.current.translation().y < 8.7) {
+      setIsJumped(false);
     }
 
     // rigidbody 위치 이동
