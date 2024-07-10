@@ -14,10 +14,16 @@ const CommonUI = ({
   quizAnswerer,
   nickName,
   isJoined,
+  setIsChatFocused,
 }) => {
   return (
     <div className="common-ui">
-      {isJoined && <ChatComponent nickName={nickName} />}
+      {isJoined && (
+        <ChatComponent
+          nickName={nickName}
+          setIsChatFocused={setIsChatFocused}
+        />
+      )}
       <Text
         type="title"
         align="center"

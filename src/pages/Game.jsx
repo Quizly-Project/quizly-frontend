@@ -24,6 +24,9 @@ export default function Game({
   isTeacher,
   clientCoords,
   isJoined,
+  model,
+  texture,
+  isChatFocused,
 }) {
   /* Constants */
   /* 초기 위치 */
@@ -76,6 +79,7 @@ export default function Game({
             matName="M_Turtle"
             nickname={nickname}
             socket={socket}
+            isChatFocused={isChatFocused}
           />
         )}
 
