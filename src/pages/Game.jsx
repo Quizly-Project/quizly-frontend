@@ -70,7 +70,8 @@ export default function Game({
       <OBubble position-x={-25} position-y={-20} position-z={-100} scale={20} />
       <XBubble position-x={55} position-y={-20} position-z={-100} scale={20} />
 
-      <Physics debug>
+      {/* <Physics debug> */}
+      <Physics>
         {/* fixed elements */}
         <Beachside position-y="-20" rotation-y={-Math.PI / 2} />
         <Crab position-z="35" position-y="-7" />
