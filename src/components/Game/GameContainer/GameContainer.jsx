@@ -253,6 +253,8 @@ const GameContainer = () => {
           quizIndex={quizIndex}
           answer={answer}
           quizAnswerer={quizAnswerer}
+          isJoined={isJoined}
+          nickName={nickName}
         />
       </div>
     </div>

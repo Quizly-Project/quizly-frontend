@@ -14,6 +14,7 @@ import Layout from './components/layout/Layout/Layout.jsx';
 import useAuthStore from './store/authStore';
 import GameContainer from './components/Game/GameContainer/GameContainer.jsx';
 import Test from './pages/Test.jsx';
+import ChatComponent from './components/common/ChatComponent/ChatComponent.jsx';
 
 const PrivateRoute = ({ children }) => {
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
@@ -55,6 +56,7 @@ function App() {
         <Route path="/game" element={<Navigate to="/landing" />} />
         <Route path="/game/:code" element={<GameContainer />} />
         <Route path="test" element={<Test />} />
+        <Route path="/chat" element={<ChatComponent />} />
       </Routes>
     </Router>
   );
