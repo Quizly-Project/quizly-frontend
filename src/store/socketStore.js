@@ -2,6 +2,8 @@
 import { create } from 'zustand';
 import io from 'socket.io-client';
 
+const socketURL = import.meta.env.VITE_NEST_API_URL || 'http://localhost:81';
+
 const useSocketStore = create((set, get) => ({
   socket: null,
   isConnected: false,
@@ -12,7 +14,7 @@ const useSocketStore = create((set, get) => ({
   initSocket: () => {
     const storedData = JSON.parse(sessionStorage.getItem('socketData'));
     if (!get().socket) {
-      const socket = io('http://localhost:81/quizly');
+      const socket = io(`${socketURL}/quizly`);
 
       socket.on('connect', () => {
         console.log('Socket connected');
