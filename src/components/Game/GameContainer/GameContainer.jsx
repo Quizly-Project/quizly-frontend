@@ -54,6 +54,10 @@ const GameContainer = () => {
   /* 퀴즈 정답자 */
   const [quizAnswerer, setQuizAnswerer] = useState('');
 
+  /* 모델 파일 */
+  const [model, setModel] = useState('');
+  const [texture, setTexture] = useState('');
+
   const joinAttempted = useRef(false);
 
   const {
@@ -65,6 +69,7 @@ const GameContainer = () => {
     handleTimerStart,
     handleTimeOut,
     handleQuizEnd,
+    handleSelectModel,
   } = useMemo(
     () =>
       createSocketHandlers(
@@ -80,7 +85,9 @@ const GameContainer = () => {
         setQuizIndex,
         isTeacher,
         setAnswer,
-        setQuizAnswerer
+        setQuizAnswerer,
+        setModel,
+        setTexture
       ),
     [nickName]
   );
@@ -136,6 +143,8 @@ const GameContainer = () => {
 
     // 퀴즈 종료
     socket.on('quizEnd', handleQuizEnd);
+
+    socket.on('selectModel', handleSelectModel);
     // 컴포넌트 언마운트 시 이벤트 리스너 제거
     return () => {
       socket.off('everyonePosition', handleEveryonePosition);
@@ -145,6 +154,7 @@ const GameContainer = () => {
       socket.off('quiz', handleQuiz);
       socket.off('timerStart', handleTimerStart);
       socket.off('timeout', handleTimeOut);
+      socket.off('selectModel', handleSelectModel);
     };
   }, [
     socket,
@@ -157,6 +167,7 @@ const GameContainer = () => {
     handleTimerStart,
     handleTimeOut,
     handleQuizEnd,
+    handleSelectModel,
   ]);
 
   const joinRoom = useCallback(async () => {
@@ -230,6 +241,8 @@ const GameContainer = () => {
             code={code}
             nickname={nickName}
             isJoined={isJoined}
+            model={model}
+            texture={texture}
           />
         </Canvas>
       </KeyboardControls>

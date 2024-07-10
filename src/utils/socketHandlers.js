@@ -13,7 +13,9 @@ export const createSocketHandlers = (
   setQuizIndex,
   isTeacher,
   setAnswer,
-  setQuizAnswerer
+  setQuizAnswerer,
+  setModel,
+  setTexture
 ) => {
   /* ------- Socket events ------- */
   // 기존 접속중인 클라이언트의 위치 저장
@@ -133,6 +135,13 @@ export const createSocketHandlers = (
     setIsQuizEnded(true);
   };
 
+  const handleSelectModel = data => {
+    // console.log('model files', data);
+    // console.log(data['name'], data['texture']);
+    setModel(data['name']);
+    setTexture(data['texture']);
+  };
+
   return {
     handleEveryonePosition,
     handleNewClientPosition,
@@ -142,5 +151,6 @@ export const createSocketHandlers = (
     handleTimerStart,
     handleTimeOut,
     handleQuizEnd,
+    handleSelectModel,
   };
 };
