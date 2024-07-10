@@ -23,13 +23,14 @@ function ChatComponent({ nickName, setIsChatFocused }) {
       setIsExpanded(false);
       setIsChatFocused(false);
     }, 10000);
-  }, []);
+  }, [setIsChatFocused]);
 
   useEffect(() => {
     const handleNewMessage = message => {
       setMessages(prevMessages => [...prevMessages, message]);
-      setIsExpanded(true);
-      resetHideTimeout();
+      if (isExpanded) {
+        resetHideTimeout();
+      }
     };
 
     socket.on('message', handleNewMessage);
@@ -48,13 +49,9 @@ function ChatComponent({ nickName, setIsChatFocused }) {
         clearTimeout(hideTimeoutRef.current);
       }
     };
-  }, [resetHideTimeout]);
+  }, [resetHideTimeout, isExpanded]);
 
   useEffect(scrollToBottom, [messages]);
-
-  useEffect(() => {
-    resetHideTimeout();
-  }, [resetHideTimeout]);
 
   const sendMessage = e => {
     e.preventDefault();
