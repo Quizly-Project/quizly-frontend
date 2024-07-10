@@ -1,0 +1,118 @@
+.chatContainer {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: 300px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+}
+
+.expanded {
+  height: 400px;
+  opacity: 1;
+}
+
+.collapsed {
+  height: 100px;
+  opacity: 0.3;
+}
+
+.collapsed:hover {
+  opacity: 0.8;
+}
+
+.messagesContainer {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  transition: opacity 0.3s ease;
+}
+
+.messageRow {
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #ffffff;
+  padding: 5px;
+  border-radius: 8px;
+}
+
+.selfMessage {
+  background-color: rgba(0, 128, 255, 0.3);
+  align-self: flex-end;
+  max-width: 80%;
+}
+
+.selfMessage .nickname {
+  color: #ffff00;
+}
+
+.timestamp {
+  color: #aaaaaa;
+  font-size: 12px;
+  margin-right: 5px;
+}
+
+.nickname {
+  font-weight: bold;
+  color: #4caf50;
+  margin-right: 5px;
+}
+
+.messageText {
+  color: #ffffff;
+}
+
+.systemMessage {
+  color: #00ff00;
+  font-style: italic;
+}
+
+.inputForm {
+  display: flex;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.inputField {
+  flex-grow: 1;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #ffffff;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+.sendButton {
+  background-color: #464c91;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  margin-left: 5px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.sendButton:hover {
+  background-color: #464ca0;
+}
+
+.collapsed .messagesContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.collapsed .messagesContainer {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.selfNickname {
+  color: #ffff00;
+  font-weight: bold;
+}

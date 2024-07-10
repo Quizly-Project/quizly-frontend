@@ -1,6 +1,7 @@
 import QuizResultText from './QuizResultText';
 import Question from './Question';
 import Text from '../common/Text/Text';
+import ChatComponent from '../common/ChatComponent/ChatComponent';
 const CommonUI = ({
   quizResult,
   isStarted,
@@ -11,9 +12,12 @@ const CommonUI = ({
   quizCnt,
   quizIndex,
   quizAnswerer,
+  nickName,
+  isJoined,
 }) => {
   return (
     <div className="common-ui">
+      {isJoined && <ChatComponent nickName={nickName} />}
       <Text
         type="title"
         align="center"

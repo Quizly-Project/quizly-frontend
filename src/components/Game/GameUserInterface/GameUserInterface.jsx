@@ -16,6 +16,8 @@ const GameUserInterface = ({
   quizCnt,
   quizIndex,
   quizAnswerer,
+  isJoined,
+  nickName,
 }) => {
   return (
     <>
@@ -30,6 +32,8 @@ const GameUserInterface = ({
           quizCnt={quizCnt}
           quizIndex={quizIndex}
           quizAnswerer={quizAnswerer}
+          nickName={nickName}
+          isJoined={isJoined}
         />
         {isTeacher ? (
           <TeacherUI
