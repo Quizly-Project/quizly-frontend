@@ -1,18 +1,12 @@
-import { useEffect, useState, useMemo } from 'react';
-import { Sky, OrbitControls, Text3D } from '@react-three/drei';
+import { useMemo } from 'react';
+import { Sky, OrbitControls } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
 import { Perf } from 'r3f-perf';
 
 // components
 import Lights from '../components/3d/Environment/Lights.jsx';
-import OLevel from '../components/3d/Environment/OLevel.jsx';
-import XLevel from '../components/3d/Environment/XLevel.jsx';
 import CharacterController from '../components/3d/Mesh/CharacterController.jsx';
 import OtherCharacterController from '../components/3d/Mesh/OtherCharacterController.jsx';
-import Beachside from '../components/3d/Environment/Beachside.jsx';
-import Crab from '../components/3d/Environment/Crab.jsx';
-import OBubble from '../components/3d/Environment/OBubble.jsx';
-import XBubble from '../components/3d/Environment/XBubble.jsx';
 import Island from '../components/3d/Environment/Island.jsx';
 import Blackboard from '../components/3d/Environment/Blackboard.jsx';
 
@@ -64,8 +58,6 @@ export default function Game({
       {/* environment */}
       <Sky />
       <Lights />
-      {/* <OBubble position-x={-25} position-y={-20} position-z={-100} scale={20} /> */}
-      {/* <XBubble position-x={55} position-y={-20} position-z={-100} scale={20} /> */}
 
       <Physics debug>
         {/* <Physics> */}
@@ -75,7 +67,7 @@ export default function Game({
         {/* <Crab position-z="35" position-y="-7" /> */}
         {/* <OLevel /> */}
         {/* <XLevel /> */}
-        <Blackboard position-y={70} position-z={-200} />
+        <Blackboard position-y={70} position-z={-200} text={quiz} />
 
         {/* me */}
         {isConnected && !isTeacher && isJoined && (
