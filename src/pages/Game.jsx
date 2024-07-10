@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
-import { Sky, OrbitControls, PointerLockControls } from '@react-three/drei';
+import { Sky, OrbitControls, Text3D } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
 import { Perf } from 'r3f-perf';
 
@@ -13,6 +13,8 @@ import Beachside from '../components/3d/Environment/Beachside.jsx';
 import Crab from '../components/3d/Environment/Crab.jsx';
 import OBubble from '../components/3d/Environment/OBubble.jsx';
 import XBubble from '../components/3d/Environment/XBubble.jsx';
+import Island from '../components/3d/Environment/Island.jsx';
+import Blackboard from '../components/3d/Environment/Blackboard.jsx';
 
 // style
 import '../styles/game.css';
@@ -26,6 +28,7 @@ export default function Game({
   isJoined,
   model,
   texture,
+  quiz,
   isChatFocused,
 }) {
   /* Constants */
@@ -61,16 +64,18 @@ export default function Game({
       {/* environment */}
       <Sky />
       <Lights />
-      <OBubble position-x={-25} position-y={-20} position-z={-100} scale={20} />
-      <XBubble position-x={55} position-y={-20} position-z={-100} scale={20} />
+      {/* <OBubble position-x={-25} position-y={-20} position-z={-100} scale={20} /> */}
+      {/* <XBubble position-x={55} position-y={-20} position-z={-100} scale={20} /> */}
 
-      {/* <Physics debug> */}
-      <Physics>
+      <Physics debug>
+        {/* <Physics> */}
         {/* fixed elements */}
-        <Beachside position-y="-20" rotation-y={-Math.PI / 2} />
-        <Crab position-z="35" position-y="-7" />
+        <Island />
+        {/* <Beachside position-y="-20" rotation-y={-Math.PI / 2} /> */}
+        {/* <Crab position-z="35" position-y="-7" /> */}
         {/* <OLevel /> */}
         {/* <XLevel /> */}
+        <Blackboard position-y={70} position-z={-200} />
 
         {/* me */}
         {isConnected && !isTeacher && isJoined && (

@@ -127,7 +127,7 @@ const CharacterController = ({
         playerWorldPos.y + cameraDistanceY,
         playerWorldPos.z + cameraDistanceZ,
         playerWorldPos.x,
-        playerWorldPos.y + 0.5,
+        playerWorldPos.y + 15,
         playerWorldPos.z,
         true
       );
