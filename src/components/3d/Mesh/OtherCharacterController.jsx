@@ -10,7 +10,7 @@ const OtherCharacterController = ({ path, matName, nickname, pos }) => {
   const character = useRef();
 
   const [myPos, setMyPos] = useState({ x: pos.x, y: pos.y, z: pos.z });
-  console.log('MyPos', myPos);
+  // console.log('MyPos', myPos);
 
   // model loading을 한 번만 수행한다.
   const model = useMemo(() => {
