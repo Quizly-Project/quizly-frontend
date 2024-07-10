@@ -120,7 +120,7 @@ const CharacterController = ({ path, matName, nickname, socket }) => {
         playerWorldPos.y + cameraDistanceY,
         playerWorldPos.z + cameraDistanceZ,
         playerWorldPos.x,
-        playerWorldPos.y + 0.5,
+        playerWorldPos.y + 15,
         playerWorldPos.z,
         true
       );
