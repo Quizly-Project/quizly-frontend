@@ -10,7 +10,6 @@ import XLevel from '../components/3d/Environment/XLevel.jsx';
 import CharacterController from '../components/3d/Mesh/CharacterController.jsx';
 import OtherCharacterController from '../components/3d/Mesh/OtherCharacterController.jsx';
 import Beachside from '../components/3d/Environment/Beachside.jsx';
-import GameUserInterface from '../components/Game/GameUserInterface.jsx';
 import Crab from '../components/3d/Environment/Crab.jsx';
 import OBubble from '../components/3d/Environment/OBubble.jsx';
 import XBubble from '../components/3d/Environment/XBubble.jsx';

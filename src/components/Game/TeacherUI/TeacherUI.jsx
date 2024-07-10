@@ -21,7 +21,7 @@ const StudentResults = ({ quizResult }) => {
             {data.result.map((result, index) => (
               <li key={index}>
                 문제 {index + 1}:{result === '0' ? '정답' : '오답'}
-                (선택한 옵션: {data.selectOption[index]})
+                (선택한 답: {option[data.selectOption[index]]})
               </li>
             ))}
           </ul>
