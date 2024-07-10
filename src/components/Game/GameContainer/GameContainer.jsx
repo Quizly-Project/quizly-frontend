@@ -58,6 +58,9 @@ const GameContainer = () => {
   const [model, setModel] = useState('');
   const [texture, setTexture] = useState('');
 
+  /* 채팅창 포커스 여부 */
+  const [isChatFocused, setIsChatFocused] = useState(false);
+
   const joinAttempted = useRef(false);
 
   const {
@@ -223,6 +226,7 @@ const GameContainer = () => {
           { name: 'rightward', keys: ['ArrowRight', 'KeyD'] },
           { name: 'jump', keys: ['Space'] },
         ]}
+        disabled={isChatFocused}
       >
         <Canvas shadows className={styles.canvas}>
           <Game
@@ -243,6 +247,7 @@ const GameContainer = () => {
             isJoined={isJoined}
             model={model}
             texture={texture}
+            isChatFocused={isChatFocused}
           />
         </Canvas>
       </KeyboardControls>
@@ -268,6 +273,7 @@ const GameContainer = () => {
           quizAnswerer={quizAnswerer}
           isJoined={isJoined}
           nickName={nickName}
+          setIsChatFocused={setIsChatFocused}
         />
       </div>
     </div>

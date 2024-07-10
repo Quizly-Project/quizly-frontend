@@ -13,11 +13,11 @@ import Beachside from '../components/3d/Environment/Beachside.jsx';
 import Crab from '../components/3d/Environment/Crab.jsx';
 import OBubble from '../components/3d/Environment/OBubble.jsx';
 import XBubble from '../components/3d/Environment/XBubble.jsx';
+import Island from '../components/3d/Environment/Island.jsx';
+import Blackboard from '../components/3d/Environment/Blackboard.jsx';
 
 // style
 import '../styles/game.css';
-import Island from '../components/3d/Environment/Island.jsx';
-import Blackboard from '../components/3d/Environment/Blackboard.jsx';
 
 export default function Game({
   nickname,
@@ -29,6 +29,7 @@ export default function Game({
   model,
   texture,
   quiz,
+  isChatFocused,
 }) {
   /* Constants */
   /* 초기 위치 */
@@ -83,6 +84,7 @@ export default function Game({
             matName={texture}
             nickname={nickname}
             socket={socket}
+            isChatFocused={isChatFocused}
           />
         )}
 
