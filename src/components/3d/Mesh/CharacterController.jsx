@@ -4,7 +4,13 @@ import { useFrame } from '@react-three/fiber';
 import { CapsuleCollider, RigidBody, vec3, euler } from '@react-three/rapier';
 import Character from './Character';
 
-const CharacterController = ({ path, matName, nickname, socket }) => {
+const CharacterController = ({
+  path,
+  matName,
+  nickname,
+  socket,
+  isChatFocused,
+}) => {
   const rigidbody = useRef(); // 움직임 관리
   const character = useRef(); // 각도 회전 관리
   const controls = useRef();
@@ -62,6 +68,7 @@ const CharacterController = ({ path, matName, nickname, socket }) => {
   // 키보드 상하좌우로 움직인다.
   useFrame(() => {
     setAction('Idle_A'); // default action
+    if (isChatFocused) return;
 
     const { forward, backward, leftward, rightward, jump } = getKeys();
 

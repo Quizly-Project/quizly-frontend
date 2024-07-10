@@ -26,6 +26,7 @@ export default function Game({
   isJoined,
   model,
   texture,
+  isChatFocused,
 }) {
   /* Constants */
   /* 초기 위치 */
@@ -78,6 +79,7 @@ export default function Game({
             matName={texture}
             nickname={nickname}
             socket={socket}
+            isChatFocused={isChatFocused}
           />
         )}
 

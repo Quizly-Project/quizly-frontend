@@ -18,6 +18,7 @@ const GameUserInterface = ({
   quizAnswerer,
   isJoined,
   nickName,
+  setIsChatFocused,
 }) => {
   return (
     <>
@@ -34,6 +35,7 @@ const GameUserInterface = ({
           quizAnswerer={quizAnswerer}
           nickName={nickName}
           isJoined={isJoined}
+          setIsChatFocused={setIsChatFocused}
         />
         {isTeacher ? (
           <TeacherUI

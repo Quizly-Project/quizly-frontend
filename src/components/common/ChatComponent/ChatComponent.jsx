@@ -4,7 +4,7 @@ import styles from './ChatComponent.module.css';
 
 const socket = io('http://localhost:3002');
 
-function ChatComponent({ nickName }) {
+function ChatComponent({ nickName, setIsChatFocused }) {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isExpanded, setIsExpanded] = useState(true);
@@ -21,7 +21,8 @@ function ChatComponent({ nickName }) {
     }
     hideTimeoutRef.current = setTimeout(() => {
       setIsExpanded(false);
-    }, 5000);
+      setIsChatFocused(false);
+    }, 10000);
   }, []);
 
   useEffect(() => {
@@ -114,6 +115,8 @@ function ChatComponent({ nickName }) {
             onChange={e => setInputMessage(e.target.value)}
             placeholder="Type a message"
             className={styles.inputField}
+            onFocus={() => setIsChatFocused(true)}
+            onBlur={() => setIsChatFocused(false)}
           />
           <button type="submit" className={styles.sendButton}>
             Send
