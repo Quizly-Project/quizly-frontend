@@ -48,6 +48,12 @@ const GameContainer = () => {
   /* joinRoom */
   const [isJoined, setIsJoined] = useState(false);
 
+  /* 퀴즈 정답 */
+  const [answer, setAnswer] = useState('');
+
+  /* 퀴즈 정답자 */
+  const [quizAnswerer, setQuizAnswerer] = useState('');
+
   const joinAttempted = useRef(false);
 
   const {
@@ -72,7 +78,9 @@ const GameContainer = () => {
         setParticipants,
         setQuizCnt,
         setQuizIndex,
-        isTeacher
+        isTeacher,
+        setAnswer,
+        setQuizAnswerer
       ),
     [nickName]
   );
@@ -243,6 +251,8 @@ const GameContainer = () => {
           participants={participants}
           quizCnt={quizCnt}
           quizIndex={quizIndex}
+          answer={answer}
+          quizAnswerer={quizAnswerer}
         />
       </div>
     </div>

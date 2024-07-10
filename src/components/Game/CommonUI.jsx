@@ -10,6 +10,7 @@ const CommonUI = ({
   participants,
   quizCnt,
   quizIndex,
+  quizAnswerer,
 }) => {
   return (
     <div className="common-ui">
@@ -32,8 +33,9 @@ const CommonUI = ({
         퀴즈: {quizIndex}/{quizCnt}{' '}
       </Text>
       {isStarted && <Question quizData={quiz} />}
-      {quizResult && <QuizResultText quizResult={`정답: ${quizResult}`} />}
       {timer > 0 ? <QuizResultText quizResult={timer} /> : null}
+      {quizAnswerer && <QuizResultText quizResult={quizAnswerer} />}
+
       {isQuizEnded && <QuizResultText quizResult="퀴즈 종료" />}
     </div>
   );
