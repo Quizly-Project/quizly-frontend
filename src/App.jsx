@@ -12,10 +12,8 @@ import Landing from './pages/Landing';
 import TeacherQuizDashboard from './pages/TeacherQuizDashboard/TeacherQuizDashboard.jsx';
 import Layout from './components/layout/Layout/Layout.jsx';
 import useAuthStore from './store/authStore';
-import Game from './pages/Game.jsx';
-import { Canvas } from '@react-three/fiber';
-import { KeyboardControls } from '@react-three/drei';
 import GameContainer from './components/Game/GameContainer/GameContainer.jsx';
+import Test from './pages/Test.jsx';
 
 const PrivateRoute = ({ children }) => {
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
@@ -56,6 +54,7 @@ function App() {
         <Route path="/landing" element={<Landing />} />
         <Route path="/game" element={<Navigate to="/landing" />} />
         <Route path="/game/:code" element={<GameContainer />} />
+        <Route path="test" element={<Test />} />
       </Routes>
     </Router>
   );
