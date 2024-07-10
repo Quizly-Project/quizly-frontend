@@ -24,6 +24,8 @@ export default function Game({
   isTeacher,
   clientCoords,
   isJoined,
+  model,
+  texture,
 }) {
   /* Constants */
   /* 초기 위치 */
@@ -72,8 +74,8 @@ export default function Game({
         {/* me */}
         {isConnected && !isTeacher && isJoined && (
           <CharacterController
-            path="Turtle_Animations.glb"
-            matName="M_Turtle"
+            path={model}
+            matName={texture}
             nickname={nickname}
             socket={socket}
           />
