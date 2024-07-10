@@ -7,7 +7,7 @@ import { useGLTF } from '@react-three/drei';
 import { RigidBody } from '@react-three/rapier';
 
 export default function Beachside(props) {
-  const { nodes, materials } = useGLTF('/Environment/Beachside.glb');
+  const { nodes, materials } = useGLTF('/public/Environment/Beachside.glb');
 
   return (
     <RigidBody type="fixed" colliders="trimesh" friction={5}>

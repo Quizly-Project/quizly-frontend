@@ -9,7 +9,7 @@ const StudentResults = ({ quizResult }) => {
   return (
     <div>
       <h2>퀴즈 결과</h2>
-      <p>정답: {option[correctAnswer]}</p>
+      <p>정답: {option[correctAnswer * 1]}</p>
       <p>정답자: {correctAnswerList.join(', ') || '없음'}</p>
 
       <h3>학생별 결과</h3>
