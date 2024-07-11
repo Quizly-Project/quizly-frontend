@@ -58,6 +58,9 @@ const GameContainer = () => {
   const [model, setModel] = useState('');
   const [texture, setTexture] = useState('');
 
+  /* client들의 모델 정보 */
+  const [clientModels, setClientModels] = useState({});
+
   /* 채팅창 포커스 여부 */
   const [isChatFocused, setIsChatFocused] = useState(false);
 
@@ -103,7 +106,8 @@ const GameContainer = () => {
         setAnswer,
         setQuizAnswerer,
         setModel,
-        setTexture
+        setTexture,
+        setClientModels
       ),
     [nickName]
   );
@@ -262,6 +266,7 @@ const GameContainer = () => {
             isChatFocused={isChatFocused}
             selectedStudent={selectedStudent}
             updateClientCoords={updateClientCoords}
+            clientModels={clientModels}
           />
         </Canvas>
       </KeyboardControls>
