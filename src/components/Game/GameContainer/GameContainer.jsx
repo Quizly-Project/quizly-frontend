@@ -287,6 +287,7 @@ const GameContainer = () => {
           isJoined={isJoined}
           nickName={nickName}
           setIsChatFocused={setIsChatFocused}
+          code={code}
           participants={Object.keys(clientCoords).map(nickName => ({
             nickName,
             isTeacher: nickName === 'teacher', // 예시: 선생님의 닉네임이 'teacher'라고 가정

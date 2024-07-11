@@ -2,7 +2,7 @@
 import { create } from 'zustand';
 import io from 'socket.io-client';
 
-const socketURL = import.meta.env.VITE_NEST_API_URL || 'http://localhost:81';
+const socketURL = import.meta.env.VITE_NEST_API_URL || 'http://localhost:3004';
 
 const useSocketStore = create((set, get) => ({
   socket: null,
