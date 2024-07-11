@@ -1,7 +1,8 @@
-import { useMemo } from 'react';
-import { Sky, OrbitControls } from '@react-three/drei';
-import { Physics } from '@react-three/rapier';
+import { useEffect, useMemo, useRef } from 'react';
+import { Sky, OrbitControls, CameraControls } from '@react-three/drei';
+import { Physics, vec3 } from '@react-three/rapier';
 import { Perf } from 'r3f-perf';
+import { useThree, useFrame } from '@react-three/fiber';
 
 // components
 import Lights from '../components/3d/Environment/Lights.jsx';
@@ -24,6 +25,8 @@ export default function Game({
   texture,
   quiz,
   isChatFocused,
+  selectedStudent,
+  updateClientCoords,
 }) {
   /* Constants */
   /* 초기 위치 */
@@ -46,6 +49,51 @@ export default function Game({
     []
   );
 
+  const { camera } = useThree();
+  const cameraControls = useRef();
+  const orbitControls = useRef();
+
+  useFrame(() => {
+    if (cameraControls.current && !isTeacher) {
+      const cameraDistanceY = 12;
+      const cameraDistanceZ = 30;
+      let playerWorldPos;
+
+      if (clientCoords[nickname]) {
+        // 학생 시점
+        playerWorldPos = vec3(clientCoords[nickname]);
+        cameraControls.current.setLookAt(
+          playerWorldPos.x,
+          playerWorldPos.y + cameraDistanceY,
+          playerWorldPos.z + cameraDistanceZ,
+          playerWorldPos.x,
+          playerWorldPos.y + 15,
+          playerWorldPos.z,
+          true
+        );
+      }
+    }
+  });
+
+  useEffect(() => {
+    if (isTeacher && orbitControls.current) {
+      if (selectedStudent && clientCoords[selectedStudent]) {
+        const studentPos = clientCoords[selectedStudent];
+        orbitControls.current.target.set(
+          studentPos.x,
+          studentPos.y + 15,
+          studentPos.z
+        );
+        camera.position.set(studentPos.x, studentPos.y + 30, studentPos.z + 30);
+      } else {
+        // 선생님 기본 시점
+        orbitControls.current.target.set(0, 15, 0);
+        camera.position.set(0, 30, 30);
+      }
+      orbitControls.current.update();
+    }
+  }, [isTeacher, selectedStudent, clientCoords, camera]);
+
   let modelIdx = 0;
   return (
     <>
@@ -53,8 +101,11 @@ export default function Game({
       <Perf />
 
       {/* camera controls */}
-      <OrbitControls />
-
+      {isTeacher ? (
+        <OrbitControls ref={orbitControls} />
+      ) : (
+        <CameraControls ref={cameraControls} />
+      )}
       {/* environment */}
       <Sky />
       <Lights />
@@ -77,6 +128,7 @@ export default function Game({
             nickname={nickname}
             socket={socket}
             isChatFocused={isChatFocused}
+            updateClientCoords={updateClientCoords}
           />
         )}
 

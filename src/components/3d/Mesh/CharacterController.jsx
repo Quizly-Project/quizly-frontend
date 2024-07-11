@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState, useMemo } from 'react';
-import { useKeyboardControls, CameraControls } from '@react-three/drei';
+import { useKeyboardControls } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
-import { CapsuleCollider, RigidBody, vec3, euler } from '@react-three/rapier';
+import { CapsuleCollider, RigidBody } from '@react-three/rapier';
 import Character from './Character';
 
 const CharacterController = ({
@@ -10,10 +10,10 @@ const CharacterController = ({
   nickname,
   socket,
   isChatFocused,
+  updateClientCoords,
 }) => {
   const rigidbody = useRef(); // 움직임 관리
   const character = useRef(); // 각도 회전 관리
-  const controls = useRef();
 
   const [subscribeKeys, getKeys] = useKeyboardControls();
 
@@ -118,6 +118,7 @@ const CharacterController = ({
     rigidbody.current.setTranslation(newPos);
     if (detectMovement(myPos, newPos)) {
       setMyPos(newPos);
+      updateClientCoords(nickname, newPos); // 위치 업데이트
     }
 
     // rigidbody 각도 이동
@@ -125,28 +126,10 @@ const CharacterController = ({
       const angle = Math.atan2(impulse.x, impulse.z);
       character.current.rotation.y = angle;
     }
-
-    // camera controls
-    if (controls.current) {
-      const cameraDistanceY = 12;
-      const cameraDistanceZ = 30;
-      const playerWorldPos = vec3(rigidbody.current.translation());
-
-      controls.current.setLookAt(
-        playerWorldPos.x,
-        playerWorldPos.y + cameraDistanceY,
-        playerWorldPos.z + cameraDistanceZ,
-        playerWorldPos.x,
-        playerWorldPos.y + 15,
-        playerWorldPos.z,
-        true
-      );
-    }
   });
 
   return (
     <>
-      <CameraControls ref={controls} />
       <RigidBody
         ref={rigidbody}
         colliders={false}
