@@ -15,11 +15,12 @@ export const createSocketHandlers = (
   setAnswer,
   setQuizAnswerer,
   setModel,
-  setTexture
+  setTexture,
+  setClientModels
 ) => {
   /* ------- Socket events ------- */
   // 기존 접속중인 클라이언트의 위치 저장
-  // data: [식별자: {nickName, {x, y, z}}, ...]
+  // data: [식별자: {nickName, {x, y, z}}, modelMapping, texture]
   const handleEveryonePosition = data => {
     console.log('everyone pos', data);
     const { userlocations, clientInfo, quizCnt } = data;
@@ -36,6 +37,18 @@ export const createSocketHandlers = (
 
       return newCoords;
     });
+    // 클라이언트가 사용중인 모델 정보 저장
+    setClientModels(prevModels => {
+      const newModels = { ...prevModels };
+      Object.keys(userlocations).forEach(key => {
+        const { nickName, modelMapping, texture } = userlocations[key];
+        if (nickName !== nickname && nickName !== 'teacher') {
+          newModels[nickName] = { modelMapping, texture };
+        }
+      });
+
+      return newModels;
+    });
   };
 
   // 다른 클라이언트 입장ㄱ
@@ -49,6 +62,16 @@ export const createSocketHandlers = (
         ...prevCoords,
         [userlocations.nickName]: userlocations.position,
       };
+    });
+    // 새로운 클라이언트가 사용할 모델 정보 저장
+    setClientModels(prevModels => {
+      const newModels = { ...prevModels };
+      const { userlocations } = data;
+      const { nickName, modelMapping, texture } = userlocations;
+
+      newModels[nickName] = { modelMapping, texture };
+
+      return newModels;
     });
   };
 

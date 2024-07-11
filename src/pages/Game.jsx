@@ -30,6 +30,7 @@ export default function Game({
   isChatFocused,
   selectedStudent,
   updateClientCoords,
+  clientModels,
 }) {
   /* Constants */
   /* 초기 위치 */
@@ -141,11 +142,13 @@ export default function Game({
           isJoined &&
           Object.keys(clientCoords).map(key => {
             if (key != nickname) {
+              const { modelMapping, texture } = clientModels[key];
+
               return (
                 <OtherCharacterController
                   key={key}
-                  path={colobusModels[modelIdx++]}
-                  matName="M_Colobus"
+                  path={modelMapping}
+                  matName={texture}
                   nickname={key}
                   pos={clientCoords[key]}
                   scale={2}

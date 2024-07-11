@@ -5,7 +5,7 @@ import { RigidBody, CapsuleCollider } from '@react-three/rapier';
 import Character from './Character';
 
 const OtherCharacterController = ({ path, matName, nickname, pos }) => {
-  console.log('position', pos);
+  // console.log('position', pos);
   const rigidbody = useRef();
   const character = useRef();
 
@@ -14,7 +14,7 @@ const OtherCharacterController = ({ path, matName, nickname, pos }) => {
 
   // model loading을 한 번만 수행한다.
   const model = useMemo(() => {
-    console.log(`Loading model for ${nickname} from ${path}`);
+    // console.log(`Loading model for ${nickname} from ${path}`);
     return (
       <Character
         path={path}
