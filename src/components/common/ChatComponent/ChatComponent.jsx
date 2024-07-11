@@ -35,7 +35,6 @@ function ChatComponent({ roomCode, nickName, setIsChatFocused, isTeacher }) {
   useEffect(() => {
     if (!socket.current) return;
     if (isTeacher) {
-      nickName = '선생님';
       socket.current.emit('createChatRoom', { roomCode, nickName });
     } else {
       socket.current.emit('joinChatRoom', { roomCode, nickName });
@@ -73,9 +72,6 @@ function ChatComponent({ roomCode, nickName, setIsChatFocused, isTeacher }) {
 
   const sendMessage = e => {
     e.preventDefault();
-    if (isTeacher) {
-      nickName = '선생님';
-    }
     if (inputMessage && nickName) {
       socket.current.emit('newMessage', {
         nickName,

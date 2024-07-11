@@ -73,9 +73,11 @@ const Dashboard = () => {
     if (!isConnected) return;
     socket.emit('createRoom', { quizGroup: quizId });
     socket.on('roomCode', handleRoomCode);
+    console.log('socket', socket);
+    console.log('isConnected', isConnected);
     return () => {
       socket.off('roomCode', handleRoomCode);
-      setBtnDisabled(false);
+      setBtnDisabled(true);
     };
   }, [isConnected, socket]);
 
