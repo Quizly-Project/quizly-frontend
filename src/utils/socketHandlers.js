@@ -104,7 +104,7 @@ export const createSocketHandlers = (
     setQuiz(quiz);
     setIsStarted(true);
     setQuizIndex(currentQuizIndex + 1);
-    setQuizResult(null);
+    if (!isTeacher) setQuizResult(null);
     setAnswer('');
     setQuizAnswerer('');
   };

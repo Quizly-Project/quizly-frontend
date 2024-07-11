@@ -1,0 +1,54 @@
+/* 기존 스타일은 그대로 유지 */
+
+.studentList {
+  list-style-type: none;
+  padding: 0;
+}
+
+.studentItem {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.studentRank {
+  width: 50px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.studentName {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.studentAnswer {
+  width: 30px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.studentScore {
+  width: 40px;
+  text-align: right;
+  font-weight: bold;
+}
+
+/* 상위 3등에 대한 스타일 */
+.studentItem:nth-child(-n + 3) .studentRank {
+  color: #ffd700;
+  font-size: 1.1em;
+}
+
+.studentItem:nth-child(1) {
+  background-color: rgba(255, 215, 0, 0.1);
+}
+
+.studentItem:nth-child(2) {
+  background-color: rgba(192, 192, 192, 0.1);
+}
+
+.studentItem:nth-child(3) {
+  background-color: rgba(205, 127, 50, 0.1);
+}

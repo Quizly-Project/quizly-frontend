@@ -1,12 +1,103 @@
-.quizStartButton {
+.teacherDashboard {
   position: fixed;
-  bottom: 0;
+  top: 0;
+  right: -300px;
+  width: 300px;
+  height: 100vh;
+  background-color: #dedfeb;
+  opacity: 0.9;
+  padding: 20px;
+  overflow-y: auto;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  transition: right 0.3s ease-in-out;
+  z-index: 10000;
+  pointer-events: auto;
+}
+
+.teacherDashboard.open {
   right: 0;
 }
 
-.teacherUI {
-  position: absolute;
-  bottom: 20px;
+.toggleButton {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 80px;
+  background-color: #464c91;
+  color: white;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 5px 0 0 5px;
+  transition:
+    right 0.3s ease-in-out,
+    background-color 0.3s;
+  z-index: 10001;
+  pointer-events: auto;
+}
+
+.teacherDashboard.open + .toggleButton {
+  right: 300px;
+}
+
+.toggleButton:hover {
+  opacity: 0.9;
+}
+
+.dashboardHeader {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.resultsContainer {
+  margin-bottom: 20px;
+}
+
+.resultsHeader,
+.studentResultsHeader {
+  margin-bottom: 10px;
+  color: #444;
+}
+
+.studentList {
+  list-style-type: none;
+  padding: 0;
+}
+
+.studentItem {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.studentNumber {
+  width: 30px;
+  text-align: center;
+}
+
+.studentName {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.studentAnswer {
+  width: 30px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.studentScore {
+  width: 40px;
+  text-align: right;
+}
+
+.startButtonContainer {
+  position: fixed;
+  bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
 }
