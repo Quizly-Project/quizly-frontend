@@ -1,11 +1,5 @@
-import { useEffect, useMemo, useRef } from 'react';
-import {
-  Sky,
-  OrbitControls,
-  CameraControls,
-  useGLTF,
-  Clone,
-} from '@react-three/drei';
+import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import { Sky, OrbitControls, CameraControls } from '@react-three/drei';
 import { Physics, vec3 } from '@react-three/rapier';
 import { Perf } from 'r3f-perf';
 import { useThree, useFrame } from '@react-three/fiber';
@@ -43,6 +37,39 @@ export default function Game({
   const { camera } = useThree();
   const cameraControls = useRef();
   const orbitControls = useRef();
+  const [initialTeacherViewSet, setInitialTeacherViewSet] = useState(false);
+
+  const setTeacherView = useCallback(() => {
+    if (orbitControls.current) {
+      if (selectedStudent && clientCoords[selectedStudent]) {
+        const studentPos = clientCoords[selectedStudent];
+        orbitControls.current.target.set(
+          studentPos.x,
+          studentPos.y + 15,
+          studentPos.z
+        );
+        camera.position.set(studentPos.x, studentPos.y + 30, studentPos.z + 30);
+      } else {
+        // 선생님 기본 시점
+        orbitControls.current.target.set(0, 15, 0);
+        camera.position.set(0, 30, 30);
+      }
+      orbitControls.current.update();
+    }
+  }, [selectedStudent, clientCoords, camera]);
+
+  useEffect(() => {
+    if (isTeacher && !initialTeacherViewSet) {
+      setTeacherView();
+      setInitialTeacherViewSet(true);
+    }
+  }, [isTeacher, initialTeacherViewSet, setTeacherView]);
+
+  useEffect(() => {
+    if (isTeacher) {
+      setTeacherView();
+    }
+  }, [isTeacher, selectedStudent, setTeacherView]);
 
   useFrame(() => {
     if (cameraControls.current && !isTeacher) {
@@ -66,25 +93,6 @@ export default function Game({
     }
   });
 
-  useEffect(() => {
-    if (isTeacher && orbitControls.current) {
-      if (selectedStudent && clientCoords[selectedStudent]) {
-        const studentPos = clientCoords[selectedStudent];
-        orbitControls.current.target.set(
-          studentPos.x,
-          studentPos.y + 15,
-          studentPos.z
-        );
-        camera.position.set(studentPos.x, studentPos.y + 30, studentPos.z + 30);
-      } else {
-        // 선생님 기본 시점
-        orbitControls.current.target.set(0, 15, 0);
-        camera.position.set(0, 30, 30);
-      }
-      orbitControls.current.update();
-    }
-  }, [isTeacher, selectedStudent, clientCoords, camera]);
-
   return (
     <>
       {/* debugging tools */}
@@ -92,10 +100,16 @@ export default function Game({
 
       {/* camera controls */}
       {isTeacher ? (
-        <OrbitControls ref={orbitControls} />
+        <OrbitControls
+          ref={orbitControls}
+          enableRotate={true}
+          enableZoom={true}
+          enablePan={true}
+        />
       ) : (
         <CameraControls ref={cameraControls} />
       )}
+
       {/* environment */}
       <Sky />
       <Lights />
@@ -131,10 +145,9 @@ export default function Game({
         {isConnected &&
           isJoined &&
           Object.keys(clientCoords).map(key => {
-            if (key != nickname) {
-              const { modelMapping, texture } = clientModels[key];
-
-              return (
+            if (key !== nickname) {
+              const { modelMapping, texture } = clientModels[key] || {};
+              return modelMapping && texture ? (
                 <OtherCharacterController
                   key={key}
                   path={modelMapping}
@@ -143,8 +156,9 @@ export default function Game({
                   pos={clientCoords[key]}
                   scale={2}
                 />
-              );
+              ) : null;
             }
+            return null;
           })}
       </Physics>
     </>

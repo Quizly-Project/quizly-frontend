@@ -18,6 +18,7 @@ const GameUserInterface = ({
   isJoined,
   nickName,
   setIsChatFocused,
+  code,
   participants,
   onSelectStudent,
   selectedStudent,
@@ -37,6 +38,7 @@ const GameUserInterface = ({
           nickName={nickName}
           isJoined={isJoined}
           setIsChatFocused={setIsChatFocused}
+          code={code}
           participants={participants}
           onSelectStudent={onSelectStudent}
           selectedStudent={selectedStudent}

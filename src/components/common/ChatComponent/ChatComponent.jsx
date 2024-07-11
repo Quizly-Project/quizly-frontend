@@ -2,14 +2,13 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import io from 'socket.io-client';
 import styles from './ChatComponent.module.css';
 
-const socket = io('http://localhost:3002');
-
-function ChatComponent({ nickName, setIsChatFocused }) {
+function ChatComponent({ roomCode, nickName, setIsChatFocused, isTeacher }) {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isExpanded, setIsExpanded] = useState(true);
   const messagesEndRef = useRef(null);
   const hideTimeoutRef = useRef(null);
+  const socket = useRef(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -26,25 +25,44 @@ function ChatComponent({ nickName, setIsChatFocused }) {
   }, [setIsChatFocused]);
 
   useEffect(() => {
+    socket.current = io('http://localhost:3002');
+    console.log('Connected to socket server');
+    return () => {
+      socket.current.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!socket.current) return;
+    if (isTeacher) {
+      nickName = '선생님';
+      socket.current.emit('createChatRoom', { roomCode, nickName });
+    } else {
+      socket.current.emit('joinChatRoom', { roomCode, nickName });
+    }
+  }, [socket.current]);
+
+  useEffect(() => {
     const handleNewMessage = message => {
+      console.log('채팅 왔음:', message);
       setMessages(prevMessages => [...prevMessages, message]);
       if (isExpanded) {
         resetHideTimeout();
       }
     };
 
-    socket.on('message', handleNewMessage);
-    socket.on('user-joined', data =>
+    socket.current.on('newMessage', handleNewMessage);
+    socket.current.on('user-joined', data =>
       handleNewMessage({ message: data.message, type: 'system' })
     );
-    socket.on('user-left', data =>
+    socket.current.on('user-left', data =>
       handleNewMessage({ message: data.message, type: 'system' })
     );
 
     return () => {
-      socket.off('message');
-      socket.off('user-joined');
-      socket.off('user-left');
+      socket.current.off('newMessage');
+      socket.current.off('user-joined');
+      socket.current.off('user-left');
       if (hideTimeoutRef.current) {
         clearTimeout(hideTimeoutRef.current);
       }
@@ -55,8 +73,15 @@ function ChatComponent({ nickName, setIsChatFocused }) {
 
   const sendMessage = e => {
     e.preventDefault();
+    if (isTeacher) {
+      nickName = '선생님';
+    }
     if (inputMessage && nickName) {
-      socket.emit('newMessage', { nickname: nickName, message: inputMessage });
+      socket.current.emit('newMessage', {
+        nickName,
+        message: inputMessage,
+        roomCode,
+      });
       setInputMessage('');
       setIsExpanded(true);
       resetHideTimeout();
@@ -89,9 +114,9 @@ function ChatComponent({ nickName, setIsChatFocused }) {
             ) : (
               <>
                 <span
-                  className={`${styles.nickname} ${msg.nickname === nickName ? styles.selfNickname : ''}`}
+                  className={`${styles.nickname} ${msg.nickName === '' ? styles.selfNickname : ''}`}
                 >
-                  {msg.nickname}
+                  {msg.nickName}
                 </span>
                 <span className={styles.messageText}>{msg.message}</span>
               </>
