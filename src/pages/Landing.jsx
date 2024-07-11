@@ -1,24 +1,54 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import InputField from '../components/common/InputField/InputField';
 import Button from '../components/common/Button/Button';
 import Text from '../components/common/Text/Text';
+import useSocketStore from '../store/socketStore';
 
 const Landing = () => {
+  const { socket, initSocket, isConnected, disconnectSocket } =
+    useSocketStore();
+  const [roomCode, setRoomCode] = useState('');
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
 
   const navigate = useNavigate();
 
+  const handleCheckRoom = useCallback(
+    response => {
+      console.log(response);
+      if (response.success) {
+        // 방이 존재하면 해당 방으로 이동
+        navigate(`/game/${roomCode}`);
+      } else {
+        disconnectSocket();
+        // 방이 존재하지 않으면 에러 메시지 표시
+        alert('존재하지 않는 방입니다.');
+      }
+    },
+    [navigate, roomCode]
+  );
+
+  useEffect(() => {
+    console.log('랜딩페이지', isConnected, roomCode);
+    if (isConnected && roomCode) {
+      console.log(roomCode);
+      socket.emit('checkRoom', roomCode, handleCheckRoom);
+    }
+  }, [isConnected, roomCode, socket, handleCheckRoom]);
+
   const onSubmit = data => {
-    console.log(data);
-    navigate(`/game/${data.code}`);
+    setRoomCode(data.code);
+    console.log('커넥트', isConnected);
+    if (!isConnected) {
+      initSocket();
+    }
   };
+
   return (
     <div>
       <Text type="title" weight="bold" size="large" align="center">

@@ -35,7 +35,13 @@ const useSocketStore = create((set, get) => ({
 
       socket.on('disconnect', () => {
         console.log('Socket disconnected');
-        set({ isConnected: false });
+        set({
+          socket: null,
+          isConnected: false,
+          isTeacher: false,
+          roomCode: null,
+          nickname: null,
+        });
       });
 
       set({

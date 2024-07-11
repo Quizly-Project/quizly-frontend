@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { Canvas } from '@react-three/fiber';
 import { KeyboardControls } from '@react-three/drei';
 import Game from '../../../pages/Game';
@@ -12,11 +12,18 @@ import styles from './GameContainer.module.css';
 
 const GameContainer = () => {
   const { code } = useParams();
+  const navigate = useNavigate();
   // useState로 관리해야 브라우저당 한 번만 접속한다.
   const [nickName, setNickName] = useState('');
 
-  const { socket, initSocket, setSocketData, isConnected, isTeacher } =
-    useSocketStore(); // 소켓 연결 시도를 useEffect 내에서 처리한다.
+  const {
+    socket,
+    initSocket,
+    setSocketData,
+    isConnected,
+    isTeacher,
+    disconnectSocket,
+  } = useSocketStore(); // 소켓 연결 시도를 useEffect 내에서 처리한다.
 
   /* client의 좌표 */
   const [clientCoords, setClientCoords] = useState({});
@@ -112,13 +119,6 @@ const GameContainer = () => {
     [nickName]
   );
 
-  useEffect(() => {
-    if (nickName) {
-      console.log('nickname:', nickName);
-      joinRoom();
-    }
-  }, [nickName]);
-
   const handleNickNameBtn = input => {
     console.log('input:', input);
     setNickName(input);
@@ -132,7 +132,7 @@ const GameContainer = () => {
 
   // 소켓 초기화 및 데이터 설정
   useEffect(() => {
-    initSocket();
+    if (isTeacher) setNickName('선생님');
   }, []);
 
   /* ------- Socket listeners ------- */
@@ -165,6 +165,17 @@ const GameContainer = () => {
     socket.on('quizEnd', handleQuizEnd);
 
     socket.on('selectModel', handleSelectModel);
+
+    socket.on('error', error => {
+      console.error('Socket error:', error);
+      alert('서버와의 연결이 끊겼습니다.');
+      socket.disconnect();
+      navigate('/');
+    });
+    socket.on('disconnect', () => {
+      socket.disconnect();
+      navigate('/');
+    });
     // 컴포넌트 언마운트 시 이벤트 리스너 제거
     return () => {
       socket.off('everyonePosition', handleEveryonePosition);
@@ -210,7 +221,7 @@ const GameContainer = () => {
 
         setTimeout(
           () => reject(new Error('Join room request timed out')),
-          10000
+          5000
         );
       });
 
@@ -224,14 +235,23 @@ const GameContainer = () => {
     } catch (error) {
       console.error('Failed to join room', error);
       joinAttempted.current = false;
+      alert('방에 입장할 수 없습니다.');
+      navigate('/');
     }
   }, [socket, isConnected, code, nickName, isJoined, setClientCoords]);
 
   useEffect(() => {
-    if (isConnected && isTeacher) {
+    console.log('체크:', isConnected, code, nickName);
+    if (isConnected && code && nickName) {
       joinRoom();
     }
-  }, []);
+  }, [isConnected, code, nickName, joinRoom]);
+
+  useEffect(() => {
+    if (!isConnected) {
+      initSocket();
+    }
+  }, [initSocket, isConnected]);
 
   return (
     <div className={styles.container}>
