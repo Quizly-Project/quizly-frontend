@@ -9,7 +9,7 @@ import { RigidBody } from '@react-three/rapier';
 export default function Island(props) {
   const { nodes, materials } = useGLTF('/Environment/Island.glb');
   return (
-    <RigidBody type="fixed" colliders="trimesh" friction={5}>
+    <RigidBody type="fixed" colliders="hull" friction={5}>
       <group {...props} dispose={null}>
         <group name="Oland" position={[-0.226, -7.566, 0.948]} scale={4.404}>
           <mesh
