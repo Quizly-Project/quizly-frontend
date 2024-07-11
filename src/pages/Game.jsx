@@ -3,12 +3,15 @@ import { Sky, OrbitControls } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
 import { Perf } from 'r3f-perf';
 
-// components
+// Environment
 import Lights from '../components/3d/Environment/Lights.jsx';
-import CharacterController from '../components/3d/Mesh/CharacterController.jsx';
-import OtherCharacterController from '../components/3d/Mesh/OtherCharacterController.jsx';
+import SpotLights from '../components/3d/Environment/SpotLights.jsx';
 import Island from '../components/3d/Environment/Island.jsx';
 import Blackboard from '../components/3d/Environment/Blackboard.jsx';
+
+// Character
+import CharacterController from '../components/3d/Mesh/CharacterController.jsx';
+import OtherCharacterController from '../components/3d/Mesh/OtherCharacterController.jsx';
 
 // style
 import '../styles/game.css';
@@ -59,14 +62,15 @@ export default function Game({
       <Sky />
       <Lights />
 
+      {/* O spotlight */}
+      <SpotLights position={[60, 50, 0]} targetPosition={[60, 8.7, 0]} />
+      {/* X spotlight */}
+      <SpotLights position={[-60, 50, 0]} targetPosition={[-60, 8.7, 0]} />
+
       <Physics debug>
         {/* <Physics> */}
         {/* fixed elements */}
         <Island />
-        {/* <Beachside position-y="-20" rotation-y={-Math.PI / 2} /> */}
-        {/* <Crab position-z="35" position-y="-7" /> */}
-        {/* <OLevel /> */}
-        {/* <XLevel /> */}
         <Blackboard position-y={70} position-z={-200} text={quiz} />
 
         {/* me */}

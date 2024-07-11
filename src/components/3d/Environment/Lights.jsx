@@ -14,7 +14,7 @@ export default function Lights() {
     scene.add(shadowCameraRef.current);
 
     // toggle camera helper
-    shadowCameraRef.current.visible = false;
+    // shadowCameraRef.current.visible = false;
 
     return () => {
       scene.remove(shadowCameraRef.current);
@@ -27,17 +27,17 @@ export default function Lights() {
         ref={lightRef}
         position={[-200, 200, 0]}
         castShadow
-        intensity={4.5}
+        intensity={1}
         shadow-mapSize-width={8192}
         shadow-mapSize-height={8192}
         shadow-camera-near={200}
         shadow-camera-far={400}
-        shadow-camera-left={-160}
-        shadow-camera-right={100}
+        shadow-camera-left={-60}
+        shadow-camera-right={60}
         shadow-camera-top={100}
         shadow-camera-bottom={-100}
       />
-      <ambientLight intensity={1.5} />
+      <ambientLight intensity={0.5} />
     </>
   );
 }
