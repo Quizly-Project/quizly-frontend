@@ -16,6 +16,7 @@ const CommonUI = ({
   nickName,
   isJoined,
   setIsChatFocused,
+  code,
   participants,
   onSelectStudent,
   selectedStudent,
@@ -25,8 +26,10 @@ const CommonUI = ({
     <div className="common-ui">
       {isJoined && (
         <ChatComponent
+          roomCode={code}
           nickName={nickName}
           setIsChatFocused={setIsChatFocused}
+          isTeacher={isTeacher}
         />
       )}
       <Text
