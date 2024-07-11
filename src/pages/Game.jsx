@@ -13,13 +13,13 @@ import Blackboard from '../components/3d/Environment/Blackboard.jsx';
 // Character
 import CharacterController from '../components/3d/Mesh/CharacterController.jsx';
 import OtherCharacterController from '../components/3d/Mesh/OtherCharacterController.jsx';
+import Wall from '../components/3d/Environment/Wall.jsx';
 
 // style
 import '../styles/game.css';
-import Wall from '../components/3d/Environment/Wall.jsx';
-import Grass from '../components/3d/Environment/Grass.jsx';
 
 export default function Game({
+  isStarted,
   nickname,
   socket,
   isConnected,
@@ -29,10 +29,12 @@ export default function Game({
   model,
   texture,
   quiz,
+  quizResult,
   isChatFocused,
   selectedStudent,
   updateClientCoords,
   clientModels,
+  spotlight,
 }) {
   const { camera } = useThree();
   const cameraControls = useRef();
@@ -115,9 +117,13 @@ export default function Game({
       <Lights />
 
       {/* O spotlight */}
-      <SpotLights position={[60, 50, 0]} targetPosition={[60, 8.7, 0]} />
+      {!isStarted && quizResult && spotlight === '1' && (
+        <SpotLights position={[-60, 50, 0]} targetPosition={[-60, 8.7, 0]} />
+      )}
       {/* X spotlight */}
-      <SpotLights position={[-60, 50, 0]} targetPosition={[-60, 8.7, 0]} />
+      {!isStarted && quizResult && spotlight === '2' && (
+        <SpotLights position={[60, 50, 0]} targetPosition={[60, 8.7, 0]} />
+      )}
 
       <Physics debug>
         {/* <Physics> */}

@@ -51,6 +51,9 @@ const GameContainer = () => {
   /* 퀴즈 정답 */
   const [answer, setAnswer] = useState('');
 
+  /* 스포트라이트를 켤 영역(1~4) */
+  const [spotlight, setSpotlight] = useState(0);
+
   /* 퀴즈 정답자 */
   const [quizAnswerer, setQuizAnswerer] = useState('');
 
@@ -107,7 +110,8 @@ const GameContainer = () => {
         setQuizAnswerer,
         setModel,
         setTexture,
-        setClientModels
+        setClientModels,
+        setSpotlight
       ),
     [nickName]
   );
@@ -267,6 +271,7 @@ const GameContainer = () => {
             selectedStudent={selectedStudent}
             updateClientCoords={updateClientCoords}
             clientModels={clientModels}
+            spotlight={spotlight}
           />
         </Canvas>
       </KeyboardControls>

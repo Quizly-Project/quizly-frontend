@@ -16,7 +16,8 @@ export const createSocketHandlers = (
   setQuizAnswerer,
   setModel,
   setTexture,
-  setClientModels
+  setClientModels,
+  setSpotlight
 ) => {
   /* ------- Socket events ------- */
   // 기존 접속중인 클라이언트의 위치 저장
@@ -125,6 +126,8 @@ export const createSocketHandlers = (
     const options = ['무응답', 'O', 'X', '4'];
     const correct = ['오답', '정답'];
     console.log('타이머 종료', data);
+    setSpotlight(data.correctAnswer);
+    console.log(data.correctAnswer);
     if (isTeacher) {
       /*
        * answer: 정답
@@ -147,6 +150,7 @@ export const createSocketHandlers = (
       const { answer, result, totalScore, correctAnswerList } = data;
       setQuizResult(correct[result]);
       setAnswer(options[answer]);
+      console.log(options[answer]);
       setQuizAnswerer(correctAnswerList);
     }
     setIsStarted(false);
