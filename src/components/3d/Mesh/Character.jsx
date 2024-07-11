@@ -7,7 +7,7 @@ const Character = React.memo(({ path, matName, nickname, actionType }) => {
   const { nodes, materials, animations } = useGLTF(`/Character/${path}`);
   const { actions } = useAnimations(animations, group);
 
-  useGLTF.preload(`./Character/${path}`);
+  useGLTF.preload(`/Character/${path}`);
 
   useEffect(() => {
     // play action
