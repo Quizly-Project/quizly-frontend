@@ -102,9 +102,6 @@ function ChatComponent({ roomCode, nickName, setIsChatFocused, isTeacher }) {
             key={index}
             className={`${styles.messageRow} ${msg.type === 'system' ? styles.systemMessage : ''}`}
           >
-            <span className={styles.timestamp}>
-              {new Date().toLocaleTimeString()}
-            </span>
             {msg.type === 'system' ? (
               <span className={styles.systemText}>{msg.message}</span>
             ) : (

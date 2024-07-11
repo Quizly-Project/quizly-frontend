@@ -131,7 +131,8 @@ const GameContainer = () => {
   /* ------- Socket events ------- */
   const handleClickQuizStart = () => {
     console.log('퀴즈 시작');
-    socket.emit('start', { roomCode: code });
+    const roomCode = code;
+    socket.emit('start', roomCode);
   };
 
   // 소켓 초기화 및 데이터 설정
@@ -173,13 +174,10 @@ const GameContainer = () => {
     socket.on('error', error => {
       console.error('Socket error:', error);
       alert('서버와의 연결이 끊겼습니다.');
-      socket.disconnect();
+      disconnectSocket();
       navigate('/');
     });
-    socket.on('disconnect', () => {
-      socket.disconnect();
-      navigate('/');
-    });
+
     // 컴포넌트 언마운트 시 이벤트 리스너 제거
     return () => {
       socket.off('everyonePosition', handleEveryonePosition);
