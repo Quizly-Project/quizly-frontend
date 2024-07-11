@@ -66,7 +66,7 @@ const CharacterController = ({
   }, [myPos]);
 
   const MOVEMENT_SPEED = 50;
-  const JUMP_FORCE = 5;
+  const JUMP_FORCE = 1.5;
   const MAX_LINVEL = 5;
 
   // 키보드 상하좌우로 움직인다.
@@ -108,7 +108,7 @@ const CharacterController = ({
     }
 
     // 바닥에 닿았는지 확인하고, 닿았다면 점프 상태 해제
-    if (rigidbody.current.translation().y < 8.7) {
+    if (rigidbody.current.translation().y < 10.4) {
       setIsJumped(false);
     }
 
