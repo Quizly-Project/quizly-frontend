@@ -11,12 +11,15 @@ export default function Blackboard(props) {
     roughness: 0.8,
   });
 
-  const fullText =
-    'Q. 태풍은 적도 부근에서 형성되어 북반구에서는 시계 반대 방향으로 회전합니다.';
+  // const fullText =
+  //   'Q. 태풍은 적도 부근에서 형성되어 북반구에서는 시계 반대 방향으로 회전합니다.';
+  const fullText = props.text.question;
   const [displayedText, setDisplayedText] = useState('');
 
-  // 글자를 한 글자씩 추가하는 함수
+  // 한 글자씩 표시되는 효과
   useEffect(() => {
+    console.log(fullText);
+    if (!fullText) return;
     let index = 0;
     const interval = setInterval(() => {
       setDisplayedText(fullText.slice(0, index));
@@ -24,7 +27,7 @@ export default function Blackboard(props) {
       if (index > fullText.length) {
         clearInterval(interval);
       }
-    }, 100); // 글자가 나타나는 간격 (밀리초 단위로 조절 가능)
+    }, 100); // 시간 간격
     return () => clearInterval(interval);
   }, [fullText]);
 
@@ -62,17 +65,18 @@ export default function Blackboard(props) {
         scale={250}
       />
       {/* Text */}
-      {lines.map((line, index) => (
-        <Text3D
-          key={index}
-          scale={10}
-          font="/fonts/UhBee_Regular.json"
-          position={[-100, 30 - index * 30, 10]} // 텍스트의 위치를 조정하여 줄바꿈
-        >
-          {line}
-          <meshStandardMaterial attach="material" {...chalkMaterial} />
-        </Text3D>
-      ))}
+      {lines &&
+        lines.map((line, index) => (
+          <Text3D
+            key={index}
+            scale={10}
+            font="/fonts/UhBee_Regular.json"
+            position={[-100, 30 - index * 30, 10]} // 텍스트의 위치를 조정하여 줄바꿈
+          >
+            {line}
+            <meshStandardMaterial attach="material" {...chalkMaterial} />
+          </Text3D>
+        ))}
     </group>
   );
 }

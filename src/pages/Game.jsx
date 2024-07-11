@@ -32,27 +32,6 @@ export default function Game({
   updateClientCoords,
   clientModels,
 }) {
-  /* Constants */
-  /* 초기 위치 */
-  const defaultPos = {
-    x: 0,
-    y: 0,
-    z: 0,
-  };
-
-  /* 임시 원숭이 배열 */
-  const colobusModels = useMemo(
-    () => [
-      'Colobus_Animations2.glb',
-      'Colobus_Animations3.glb',
-      'Colobus_Animations4.glb',
-      'Colobus_Animations5.glb',
-      'Colobus_Animations6.glb',
-      'Colobus_Animations7.glb',
-    ],
-    []
-  );
-
   const { camera } = useThree();
   const cameraControls = useRef();
   const orbitControls = useRef();
@@ -98,7 +77,6 @@ export default function Game({
     }
   }, [isTeacher, selectedStudent, clientCoords, camera]);
 
-  let modelIdx = 0;
   return (
     <>
       {/* debugging tools */}
@@ -123,7 +101,9 @@ export default function Game({
         {/* <Physics> */}
         {/* fixed elements */}
         <Island />
-        <Blackboard position-y={70} position-z={-200} text={quiz} />
+        {isConnected && quiz && (
+          <Blackboard position-y={70} position-z={-200} text={quiz} />
+        )}
 
         {/* me */}
         {isConnected && !isTeacher && isJoined && (
