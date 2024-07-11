@@ -16,6 +16,8 @@ import OtherCharacterController from '../components/3d/Mesh/OtherCharacterContro
 
 // style
 import '../styles/game.css';
+import Wall from '../components/3d/Environment/Wall.jsx';
+import Grass from '../components/3d/Environment/Grass.jsx';
 
 export default function Game({
   nickname,
@@ -111,6 +113,7 @@ export default function Game({
       {/* environment */}
       <Sky />
       <Lights />
+      <OrbitControls />
 
       {/* O spotlight */}
       <SpotLights position={[60, 50, 0]} targetPosition={[60, 8.7, 0]} />
@@ -121,6 +124,7 @@ export default function Game({
         {/* <Physics> */}
         {/* fixed elements */}
         <Island />
+        <Wall />
         {isConnected && quiz && (
           <Blackboard position-y={70} position-z={-200} text={quiz} />
         )}

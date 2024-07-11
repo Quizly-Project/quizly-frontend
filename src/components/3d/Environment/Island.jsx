@@ -9,256 +9,69 @@ import { RigidBody } from '@react-three/rapier';
 export default function Island(props) {
   const { nodes, materials } = useGLTF('/Environment/Island.glb');
   return (
-    <RigidBody type="fixed" colliders="hull" friction={5}>
-      <group {...props} dispose={null}>
-        <group name="Oland" position={[-0.226, -7.566, 0.948]} scale={4.404}>
+    <group {...props} dispose={null}>
+      <RigidBody type="fixed" colliders="hull" friction={5}>
+        <group
+          name="Dock_Wide"
+          position={[0, 6.257, 0]}
+          rotation={[-Math.PI / 2, 0, -1.573]}
+          scale={100}
+        >
           <mesh
-            name="Cylinder-Mesh"
+            name="Dock_Wide002"
             castShadow
             receiveShadow
-            geometry={nodes['Cylinder-Mesh'].geometry}
-            material={materials.Dirt}
+            geometry={nodes.Dock_Wide002.geometry}
+            material={materials['Wood.002']}
           />
           <mesh
-            name="Cylinder-Mesh_1"
+            name="Dock_Wide002_1"
             castShadow
             receiveShadow
-            geometry={nodes['Cylinder-Mesh_1'].geometry}
-            material={materials.Grass}
+            geometry={nodes.Dock_Wide002_1.geometry}
+            material={materials['LightWood.002']}
+          />
+        </group>
+      </RigidBody>
+      <RigidBody type="fixed" friction={5}>
+        <group name="OLand" position={[5.804, -26.996, 0]}>
+          <mesh
+            name="Oland"
+            castShadow
+            receiveShadow
+            geometry={nodes.Oland.geometry}
+            material={materials['Dirt.001']}
+          />
+          <mesh
+            name="Oland_1"
+            castShadow
+            receiveShadow
+            geometry={nodes.Oland_1.geometry}
+            material={materials['Grass.001']}
           />
         </group>
         <group
           name="Xland"
-          position={[-0.145, -7.566, 0.948]}
-          rotation={[-Math.PI, 0.009, -Math.PI]}
-          scale={4.404}
+          position={[122.892, -26.996, 0]}
+          rotation={[0, -0.003, 0]}
         >
           <mesh
-            name="Cylinder-Mesh"
+            name="Xland_1"
             castShadow
             receiveShadow
-            geometry={nodes['Cylinder-Mesh'].geometry}
-            material={materials.Dirt}
+            geometry={nodes.Xland_1.geometry}
+            material={materials['Dirt.001']}
           />
           <mesh
-            name="Cylinder-Mesh_1"
+            name="Xland_2"
             castShadow
             receiveShadow
-            geometry={nodes['Cylinder-Mesh_1'].geometry}
-            material={materials.Grass}
+            geometry={nodes.Xland_2.geometry}
+            material={materials['Grass.001']}
           />
         </group>
-        <group
-          name="Dock"
-          position={[-0.226, -7.566, 0.948]}
-          rotation={[Math.PI, -1.569, Math.PI]}
-          scale={4.404}
-        >
-          <group name="Dock_Wide" rotation={[-Math.PI / 2, 0, 0]} scale={100}>
-            <mesh
-              name="Dock_Wide_1"
-              castShadow
-              receiveShadow
-              geometry={nodes.Dock_Wide_1.geometry}
-              material={materials.Wood}
-            />
-            <mesh
-              name="Dock_Wide_2"
-              castShadow
-              receiveShadow
-              geometry={nodes.Dock_Wide_2.geometry}
-              material={materials.LightWood}
-            />
-            <mesh
-              name="Dock_Wide_3"
-              castShadow
-              receiveShadow
-              geometry={nodes.Dock_Wide_3.geometry}
-              material={materials.String}
-            />
-          </group>
-        </group>
-        <group name="SignO" position={[-0.226, 25.707, 0.948]} scale={4.404}>
-          <group name="Sign5" scale={100}>
-            <mesh
-              name="Sign5_1"
-              castShadow
-              receiveShadow
-              geometry={nodes.Sign5_1.geometry}
-              material={materials['Light Wood']}
-            />
-            <mesh
-              name="Sign5_2"
-              castShadow
-              receiveShadow
-              geometry={nodes.Sign5_2.geometry}
-              material={materials['Dark Wood']}
-            />
-            <mesh
-              name="Sign5_3"
-              castShadow
-              receiveShadow
-              geometry={nodes.Sign5_3.geometry}
-              material={materials.Herbs}
-            />
-          </group>
-        </group>
-        <mesh
-          name="O"
-          castShadow
-          receiveShadow
-          geometry={nodes.O.geometry}
-          material={materials.O}
-          position={[-92.733, 25.045, -51.426]}
-          rotation={[-1.574, -0.002, 0.482]}
-          scale={4.404}
-        />
-        <mesh
-          name="X"
-          castShadow
-          receiveShadow
-          geometry={nodes.X.geometry}
-          material={materials.X}
-          position={[109.598, 31.452, 22.129]}
-          rotation={[0, -0.571, 0]}
-          scale={4.404}
-        />
-        <mesh
-          name="Text"
-          castShadow
-          receiveShadow
-          geometry={nodes.Text.geometry}
-          material={materials.O}
-          position={[-41.231, 17.323, -26.583]}
-          rotation={[1.57, 0, 0]}
-          scale={4.404}
-        />
-        <mesh
-          name="Transparent"
-          geometry={nodes.Transparent.geometry}
-          material={materials['Transparent.001']}
-          position={[0, 22.283, 1.656]}
-        />
-        <mesh
-          name="Transparent001"
-          geometry={nodes.Transparent001.geometry}
-          material={materials['Transparent.001']}
-          position={[0, 22.283, 35.852]}
-        />
-        <mesh
-          name="Transparent002"
-          geometry={nodes.Transparent002.geometry}
-          material={materials['Transparent.001']}
-          position={[35.497, 22.283, 42.54]}
-          rotation={[0, 0.015, 0]}
-        />
-        <mesh
-          name="Transparent003"
-          geometry={nodes.Transparent003.geometry}
-          material={materials['Transparent.001']}
-          position={[63.485, 22.283, 47.452]}
-          rotation={[0, 0.815, 0]}
-        />
-        <mesh
-          name="Transparent004"
-          geometry={nodes.Transparent004.geometry}
-          material={materials['Transparent.001']}
-          position={[88.421, 22.283, 34.991]}
-          rotation={[-Math.PI, 1.501, -Math.PI]}
-        />
-        <mesh
-          name="Transparent005"
-          geometry={nodes.Transparent005.geometry}
-          material={materials['Transparent.001']}
-          position={[114.113, 22.283, 22.57]}
-          rotation={[-Math.PI, 1.501, -Math.PI]}
-        />
-        <mesh
-          name="Transparent006"
-          geometry={nodes.Transparent006.geometry}
-          material={materials['Transparent.001']}
-          position={[118.963, 22.283, -8.657]}
-          rotation={[-Math.PI, 0.878, -Math.PI]}
-        />
-        <mesh
-          name="Transparent007"
-          geometry={nodes.Transparent007.geometry}
-          material={materials['Transparent.001']}
-          position={[88.705, 22.283, -27.337]}
-          rotation={[-Math.PI, 1.501, -Math.PI]}
-        />
-        <mesh
-          name="Transparent008"
-          geometry={nodes.Transparent008.geometry}
-          material={materials['Transparent.001']}
-          position={[63.304, 22.283, -18.541]}
-          rotation={[-Math.PI, 1.501, -Math.PI]}
-        />
-        <mesh
-          name="Transparent009"
-          geometry={nodes.Transparent009.geometry}
-          material={materials['Transparent.001']}
-          position={[46.393, 22.283, -6.325]}
-          rotation={[-Math.PI, 1.501, -Math.PI]}
-        />
-        <mesh
-          name="Transparent010"
-          geometry={nodes.Transparent010.geometry}
-          material={materials['Transparent.001']}
-          position={[-15.59, 22.283, 38.734]}
-          rotation={[-Math.PI, 1.401, -Math.PI]}
-        />
-        <mesh
-          name="Transparent011"
-          geometry={nodes.Transparent011.geometry}
-          material={materials['Transparent.001']}
-          position={[-32.331, 22.283, 50.778]}
-          rotation={[-Math.PI, 1.401, -Math.PI]}
-        />
-        <mesh
-          name="Transparent012"
-          geometry={nodes.Transparent012.geometry}
-          material={materials['Transparent.001']}
-          position={[-55.112, 22.283, 44.851]}
-          rotation={[-Math.PI, 1.401, -Math.PI]}
-        />
-        <mesh
-          name="Transparent013"
-          geometry={nodes.Transparent013.geometry}
-          material={materials['Transparent.001']}
-          position={[-63.79, 22.283, 20.068]}
-          rotation={[-Math.PI, 1.401, -Math.PI]}
-        />
-        <mesh
-          name="Transparent014"
-          geometry={nodes.Transparent014.geometry}
-          material={materials['Transparent.001']}
-          position={[-62.313, 22.283, -9.09]}
-          rotation={[-Math.PI, 1.401, -Math.PI]}
-        />
-        <mesh
-          name="Transparent015"
-          geometry={nodes.Transparent015.geometry}
-          material={materials['Transparent.001']}
-          position={[-37.877, 22.283, -20.801]}
-          rotation={[-Math.PI, 1.401, -Math.PI]}
-        />
-        <mesh
-          name="Transparent016"
-          geometry={nodes.Transparent016.geometry}
-          material={materials['Transparent.001']}
-          position={[-17.305, 22.283, -16.001]}
-          rotation={[-Math.PI, 1.401, -Math.PI]}
-        />
-        <mesh
-          name="Transparent017"
-          geometry={nodes.Transparent017.geometry}
-          material={materials['Transparent.001']}
-          position={[-13.588, 22.283, -8.347]}
-          rotation={[-Math.PI, 1.401, -Math.PI]}
-        />
-      </group>
-    </RigidBody>
+      </RigidBody>
+    </group>
   );
 }
 
