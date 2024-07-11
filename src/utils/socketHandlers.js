@@ -23,7 +23,7 @@ export const createSocketHandlers = (
   const handleEveryonePosition = data => {
     console.log('everyone pos', data);
     const { userlocations, clientInfo, quizCnt } = data;
-    setParticipants(clientInfo.clientCnt);
+    setParticipants(clientInfo);
     setQuizCnt(quizCnt);
     setClientCoords(prevCoords => {
       const newCoords = { ...prevCoords }; // clientCoords의 불변성을 지키기 위해 newCoords 사용
@@ -43,7 +43,7 @@ export const createSocketHandlers = (
   const handleNewClientPosition = data => {
     console.log('new client pos', data);
     const { clientInfo, userlocations } = data;
-    setParticipants(clientInfo.clientCnt);
+    setParticipants(clientInfo);
     setClientCoords(prevCoords => {
       return {
         ...prevCoords,
@@ -66,7 +66,7 @@ export const createSocketHandlers = (
   const handleSomeoneExit = data => {
     console.log('someone exit', data);
     const { nickName, clientInfo } = data;
-    setParticipants(clientInfo.clientCnt);
+    setParticipants(clientInfo);
     setClientCoords(prevCoords => {
       const newCoords = { ...prevCoords };
       delete newCoords[nickName];

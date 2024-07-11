@@ -36,7 +36,7 @@ const GameContainer = () => {
   /* 퀴즈 종료 여부 */
   const [isQuizEnded, setIsQuizEnded] = useState(false);
 
-  /* 참가자수 */
+  /* 참가자 정보 */
   const [participants, setParticipants] = useState(0);
 
   /* 퀴즈 갯수 */
@@ -62,6 +62,19 @@ const GameContainer = () => {
   const [isChatFocused, setIsChatFocused] = useState(false);
 
   const joinAttempted = useRef(false);
+
+  const [selectedStudent, setSelectedStudent] = useState(null);
+
+  const updateClientCoords = (nickname, newPos) => {
+    setClientCoords(prev => ({
+      ...prev,
+      [nickname]: newPos,
+    }));
+  };
+
+  const handleSelectStudent = studentNickname => {
+    setSelectedStudent(studentNickname);
+  };
 
   const {
     handleEveryonePosition,
@@ -235,7 +248,6 @@ const GameContainer = () => {
             quizResult={quizResult}
             timer={timer}
             isQuizEnded={isQuizEnded}
-            participants={participants}
             quizCnt={quizCnt}
             quizIndex={quizIndex}
             clientCoords={clientCoords}
@@ -248,6 +260,8 @@ const GameContainer = () => {
             model={model}
             texture={texture}
             isChatFocused={isChatFocused}
+            selectedStudent={selectedStudent}
+            updateClientCoords={updateClientCoords}
           />
         </Canvas>
       </KeyboardControls>
@@ -266,7 +280,6 @@ const GameContainer = () => {
           quizResult={quizResult}
           timer={timer}
           isQuizEnded={isQuizEnded}
-          participants={participants}
           quizCnt={quizCnt}
           quizIndex={quizIndex}
           answer={answer}
@@ -274,6 +287,12 @@ const GameContainer = () => {
           isJoined={isJoined}
           nickName={nickName}
           setIsChatFocused={setIsChatFocused}
+          participants={Object.keys(clientCoords).map(nickName => ({
+            nickName,
+            isTeacher: nickName === 'teacher', // 예시: 선생님의 닉네임이 'teacher'라고 가정
+          }))}
+          onSelectStudent={handleSelectStudent}
+          selectedStudent={selectedStudent}
         />
       </div>
     </div>

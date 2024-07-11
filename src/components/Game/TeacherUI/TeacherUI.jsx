@@ -36,6 +36,7 @@ const TeacherUI = ({
   isStarted,
   isQuizEnded,
   quizResult,
+  participants,
 }) => {
   return (
     <div className={styles.teacherUI}>

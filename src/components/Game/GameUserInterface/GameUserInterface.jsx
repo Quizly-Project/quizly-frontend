@@ -12,13 +12,15 @@ const GameUserInterface = ({
   quizResult,
   timer,
   isQuizEnded,
-  participants,
   quizCnt,
   quizIndex,
   quizAnswerer,
   isJoined,
   nickName,
   setIsChatFocused,
+  participants,
+  onSelectStudent,
+  selectedStudent,
 }) => {
   return (
     <>
@@ -29,13 +31,16 @@ const GameUserInterface = ({
           quiz={quiz}
           timer={timer}
           isQuizEnded={isQuizEnded}
-          participants={participants}
           quizCnt={quizCnt}
           quizIndex={quizIndex}
           quizAnswerer={quizAnswerer}
           nickName={nickName}
           isJoined={isJoined}
           setIsChatFocused={setIsChatFocused}
+          participants={participants}
+          onSelectStudent={onSelectStudent}
+          selectedStudent={selectedStudent}
+          isTeacher={isTeacher}
         />
         {isTeacher ? (
           <TeacherUI
@@ -43,6 +48,9 @@ const GameUserInterface = ({
             isStarted={isStarted}
             isQuizEnded={isQuizEnded}
             quizResult={quizResult}
+            participants={participants}
+            onSelectStudent={onSelectStudent}
+            selectedStudent={selectedStudent}
           />
         ) : (
           <StudentUI quizResult={quizResult} />
