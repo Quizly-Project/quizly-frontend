@@ -113,7 +113,6 @@ export default function Game({
       {/* environment */}
       <Sky />
       <Lights />
-      <OrbitControls />
 
       {/* O spotlight */}
       <SpotLights position={[60, 50, 0]} targetPosition={[60, 8.7, 0]} />
