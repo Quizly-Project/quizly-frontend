@@ -1,0 +1,35 @@
+.quizProgressContainer {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0.9;
+  border-radius: 15px;
+  padding: 10px 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.quizInfo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.currentQuiz {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.separator {
+  margin: 0 5px;
+  font-size: 20px;
+  opacity: 0.7;
+}
+
+.totalQuizzes {
+  font-size: 20px;
+  opacity: 0.7;
+}

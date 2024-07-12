@@ -42,18 +42,18 @@
 
 /* 상위 3등에 대한 스타일 */
 .studentItem:nth-child(-n + 3) .studentRank {
-  color: #ffd700;
+  color: black;
   font-size: 1.1em;
 }
 
 .studentItem:nth-child(1) {
-  background-color: rgba(255, 215, 0, 0.1);
+  background-color: rgba(255, 215, 0, 0.5);
 }
 
 .studentItem:nth-child(2) {
-  background-color: rgba(192, 192, 192, 0.1);
+  background-color: rgba(192, 192, 192, 0.5);
 }
 
 .studentItem:nth-child(3) {
-  background-color: rgba(205, 127, 50, 0.1);
+  background-color: rgba(205, 127, 50, 0.5);
 }

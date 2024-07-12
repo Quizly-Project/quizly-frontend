@@ -7,6 +7,7 @@ import GameUserInterface from '../GameUserInterface/GameUserInterface';
 import NickNameInput from '../NickNameInput/NickNameInput';
 import useSocketStore from '../../../store/socketStore';
 import { createSocketHandlers } from '../../../utils/socketHandlers';
+import { useTimer } from '../../../hooks/useTimer';
 
 import styles from './GameContainer.module.css';
 
@@ -36,9 +37,6 @@ const GameContainer = () => {
 
   /* 퀴즈 결과 */
   const [quizResult, setQuizResult] = useState(null);
-
-  /* 퀴즈 타이머 */
-  const [timer, setTimer] = useState(0);
 
   /* 퀴즈 종료 여부 */
   const [isQuizEnded, setIsQuizEnded] = useState(false);
@@ -89,6 +87,8 @@ const GameContainer = () => {
     setSelectedStudent(studentNickname);
   };
 
+  const { timer, startTimer, stopTimer } = useTimer();
+
   const {
     handleEveryonePosition,
     handleNewClientPosition,
@@ -107,7 +107,7 @@ const GameContainer = () => {
         setIsStarted,
         nickName,
         setQuizResult,
-        setTimer,
+        startTimer,
         setIsQuizEnded,
         setParticipants,
         setQuizCnt,
@@ -188,6 +188,7 @@ const GameContainer = () => {
       socket.off('timerStart', handleTimerStart);
       socket.off('timeout', handleTimeOut);
       socket.off('selectModel', handleSelectModel);
+      stopTimer();
     };
   }, [
     socket,
@@ -201,6 +202,7 @@ const GameContainer = () => {
     handleTimeOut,
     handleQuizEnd,
     handleSelectModel,
+    stopTimer,
   ]);
 
   const joinRoom = useCallback(async () => {

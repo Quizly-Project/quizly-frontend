@@ -6,7 +6,7 @@ export const createSocketHandlers = (
   setIsStarted,
   nickname,
   setQuizResult,
-  setTimer,
+  startTimer,
   setIsQuizEnded,
   setParticipants,
   setQuizCnt,
@@ -111,15 +111,7 @@ export const createSocketHandlers = (
 
   const handleTimerStart = duration => {
     console.log('타이머 시작', duration);
-    setTimer(duration);
-    const interval = setInterval(() => {
-      console.log('타이머', duration);
-      duration--;
-      setTimer(duration);
-      if (duration <= 0) {
-        clearInterval(interval);
-      }
-    }, 1000);
+    startTimer(duration);
   };
 
   const handleTimeOut = data => {

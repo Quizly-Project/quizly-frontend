@@ -98,7 +98,7 @@ export default function Game({
   return (
     <>
       {/* debugging tools */}
-      <Perf />
+      {/* <Perf /> */}
 
       {/* camera controls */}
       {isTeacher ? (
@@ -125,7 +125,7 @@ export default function Game({
         <SpotLights position={[60, 50, 0]} targetPosition={[60, 8.7, 0]} />
       )}
 
-      <Physics debug>
+      <Physics>
         {/* <Physics> */}
         {/* fixed elements */}
         <Island />
