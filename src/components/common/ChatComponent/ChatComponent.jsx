@@ -3,9 +3,11 @@ import io from 'socket.io-client';
 import styles from './ChatComponent.module.css';
 
 function ChatComponent({ roomCode, nickName, setIsChatFocused, isTeacher }) {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([
+    { message: `${nickName}(님)이 참여했습니다.`, type: 'system' },
+  ]);
   const [inputMessage, setInputMessage] = useState('');
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
   const messagesEndRef = useRef(null);
   const hideTimeoutRef = useRef(null);
   const socket = useRef(null);

@@ -108,7 +108,7 @@ export default function Game({
   return (
     <>
       {/* debugging tools */}
-      <Perf />
+      {/* <Perf /> */}
 
       {/* camera controls */}
       {isTeacher ? (

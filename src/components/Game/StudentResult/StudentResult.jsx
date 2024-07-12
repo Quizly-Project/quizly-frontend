@@ -37,7 +37,7 @@ const StudentResults = ({ quizResult }) => {
               <span className={styles.studentAnswers}>
                 {studentData.result.map((result, idx) => (
                   <span key={idx} className={styles.answerIcon}>
-                    {result === '0' ? '⭕' : '❌'}
+                    {result * 1 ? '⭕' : '❌'}
                   </span>
                 ))}
               </span>

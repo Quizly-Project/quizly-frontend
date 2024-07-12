@@ -3,6 +3,8 @@ import Question from './Question';
 import Text from '../common/Text/Text';
 import ChatComponent from '../common/ChatComponent/ChatComponent';
 import ParticipantList from './ParticipantList/ParticipantList';
+import Timer from './Timer/Timer';
+import QuizProgress from './QuizProgress/QuizProgress';
 
 const CommonUI = ({
   quizResult,
@@ -32,17 +34,7 @@ const CommonUI = ({
           isTeacher={isTeacher}
         />
       )}
-      <Text
-        type="title"
-        align="center"
-        color="primary"
-        size="large"
-        weight="normal"
-      >
-        퀴즈: {quizIndex}/{quizCnt}{' '}
-      </Text>
-      {timer > 0 ? <QuizResultText quizResult={timer} /> : null}
-
+      <QuizProgress currentQuiz={quizIndex} totalQuizzes={quizCnt} />
       {isQuizEnded && <QuizResultText quizResult="퀴즈 종료" />}
       <ParticipantList
         participants={participants}
@@ -50,6 +42,7 @@ const CommonUI = ({
         onSelectStudent={onSelectStudent}
         selectedStudent={selectedStudent}
       />
+      <Timer timer={timer} />
     </div>
   );
 };
