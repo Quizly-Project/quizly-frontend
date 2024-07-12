@@ -17,7 +17,8 @@ export const createSocketHandlers = (
   setModel,
   setTexture,
   setClientModels,
-  setSpotlight
+  setSpotlight,
+  setRank
 ) => {
   /* ------- Socket events ------- */
   // 기존 접속중인 클라이언트의 위치 저장
@@ -52,7 +53,7 @@ export const createSocketHandlers = (
     });
   };
 
-  // 다른 클라이언트 입장ㄱ
+  // 다른 클라이언트 입장
   // data: {nickName, {0, 0, 0}}
   const handleNewClientPosition = data => {
     console.log('new client pos', data);
@@ -126,8 +127,23 @@ export const createSocketHandlers = (
     const options = ['무응답', 'O', 'X', '4'];
     const correct = ['오답', '정답'];
     console.log('타이머 종료', data);
+
+    // spotlight를 켤 영역 찾기
     setSpotlight(data.correctAnswer);
-    console.log(data.correctAnswer);
+
+    // 현재 1, 2, 3위 계산
+    const topThree = data.currRank.slice(0, 3).map(rank => ({
+      nickName: rank.nickName,
+      totalScore: rank.totalScore,
+    }));
+
+    // 인원수가 1명이나 2명일 경우 예외 처리
+    while (topThree.length < 3) {
+      topThree.push({ nickName: '', totalScore: 0 });
+    }
+
+    setRank(topThree);
+
     if (isTeacher) {
       /*
        * answer: 정답
@@ -150,7 +166,7 @@ export const createSocketHandlers = (
       const { answer, result, totalScore, correctAnswerList } = data;
       setQuizResult(correct[result]);
       setAnswer(options[answer]);
-      console.log(options[answer]);
+      // console.log(options[answer]);
       setQuizAnswerer(correctAnswerList);
     }
     setIsStarted(false);
