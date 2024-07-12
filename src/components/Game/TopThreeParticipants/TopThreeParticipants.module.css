@@ -1,0 +1,87 @@
+.rankingContainer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 300px;
+  padding: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  transition:
+    transform 0.5s ease,
+    opacity 0.5s ease;
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.rankingContainer.exiting {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+.rankCard {
+  width: 180px;
+  padding: 20px;
+  margin: 0 10px;
+  border-radius: 15px;
+  text-align: center;
+  transition:
+    transform 0.5s ease,
+    opacity 0.5s ease;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.rankingContainer.hidden {
+  display: none;
+}
+
+.rankingContainer:not(.exiting) .rankCard {
+  animation: slideDown 0.5s ease-out forwards;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.rank1 {
+  height: 250px;
+  background: linear-gradient(45deg, #ffd700, #ffa500);
+  z-index: 3;
+}
+
+.rank2 {
+  height: 220px;
+  background: linear-gradient(45deg, #c0c0c0, #a9a9a9);
+  z-index: 2;
+}
+
+.rank3 {
+  height: 190px;
+  background: linear-gradient(45deg, #cd7f32, #b8860b);
+  z-index: 1;
+}
+
+.medal {
+  font-size: 48px;
+  margin-bottom: 10px;
+}
+
+.nickname {
+  font-size: 24px;
+  color: white;
+  margin: 10px 0;
+}
+
+.score {
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+}

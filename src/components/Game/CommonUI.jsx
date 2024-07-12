@@ -5,6 +5,7 @@ import ChatComponent from '../common/ChatComponent/ChatComponent';
 import ParticipantList from './ParticipantList/ParticipantList';
 import Timer from './Timer/Timer';
 import QuizProgress from './QuizProgress/QuizProgress';
+import TopThreeParticipants from './TopThreeParticipants/TopThreeParticipants';
 
 const CommonUI = ({
   quizResult,
@@ -33,6 +34,9 @@ const CommonUI = ({
           setIsChatFocused={setIsChatFocused}
           isTeacher={isTeacher}
         />
+      )}
+      {quizResult && (
+        <TopThreeParticipants quizResult={quizResult} isStarted={isStarted} />
       )}
       <QuizProgress currentQuiz={quizIndex} totalQuizzes={quizCnt} />
       {isQuizEnded && <QuizResultText quizResult="퀴즈 종료" />}
