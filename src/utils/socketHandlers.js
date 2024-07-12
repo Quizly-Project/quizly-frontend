@@ -156,7 +156,7 @@ export const createSocketHandlers = (
        * totalScore:내 점수 */
 
       const { answer, result, totalScore, correctAnswerList } = data;
-      setQuizResult(correct[result]);
+      setQuizResult(data);
       setAnswer(options[answer]);
       // console.log(options[answer]);
       setQuizAnswerer(correctAnswerList);

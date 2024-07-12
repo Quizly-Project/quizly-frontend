@@ -14,9 +14,7 @@ const Timer = ({ timer }) => {
   const isWarning = percent <= 60 && percent > 30;
 
   return (
-    <div
-      className={`${styles.timerContainer} ${isCritical ? styles.shake : ''} ${isDone ? styles.done : ''}`}
-    >
+    <div className={`${styles.timerContainer} ${isDone ? styles.done : ''}`}>
       <div
         className={`${styles.timerGauge} ${isCritical ? styles.critical : ''} ${isWarning ? styles.warning : ''}`}
         style={{

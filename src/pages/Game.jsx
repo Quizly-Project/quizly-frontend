@@ -19,7 +19,7 @@ import Wall from '../components/3d/Environment/Wall.jsx';
 import '../styles/game.css';
 import ExplosionConfetti from '../components/3d/Environment/ExplosionConfetti.jsx';
 import Stars from '../components/3d/Environment/Stars.jsx';
-import RankDisplay from '../components/3d/Mesh/RankDisplay.jsx';
+// import RankDisplay from '../components/3d/Mesh/RankDisplay.jsx';
 
 export default function Game({
   isStarted,
