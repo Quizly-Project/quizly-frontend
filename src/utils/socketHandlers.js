@@ -158,7 +158,7 @@ export const createSocketHandlers = (
 
   const handleQuizEnd = data => {
     console.log('퀴즈 종료', data);
-    setQuizResult(data);
+    // setQuizResult(data);
     setIsQuizEnded(true);
   };
 

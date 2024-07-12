@@ -2,13 +2,8 @@ import React from 'react';
 import styles from './StudentResult.module.css';
 
 const StudentResults = ({ quizResult }) => {
-  const { answers, correctAnswer } = quizResult;
+  const { answers, correctAnswer, currRank } = quizResult;
   const option = ['무응답', '⭕️', '❌'];
-
-  // 학생들의 점수를 기준으로 정렬
-  const sortedStudents = Object.entries(answers).sort(
-    ([, a], [, b]) => b.totalScore - a.totalScore
-  );
 
   const getRankSymbol = index => {
     switch (index) {
@@ -30,19 +25,26 @@ const StudentResults = ({ quizResult }) => {
 
       <h4 className={styles.studentResultsHeader}>학생별 결과</h4>
       <ul className={styles.studentList}>
-        {sortedStudents.map(([studentName, data], index) => (
-          <li key={studentName} className={styles.studentItem}>
-            <span className={styles.studentRank}>
-              {getRankSymbol(index)}
-              {index + 1}
-            </span>
-            <span className={styles.studentName}>{studentName}</span>
-            <span className={styles.studentAnswer}>
-              {data.result === '0' ? '⭕️' : '❌'}
-            </span>
-            <span className={styles.studentScore}>{data.totalScore}</span>
-          </li>
-        ))}
+        {currRank.map((student, index) => {
+          const studentData = answers[student.nickName];
+          return (
+            <li key={student.nickName} className={styles.studentItem}>
+              <span className={styles.studentRank}>
+                {getRankSymbol(index)}
+                {index + 1}
+              </span>
+              <span className={styles.studentName}>{student.nickName}</span>
+              <span className={styles.studentAnswers}>
+                {studentData.result.map((result, idx) => (
+                  <span key={idx} className={styles.answerIcon}>
+                    {result === '0' ? '⭕' : '❌'}
+                  </span>
+                ))}
+              </span>
+              <span className={styles.studentScore}>{student.totalScore}</span>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

@@ -1,10 +1,12 @@
 .teacherDashboard {
   position: fixed;
-  top: 0;
-  right: -300px;
+  top: 50%;
+  transform: translateY(-50%);
+  right: -340px;
   width: 300px;
-  height: 100vh;
+  height: 70vh;
   background-color: #dedfeb;
+  border-radius: 10px 0 0 10px;
   opacity: 0.9;
   padding: 20px;
   overflow-y: auto;
@@ -23,14 +25,14 @@
   top: 50%;
   right: 0;
   transform: translateY(-50%);
-  width: 40px;
-  height: 80px;
+  width: 30px;
+  height: 150px;
   background-color: #464c91;
   color: white;
   border: none;
   font-size: 20px;
   cursor: pointer;
-  border-radius: 5px 0 0 5px;
+  border-radius: 10px 0 0 10px;
   transition:
     right 0.3s ease-in-out,
     background-color 0.3s;
@@ -39,7 +41,7 @@
 }
 
 .teacherDashboard.open + .toggleButton {
-  right: 300px;
+  right: 340px;
 }
 
 .toggleButton:hover {
