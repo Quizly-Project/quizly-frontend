@@ -64,6 +64,13 @@ const GameContainer = () => {
   /* 퀴즈 정답자 */
   const [quizAnswerer, setQuizAnswerer] = useState('');
 
+  /* 현재 1, 2, 3등과 점수 */
+  const [rank, setRank] = useState([
+    { nickName: '', totalScore: 0 },
+    { nickName: '', totalScore: 0 },
+    { nickName: '', totalScore: 0 },
+  ]);
+
   /* 모델 파일 */
   const [model, setModel] = useState('');
   const [texture, setTexture] = useState('');
@@ -118,7 +125,8 @@ const GameContainer = () => {
         setModel,
         setTexture,
         setClientModels,
-        setSpotlight
+        setSpotlight,
+        setRank
       ),
     [nickName]
   );
@@ -290,6 +298,7 @@ const GameContainer = () => {
             updateClientCoords={updateClientCoords}
             clientModels={clientModels}
             spotlight={spotlight}
+            rank={rank}
           />
         </Canvas>
       </KeyboardControls>

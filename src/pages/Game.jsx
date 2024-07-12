@@ -17,6 +17,9 @@ import Wall from '../components/3d/Environment/Wall.jsx';
 
 // style
 import '../styles/game.css';
+import ExplosionConfetti from '../components/3d/Environment/ExplosionConfetti.jsx';
+import Stars from '../components/3d/Environment/Stars.jsx';
+import RankDisplay from '../components/3d/Mesh/RankDisplay.jsx';
 
 export default function Game({
   isStarted,
@@ -35,11 +38,18 @@ export default function Game({
   updateClientCoords,
   clientModels,
   spotlight,
+  rank,
 }) {
   const { camera } = useThree();
   const cameraControls = useRef();
   const orbitControls = useRef();
+  const starRef = useRef();
   const [initialTeacherViewSet, setInitialTeacherViewSet] = useState(false);
+
+  // test rank
+  useEffect(() => {
+    console.log(rank);
+  }, [rank]);
 
   const setTeacherView = useCallback(() => {
     if (orbitControls.current) {
@@ -114,7 +124,7 @@ export default function Game({
 
       {/* environment */}
       <Sky />
-      <Lights />
+      <Lights intensity={1.5} ambientIntensity={0.5} />
 
       {/* O spotlight */}
       {!isStarted && quizResult && spotlight === '1' && (
@@ -124,8 +134,17 @@ export default function Game({
       {!isStarted && quizResult && spotlight === '2' && (
         <SpotLights position={[60, 50, 0]} targetPosition={[60, 8.7, 0]} />
       )}
+      {/* <ExplosionConfetti
+        position-x={60}
+        rate={2}
+        fallingHeight={20}
+        amount={50}
+        isExploding
+      /> */}
+      <Stars ref={starRef} scale={10} />
+      {/* <RankDisplay rank={rank} /> */}
 
-      <Physics debug>
+      <Physics>
         {/* <Physics> */}
         {/* fixed elements */}
         <Island />
