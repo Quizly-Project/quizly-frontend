@@ -21,7 +21,7 @@ const TeacherUI = ({
       <div
         className={`${styles.teacherDashboard} ${isDashboardOpen ? styles.open : ''}`}
       >
-        <h2 className={styles.dashboardHeader}>교사 대시보드</h2>
+        <h2 className={styles.dashboardHeader}>대시보드</h2>
         {quizResult && <StudentResults quizResult={quizResult} />}
       </div>
       <button
