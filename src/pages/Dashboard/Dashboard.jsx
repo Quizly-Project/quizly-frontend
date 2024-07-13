@@ -70,6 +70,10 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+    if (isConnected) disconnectSocket();
+  }, []);
+
+  useEffect(() => {
     if (!isConnected || !quizId) return;
     socket.emit('createRoom', { quizGroup: quizId });
     socket.on('roomCode', handleRoomCode);
