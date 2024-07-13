@@ -9,6 +9,8 @@ const TeacherUI = ({
   isQuizEnded,
   quizResult,
   participants,
+  quiz,
+  quizCnt,
 }) => {
   const [isDashboardOpen, setIsDashboardOpen] = useState(false);
 
@@ -22,7 +24,13 @@ const TeacherUI = ({
         className={`${styles.teacherDashboard} ${isDashboardOpen ? styles.open : ''}`}
       >
         <h2 className={styles.dashboardHeader}>대시보드</h2>
-        {quizResult && <StudentResults quizResult={quizResult} />}
+        {quizResult && (
+          <StudentResults
+            quizResult={quizResult}
+            quiz={quiz}
+            quizCnt={quizCnt}
+          />
+        )}
       </div>
       <button
         className={`${styles.toggleButton} ${isDashboardOpen ? styles.open : ''}`}

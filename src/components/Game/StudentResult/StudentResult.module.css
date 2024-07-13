@@ -13,7 +13,7 @@
 }
 
 .studentRank {
-  width: 50px;
+  width: 40px;
   text-align: center;
   font-weight: bold;
   font-size: 0.9em;
@@ -28,22 +28,20 @@
   display: flex;
   gap: 5px;
   margin-right: 10px;
-}
-
-.answerIcon {
-  font-size: 0.9em;
+  font-weight: bold;
 }
 
 .studentScore {
   width: 50px;
   text-align: right;
+  margin-right: 10px;
   font-weight: bold;
 }
 
 /* 상위 3등에 대한 스타일 */
 .studentItem:nth-child(-n + 3) .studentRank {
   color: black;
-  font-size: 1.1em;
+  font-size: 1.2em;
 }
 
 .studentItem:nth-child(1) {

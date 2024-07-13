@@ -36,7 +36,11 @@ const CommonUI = ({
         />
       )}
       {quizResult && (
-        <TopThreeParticipants quizResult={quizResult} isStarted={isStarted} />
+        <TopThreeParticipants
+          quizResult={quizResult}
+          isStarted={isStarted}
+          participants={participants}
+        />
       )}
       <QuizProgress currentQuiz={quizIndex} totalQuizzes={quizCnt} />
       {isQuizEnded && <QuizResultText quizResult="퀴즈 종료" />}

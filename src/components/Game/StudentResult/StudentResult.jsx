@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from './StudentResult.module.css';
 
-const StudentResults = ({ quizResult }) => {
+const StudentResults = ({ quizResult, quiz, quizCnt }) => {
   const { answers, correctAnswer, currRank } = quizResult;
   const option = ['무응답', '⭕️', '❌'];
-
+  console.log('quiz', quiz);
   const getRankSymbol = index => {
     switch (index) {
       case 0:
@@ -18,9 +18,19 @@ const StudentResults = ({ quizResult }) => {
     }
   };
 
+  Object.keys(answers).forEach(key => {
+    const studentData = answers[key];
+    studentData.correctCnt = 0;
+    studentData.result.forEach((result, idx) => {
+      if (result === '1') {
+        studentData.correctCnt += 1;
+      }
+    });
+  });
+
   return (
     <div className={styles.resultsContainer}>
-      <h3 className={styles.resultsHeader}>퀴즈 결과</h3>
+      <h3 className={styles.resultsHeader}>문제: {quiz.question}</h3>
       <p>정답: {option[correctAnswer]}</p>
 
       <h4 className={styles.studentResultsHeader}>학생별 결과</h4>
@@ -35,11 +45,7 @@ const StudentResults = ({ quizResult }) => {
               </span>
               <span className={styles.studentName}>{student.nickName}</span>
               <span className={styles.studentAnswers}>
-                {studentData.result.map((result, idx) => (
-                  <span key={idx} className={styles.answerIcon}>
-                    {result * 1 ? '⭕' : '❌'}
-                  </span>
-                ))}
+                {studentData.correctCnt}/{quizCnt}
               </span>
               <span className={styles.studentScore}>{student.totalScore}</span>
             </li>

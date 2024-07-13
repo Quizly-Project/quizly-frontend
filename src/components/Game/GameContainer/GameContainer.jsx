@@ -264,7 +264,7 @@ const GameContainer = () => {
       initSocket();
     }
   }, [initSocket, isConnected]);
-
+  console.log(clientModels);
   return (
     <div className={styles.container}>
       <KeyboardControls
@@ -327,10 +327,13 @@ const GameContainer = () => {
           nickName={nickName}
           setIsChatFocused={setIsChatFocused}
           code={code}
-          participants={Object.keys(clientCoords).map(nickName => ({
-            nickName,
-            isTeacher: nickName === 'teacher', // 예시: 선생님의 닉네임이 'teacher'라고 가정
-          }))}
+          participants={Object.keys(clientCoords).map(nickName => {
+            const { modelMapping, texture } = clientModels[nickName] || {};
+            return {
+              nickName,
+              icon: `bg-${texture?.split('_')[1]}`,
+            };
+          })}
           onSelectStudent={handleSelectStudent}
           selectedStudent={selectedStudent}
         />
