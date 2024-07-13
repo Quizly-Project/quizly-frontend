@@ -162,6 +162,7 @@ export default function Game({
             socket={socket}
             isChatFocused={isChatFocused}
             updateClientCoords={updateClientCoords}
+            rank={rank}
           />
         )}
 
@@ -179,6 +180,7 @@ export default function Game({
                   nickname={key}
                   pos={clientCoords[key]}
                   scale={2}
+                  rank={rank}
                 />
               ) : null;
             }

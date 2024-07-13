@@ -11,6 +11,7 @@ const CharacterController = ({
   socket,
   isChatFocused,
   updateClientCoords,
+  rank,
 }) => {
   const rigidbody = useRef(); // 움직임 관리
   const character = useRef(); // 각도 회전 관리
@@ -36,6 +37,7 @@ const CharacterController = ({
         nickname={nickname}
         scale={2}
         actionType="Idle_A"
+        rank={rank}
       />
     );
   }, [path, matName, nickname]);
@@ -146,6 +148,7 @@ const CharacterController = ({
               nickname={nickname}
               scale={2}
               actionType={action}
+              rank={rank}
             />
           )}
         </group>

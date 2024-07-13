@@ -130,9 +130,9 @@ export const createSocketHandlers = (
     }));
 
     // 인원수가 1명이나 2명일 경우 예외 처리
-    while (topThree.length < 3) {
-      topThree.push({ nickName: '', totalScore: 0 });
-    }
+    // while (topThree.length < 3) {
+    //   topThree.push({ nickName: '', totalScore: 0 });
+    // }
 
     setRank(topThree);
 

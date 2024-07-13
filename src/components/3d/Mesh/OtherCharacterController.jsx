@@ -4,7 +4,7 @@ import { useGLTF } from '@react-three/drei';
 import { RigidBody, CapsuleCollider } from '@react-three/rapier';
 import Character from './Character';
 
-const OtherCharacterController = ({ path, matName, nickname, pos }) => {
+const OtherCharacterController = ({ path, matName, nickname, pos, rank }) => {
   // console.log('position', pos);
   const rigidbody = useRef();
   const character = useRef();
@@ -22,6 +22,7 @@ const OtherCharacterController = ({ path, matName, nickname, pos }) => {
         nickname={nickname}
         scale={2}
         actionType="Idle_A"
+        rank={rank}
       />
     );
   }, [path, matName, nickname]);
