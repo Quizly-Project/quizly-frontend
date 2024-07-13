@@ -141,10 +141,10 @@ export default function Game({
         amount={50}
         isExploding
       /> */}
-      <Stars ref={starRef} scale={10} />
+      {/* <Stars ref={starRef} scale={10} /> */}
 
       <Physics debug>
-        {/* <Physics> */}
+        {/* <Physics>gg */}
         {/* fixed elements */}
         <Island />
         {/* <IslandBaked rotation-y={Math.PI} /> */}

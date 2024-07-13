@@ -35,7 +35,7 @@ const Character = React.memo(
     }, [actionType]);
 
     return (
-      <group ref={group} dispose={null}>
+      <group ref={group} dispose={null} scale={2}>
         <group name="Scene">
           <group name="Rig" castShadow>
             <skinnedMesh
