@@ -21,7 +21,7 @@ const SignUp = () => {
     try {
       const success = await signup(data);
       if (success) {
-        navigate('/dahsboard');
+        navigate('/dashboard');
       } else {
         setError('username', {
           type: 'manual',

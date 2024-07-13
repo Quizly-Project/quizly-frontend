@@ -67,7 +67,7 @@ const CharacterController = ({
     socket.emit('iMove', { nickName: nickname, position: myPos }); // 보내줄 데이터 {nickName, {x, y, z}}
   }, [myPos]);
 
-  const MOVEMENT_SPEED = 50;
+  const MOVEMENT_SPEED = 70;
   const JUMP_FORCE = 1.5;
   const MAX_LINVEL = 5;
 

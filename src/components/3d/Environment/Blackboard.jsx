@@ -27,7 +27,7 @@ export default function Blackboard(props) {
       if (index > fullText.length) {
         clearInterval(interval);
       }
-    }, 100); // 시간 간격
+    }, 70); // 시간 간격
     return () => clearInterval(interval);
   }, [fullText]);
 
@@ -56,14 +56,14 @@ export default function Blackboard(props) {
 
   return (
     <group {...props} dispose={null}>
-      {/* <mesh
+      <mesh
         name="Blackboard_Q"
         castShadow
         receiveShadow
         geometry={nodes.Blackboard_Q.geometry}
         material={materials.phong1SG}
         scale={250}
-      /> */}
+      />
       {/* Text */}
       {lines &&
         lines.map((line, index) => (
