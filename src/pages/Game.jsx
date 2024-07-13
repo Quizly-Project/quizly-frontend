@@ -9,6 +9,9 @@ import Lights from '../components/3d/Environment/Lights.jsx';
 import SpotLights from '../components/3d/Environment/SpotLights.jsx';
 import Island from '../components/3d/Environment/Island.jsx';
 import Blackboard from '../components/3d/Environment/Blackboard.jsx';
+import ExplosionConfetti from '../components/3d/Environment/ExplosionConfetti.jsx';
+import Stars from '../components/3d/Environment/Stars.jsx';
+import IslandBaked from '../components/3d/Environment/IslandBaked.jsx';
 
 // Character
 import CharacterController from '../components/3d/Mesh/CharacterController.jsx';
@@ -17,9 +20,6 @@ import Wall from '../components/3d/Environment/Wall.jsx';
 
 // style
 import '../styles/game.css';
-import ExplosionConfetti from '../components/3d/Environment/ExplosionConfetti.jsx';
-import Stars from '../components/3d/Environment/Stars.jsx';
-// import RankDisplay from '../components/3d/Mesh/RankDisplay.jsx';
 
 export default function Game({
   isStarted,
@@ -108,7 +108,7 @@ export default function Game({
   return (
     <>
       {/* debugging tools */}
-      {/* <Perf /> */}
+      <Perf />
 
       {/* camera controls */}
       {isTeacher ? (
@@ -142,12 +142,12 @@ export default function Game({
         isExploding
       /> */}
       <Stars ref={starRef} scale={10} />
-      {/* <RankDisplay rank={rank} /> */}
 
-      <Physics>
+      <Physics debug>
         {/* <Physics> */}
         {/* fixed elements */}
         <Island />
+        {/* <IslandBaked rotation-y={Math.PI} /> */}
         <Wall />
         {isConnected && quiz && (
           <Blackboard position-y={70} position-z={-200} text={quiz} />

@@ -56,22 +56,22 @@ export default function Blackboard(props) {
 
   return (
     <group {...props} dispose={null}>
-      <mesh
+      {/* <mesh
         name="Blackboard_Q"
         castShadow
         receiveShadow
         geometry={nodes.Blackboard_Q.geometry}
         material={materials.phong1SG}
         scale={250}
-      />
+      /> */}
       {/* Text */}
       {lines &&
         lines.map((line, index) => (
           <Text3D
             key={index}
-            scale={10}
+            scale={5}
             font="/fonts/UhBee_Regular.json"
-            position={[-100, 30 - index * 30, 10]} // 텍스트의 위치를 조정하여 줄바꿈
+            position={[-50, 0 - index * 15, 110]} // 텍스트의 위치를 조정하여 줄바꿈
           >
             {line}
             <meshStandardMaterial attach="material" {...chalkMaterial} />
