@@ -53,6 +53,8 @@ const GameUserInterface = ({
             participants={participants}
             onSelectStudent={onSelectStudent}
             selectedStudent={selectedStudent}
+            quiz={quiz}
+            quizCnt={quizCnt}
           />
         ) : (
           <StudentUI quizResult={quizResult} />

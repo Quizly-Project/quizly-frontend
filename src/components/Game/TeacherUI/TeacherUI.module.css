@@ -99,6 +99,6 @@
 .startButtonContainer {
   position: fixed;
   bottom: 30px;
-  left: 50%;
+  right: 30px;
   transform: translateX(-50%);
 }
