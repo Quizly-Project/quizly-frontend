@@ -26,6 +26,30 @@
   display: none;
 }
 
+@keyframes dropIn {
+  0% {
+    transform: translateY(-100vh) rotateY(-5deg) rotateX(5deg);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(20px) rotateY(-5deg) rotateX(5deg);
+  }
+  100% {
+    transform: translateY(0) rotateY(-5deg) rotateX(5deg);
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotateY(-5deg) rotateX(5deg);
+  }
+  50% {
+    transform: translateY(-10px) rotateY(-5deg) rotateX(5deg);
+  }
+}
+
 .rankCard {
   width: 180px;
   padding: 20px;
@@ -35,47 +59,40 @@
   transition: all 0.5s ease;
   transform-style: preserve-3d;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-.rankingContainer:not(.exiting) .rankCard {
-  animation: slideDown 0.5s ease-out forwards;
-}
-
-@keyframes slideDown {
-  from {
-    transform: translateY(-50px) rotateY(-5deg) rotateX(5deg);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0) rotateY(-5deg) rotateX(5deg);
-    opacity: 1;
-  }
-}
-
-.rankCard:hover {
-  transform: rotateY(0deg) rotateX(0deg) scale(1.05);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  animation:
+    dropIn 1s ease-out forwards,
+    float 3s ease-in-out infinite 1s;
 }
 
 .rank1 {
   height: 310px;
   background: linear-gradient(45deg, #ffd700, #ffa500);
   z-index: 3;
-  transform: translateZ(40px) rotateY(-5deg) rotateX(5deg);
+  transform: translateZ(40px);
+  animation-delay: 0s, 1s;
 }
 
 .rank2 {
   height: 280px;
   background: linear-gradient(45deg, #c0c0c0, #a9a9a9);
   z-index: 2;
-  transform: translateZ(20px) rotateY(-5deg) rotateX(5deg);
+  transform: translateZ(20px);
+  animation-delay: 0.2s, 1.2s;
 }
 
 .rank3 {
   height: 250px;
   background: linear-gradient(45deg, #cd7f32, #b8860b);
   z-index: 1;
-  transform: translateZ(0) rotateY(-5deg) rotateX(5deg);
+  transform: translateZ(0);
+  animation-delay: 0.4s, 1.4s;
+}
+
+.rankCard:hover {
+  animation-play-state: paused;
+  transform: rotateY(0deg) rotateX(0deg) scale(1.05) translateY(-10px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
 }
 
 .medal {
@@ -122,6 +139,33 @@
 .rankCard:hover .bg-Jellyfish,
 .rankCard:hover .bg-Prawn {
   transform: translateZ(40px) scale(1.1);
+}
+
+@keyframes dropOut {
+  0% {
+    transform: translateY(0) rotateY(-5deg) rotateX(5deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotateY(-5deg) rotateX(5deg);
+    opacity: 0;
+  }
+}
+
+.rankingContainer.exiting .rankCard {
+  animation: dropOut 0.8s ease-in forwards;
+}
+
+.rankingContainer.exiting .rank1 {
+  animation-delay: 0s;
+}
+
+.rankingContainer.exiting .rank2 {
+  animation-delay: 0.1s;
+}
+
+.rankingContainer.exiting .rank3 {
+  animation-delay: 0.2s;
 }
 
 .bg-Seagull {
