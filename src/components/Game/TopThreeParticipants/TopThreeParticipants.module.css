@@ -2,12 +2,14 @@
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  height: 300px;
+  height: 400px;
   padding: 20px;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
+  perspective: 1000px;
+  transform-style: preserve-3d;
   transition:
     transform 0.5s ease,
     opacity 0.5s ease;
@@ -20,20 +22,19 @@
   opacity: 0;
 }
 
+.rankingContainer.hidden {
+  display: none;
+}
+
 .rankCard {
   width: 180px;
   padding: 20px;
   margin: 0 10px;
   border-radius: 15px;
   text-align: center;
-  transition:
-    transform 0.5s ease,
-    opacity 0.5s ease;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-.rankingContainer.hidden {
-  display: none;
+  transition: all 0.5s ease;
+  transform-style: preserve-3d;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
 .rankingContainer:not(.exiting) .rankCard {
@@ -42,46 +43,131 @@
 
 @keyframes slideDown {
   from {
-    transform: translateY(-50px);
+    transform: translateY(-50px) rotateY(-5deg) rotateX(5deg);
     opacity: 0;
   }
   to {
-    transform: translateY(0);
+    transform: translateY(0) rotateY(-5deg) rotateX(5deg);
     opacity: 1;
   }
 }
 
+.rankCard:hover {
+  transform: rotateY(0deg) rotateX(0deg) scale(1.05);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
 .rank1 {
-  height: 250px;
+  height: 310px;
   background: linear-gradient(45deg, #ffd700, #ffa500);
   z-index: 3;
+  transform: translateZ(40px) rotateY(-5deg) rotateX(5deg);
 }
 
 .rank2 {
-  height: 220px;
+  height: 280px;
   background: linear-gradient(45deg, #c0c0c0, #a9a9a9);
   z-index: 2;
+  transform: translateZ(20px) rotateY(-5deg) rotateX(5deg);
 }
 
 .rank3 {
-  height: 190px;
+  height: 250px;
   background: linear-gradient(45deg, #cd7f32, #b8860b);
   z-index: 1;
+  transform: translateZ(0) rotateY(-5deg) rotateX(5deg);
 }
 
 .medal {
   font-size: 48px;
   margin-bottom: 10px;
+  transform: translateZ(20px);
 }
 
 .nickname {
   font-size: 24px;
   color: white;
   margin: 10px 0;
+  transform: translateZ(10px);
 }
 
 .score {
   font-size: 18px;
   font-weight: bold;
   color: white;
+  transform: translateZ(5px);
+}
+
+.bg-Seagull,
+.bg-Sardine,
+.bg-Turtle,
+.bg-Tuna,
+.bg-Octopus,
+.bg-Salmon,
+.bg-Jellyfish,
+.bg-Prawn {
+  width: 180px;
+  height: 180px;
+  background-image: url('/src/assets/icon_sprites.png');
+  transform: translateZ(30px);
+  transition: transform 0.3s ease;
+}
+
+.rankCard:hover .bg-Seagull,
+.rankCard:hover .bg-Sardine,
+.rankCard:hover .bg-Turtle,
+.rankCard:hover .bg-Tuna,
+.rankCard:hover .bg-Octopus,
+.rankCard:hover .bg-Salmon,
+.rankCard:hover .bg-Jellyfish,
+.rankCard:hover .bg-Prawn {
+  transform: translateZ(40px) scale(1.1);
+}
+
+.bg-Seagull {
+  width: 180px;
+  height: 180px;
+  background: url('/src/assets/icon_sprites.png') -10px -10px;
+}
+
+.bg-Sardine {
+  width: 180px;
+  height: 180px;
+  background: url('/src/assets/icon_sprites.png') -210px -10px;
+}
+
+.bg-Turtle {
+  width: 180px;
+  height: 180px;
+  background: url('/src/assets/icon_sprites.png') -10px -210px;
+}
+
+.bg-Tuna {
+  width: 180px;
+  height: 180px;
+  background: url('/src/assets/icon_sprites.png') -210px -210px;
+}
+
+.bg-Octopus {
+  width: 180px;
+  height: 180px;
+  background: url('/src/assets/icon_sprites.png') -410px -10px;
+}
+
+.bg-Salmon {
+  width: 180px;
+  height: 180px;
+  background: url('/src/assets/icon_sprites.png') -410px -210px;
+}
+
+.bg-Jellyfish {
+  width: 180px;
+  height: 180px;
+  background: url('/src/assets/icon_sprites.png') -10px -410px;
+}
+
+.bg-Prawn {
+  width: 180px;
+  height: 180px;
+  background: url('/src/assets/icon_sprites.png') -210px -410px;
 }
