@@ -25,7 +25,7 @@ const OtherCharacterController = ({ path, matName, nickname, pos, rank }) => {
         rank={rank}
       />
     );
-  }, [path, matName, nickname]);
+  }, [path, matName, nickname, rank]);
 
   // 임계점 이상일 때만 렌더링한다.
   const detectMovement = (oldPos, newPos, threshold = 0.3) => {
