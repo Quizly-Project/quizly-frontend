@@ -28,21 +28,6 @@ const CharacterController = ({
   // Jump only once
   const [isJumped, setIsJumped] = useState(false);
 
-  // model loading을 한 번만 수행한다.
-  const model = useMemo(() => {
-    console.log(`Loading model for ${nickname} from ${path}`);
-    return (
-      <Character
-        path={path}
-        matName={matName}
-        nickname={nickname}
-        scale={2}
-        actionType="Idle_A"
-        rank={rank}
-      />
-    );
-  }, [path, matName, nickname]);
-
   // 첫 렌더링 시 스폰 위치
   useEffect(() => {
     const defaultPos = {
@@ -77,7 +62,7 @@ const CharacterController = ({
     setAction('Idle_A'); // default action
     if (isChatFocused) return;
 
-    console.log(isCorrectAnswerer);
+    // console.log(isCorrectAnswerer);
     // 정답자이면 멈추고 춤추기
     if (isCorrectAnswerer) {
       setAction('Fly');

@@ -268,7 +268,7 @@ const GameContainer = () => {
       initSocket();
     }
   }, [initSocket, isConnected]);
-  console.log(clientModels);
+  // console.log(clientModels);
   return (
     <div className={styles.container}>
       <KeyboardControls
@@ -306,6 +306,7 @@ const GameContainer = () => {
             spotlight={spotlight}
             rank={rank}
             isCorrectAnswerer={isCorrectAnswerer}
+            quizAnswerer={quizAnswerer}
           />
         </Canvas>
       </KeyboardControls>
