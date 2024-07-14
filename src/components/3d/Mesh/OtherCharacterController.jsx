@@ -4,7 +4,14 @@ import { useGLTF } from '@react-three/drei';
 import { RigidBody, CapsuleCollider } from '@react-three/rapier';
 import Character from './Character';
 
-const OtherCharacterController = ({ path, matName, nickname, pos, rank }) => {
+const OtherCharacterController = ({
+  path,
+  matName,
+  nickname,
+  pos,
+  rank,
+  isCorrectAnswerer,
+}) => {
   // console.log('position', pos);
   const rigidbody = useRef();
   const character = useRef();
@@ -12,20 +19,8 @@ const OtherCharacterController = ({ path, matName, nickname, pos, rank }) => {
   const [myPos, setMyPos] = useState({ x: pos.x, y: pos.y, z: pos.z });
   // console.log('MyPos', myPos);
 
-  // model loading을 한 번만 수행한다.
-  const model = useMemo(() => {
-    // console.log(`Loading model for ${nickname} from ${path}`);
-    return (
-      <Character
-        path={path}
-        matName={matName}
-        nickname={nickname}
-        scale={2}
-        actionType="Idle_A"
-        rank={rank}
-      />
-    );
-  }, [path, matName, nickname, rank]);
+  // Action
+  const [action, setAction] = useState('Idle_A');
 
   // 임계점 이상일 때만 렌더링한다.
   const detectMovement = (oldPos, newPos, threshold = 0.3) => {
@@ -46,6 +41,15 @@ const OtherCharacterController = ({ path, matName, nickname, pos, rank }) => {
     rigidbody.current.setTranslation(worldPos);
     setMyPos(worldPos);
   }, []);
+
+  // 정답자이면 춤추게
+  useEffect(() => {
+    if (isCorrectAnswerer) {
+      setAction('Fly');
+    } else {
+      setAction('Idle_A');
+    }
+  }, [isCorrectAnswerer]);
 
   // 이동한 위치로 클라이언트 모델 다시 렌더링
   useFrame(() => {
@@ -88,7 +92,18 @@ const OtherCharacterController = ({ path, matName, nickname, pos, rank }) => {
       enabledRotations={[false, false, false]}
     >
       <CapsuleCollider args={[0.5, 0.7]} position={[0, 1.25, 0]} />
-      <group ref={character}>{model}</group>
+      <group ref={character}>
+        {action && (
+          <Character
+            path={path}
+            matName={matName}
+            nickname={nickname}
+            scale={2}
+            actionType={action}
+            rank={rank}
+          />
+        )}
+      </group>
     </RigidBody>
   );
 };

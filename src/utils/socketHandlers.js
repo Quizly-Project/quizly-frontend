@@ -147,7 +147,10 @@ export const createSocketHandlers = (
        *    totalScore:0, // 총점
        * }
        */
+      const { correctAnswerList } = data;
       setQuizResult(data);
+      setQuizAnswerer(correctAnswerList);
+      // console.log(correctAnswerList);
     } else {
       /* answer: 정답
        * userAnwer: 유저 대답(0:무효, 1~4:선택한 답)
