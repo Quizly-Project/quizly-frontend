@@ -118,6 +118,7 @@ const GameContainer = () => {
         setIsQuizEnded,
         setParticipants,
         setQuizCnt,
+        quizCnt,
         setQuizIndex,
         isTeacher,
         setAnswer,
@@ -264,7 +265,7 @@ const GameContainer = () => {
       initSocket();
     }
   }, [initSocket, isConnected]);
-  console.log(clientModels);
+
   return (
     <div className={styles.container}>
       <KeyboardControls

@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import QuizResultText from './QuizResultText';
 import Question from './Question';
 import Text from '../common/Text/Text';
@@ -6,6 +7,8 @@ import ParticipantList from './ParticipantList/ParticipantList';
 import Timer from './Timer/Timer';
 import QuizProgress from './QuizProgress/QuizProgress';
 import TopThreeParticipants from './TopThreeParticipants/TopThreeParticipants';
+import QuizQuestionCompletion from './QuizQuestionCompletion';
+import { set } from 'react-hook-form';
 
 const CommonUI = ({
   quizResult,
@@ -25,6 +28,19 @@ const CommonUI = ({
   selectedStudent,
   isTeacher,
 }) => {
+  const [showCompletion, setShowCompletion] = useState(false);
+  const [showTopThree, setShowTopThree] = useState(false);
+
+  const handleOnComplete = () => {
+    console.log('handleOnComplete');
+    setShowCompletion(false);
+    setShowTopThree(true);
+  };
+
+  useEffect(() => {
+    if (!isStarted && quizResult) setShowCompletion(true);
+  }, [isStarted, quizResult]);
+
   return (
     <div className="common-ui">
       {isJoined && (
@@ -35,11 +51,19 @@ const CommonUI = ({
           isTeacher={isTeacher}
         />
       )}
-      {quizResult && (
+      {
+        <QuizQuestionCompletion
+          message={'정지!'}
+          onComplete={handleOnComplete}
+          show={showCompletion}
+        />
+      }
+      {showTopThree && (
         <TopThreeParticipants
           quizResult={quizResult}
           isStarted={isStarted}
           participants={participants}
+          setShowTopThree={setShowTopThree}
         />
       )}
       <QuizProgress currentQuiz={quizIndex} totalQuizzes={quizCnt} />
