@@ -18,7 +18,8 @@ export const createSocketHandlers = (
   setTexture,
   setClientModels,
   setSpotlight,
-  setRank
+  setRank,
+  setIsCorrectAnswerer
 ) => {
   /* ------- Socket events ------- */
   // 기존 접속중인 클라이언트의 위치 저장
@@ -104,6 +105,7 @@ export const createSocketHandlers = (
     console.log('퀴즈 시작', data);
     setQuiz(quiz);
     setIsStarted(true);
+    setIsCorrectAnswerer(false);
     setQuizIndex(currentQuizIndex + 1);
     if (!isTeacher) setQuizResult(null);
     setAnswer('');
@@ -160,6 +162,14 @@ export const createSocketHandlers = (
       setAnswer(options[answer]);
       // console.log(options[answer]);
       setQuizAnswerer(correctAnswerList);
+
+      // console.log(correctAnswerList);
+      // 정답 맞혔는지 여부
+      if (correctAnswerList.includes(nickname)) {
+        setIsCorrectAnswerer(true);
+      } else {
+        setIsCorrectAnswerer(false);
+      }
     }
     setIsStarted(false);
   };

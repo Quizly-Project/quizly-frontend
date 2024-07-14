@@ -39,17 +39,13 @@ export default function Game({
   clientModels,
   spotlight,
   rank,
+  isCorrectAnswerer,
 }) {
   const { camera } = useThree();
   const cameraControls = useRef();
   const orbitControls = useRef();
-  const starRef = useRef();
+  // const starRef = useRef();
   const [initialTeacherViewSet, setInitialTeacherViewSet] = useState(false);
-
-  // test rank
-  useEffect(() => {
-    console.log(rank);
-  }, [rank]);
 
   const setTeacherView = useCallback(() => {
     if (orbitControls.current) {
@@ -163,6 +159,7 @@ export default function Game({
             isChatFocused={isChatFocused}
             updateClientCoords={updateClientCoords}
             rank={rank}
+            isCorrectAnswerer={isCorrectAnswerer}
           />
         )}
 

@@ -7,6 +7,7 @@ const Character = React.memo(
 
     const { nodes, materials, animations } = useGLTF(`/Character/${path}`);
     const { actions } = useAnimations(animations, group);
+    // console.log(actions);
 
     const getRankMedal = useMemo(() => {
       console.log('getRankMedal', nickname, rank);
@@ -35,7 +36,7 @@ const Character = React.memo(
     }, [actionType]);
 
     return (
-      <group ref={group} dispose={null} scale={2}>
+      <group ref={group} dispose={null} scale={2.5}>
         <group name="Scene">
           <group name="Rig" castShadow>
             <skinnedMesh
