@@ -66,23 +66,23 @@
 }
 
 .rank1 {
-  height: 310px;
-  background: linear-gradient(45deg, #ffd700, #ffa500);
+  height: 330px;
+  background: linear-gradient(45deg, #ffa500, #ffd700);
   z-index: 3;
   transform: translateZ(40px);
   animation-delay: 0s, 1s;
 }
 
 .rank2 {
-  height: 280px;
-  background: linear-gradient(45deg, #c0c0c0, #a9a9a9);
+  height: 300px;
+  background: linear-gradient(45deg, #a9a9a9, #c0c0c0);
   z-index: 2;
   transform: translateZ(20px);
   animation-delay: 0.2s, 1.2s;
 }
 
 .rank3 {
-  height: 250px;
+  height: 270px;
   background: linear-gradient(45deg, #cd7f32, #b8860b);
   z-index: 1;
   transform: translateZ(0);
@@ -109,7 +109,7 @@
 }
 
 .score {
-  font-size: 18px;
+  font-size: 22px;
   font-weight: bold;
   color: white;
   transform: translateZ(5px);
