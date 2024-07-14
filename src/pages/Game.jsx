@@ -108,7 +108,7 @@ export default function Game({
   return (
     <>
       {/* debugging tools */}
-      <Perf />
+      {/* <Perf /> */}
 
       {/* camera controls */}
       {isTeacher ? (
@@ -143,7 +143,7 @@ export default function Game({
       /> */}
       {/* <Stars ref={starRef} scale={10} /> */}
 
-      <Physics debug>
+      <Physics>
         {/* <Physics>gg */}
         {/* fixed elements */}
         <Island />

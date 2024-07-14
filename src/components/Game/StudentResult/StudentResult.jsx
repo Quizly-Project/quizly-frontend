@@ -14,7 +14,7 @@ const StudentResults = ({ quizResult, quiz, quizCnt }) => {
       case 2:
         return '🥉 ';
       default:
-        return '';
+        return index + 1;
     }
   };
 
@@ -39,10 +39,7 @@ const StudentResults = ({ quizResult, quiz, quizCnt }) => {
           const studentData = answers[student.nickName];
           return (
             <li key={student.nickName} className={styles.studentItem}>
-              <span className={styles.studentRank}>
-                {getRankSymbol(index)}
-                {index + 1}
-              </span>
+              <span className={styles.studentRank}>{getRankSymbol(index)}</span>
               <span className={styles.studentName}>{student.nickName}</span>
               <span className={styles.studentAnswers}>
                 {studentData.correctCnt}/{quizCnt}
