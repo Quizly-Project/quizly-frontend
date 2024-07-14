@@ -42,6 +42,9 @@ const TopThreeParticipants = ({
     >
       {rankOrder.map((order, index) => {
         const participant = sortedParticipants[order];
+
+        if (!participant) return null; // Check if participant is undefined
+
         const participantData = participants.find(
           p => p.nickName === participant.nickName
         );

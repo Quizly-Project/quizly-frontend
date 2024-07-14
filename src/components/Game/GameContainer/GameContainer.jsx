@@ -62,6 +62,9 @@ const GameContainer = () => {
   /* 퀴즈 정답자 */
   const [quizAnswerer, setQuizAnswerer] = useState('');
 
+  /* 정답을 맞혔는지 여부 */
+  const [isCorrectAnswerer, setIsCorrectAnswerer] = useState(false);
+
   /* 현재 1, 2, 3등과 점수 */
   const [rank, setRank] = useState([
     { nickName: '', totalScore: 0 },
@@ -127,7 +130,8 @@ const GameContainer = () => {
         setTexture,
         setClientModels,
         setSpotlight,
-        setRank
+        setRank,
+        setIsCorrectAnswerer
       ),
     [nickName]
   );
@@ -302,6 +306,8 @@ const GameContainer = () => {
             clientModels={clientModels}
             spotlight={spotlight}
             rank={rank}
+            isCorrectAnswerer={isCorrectAnswerer}
+            quizAnswerer={quizAnswerer}
           />
         </Canvas>
       </KeyboardControls>

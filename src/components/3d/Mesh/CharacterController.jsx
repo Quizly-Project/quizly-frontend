@@ -12,6 +12,7 @@ const CharacterController = ({
   isChatFocused,
   updateClientCoords,
   rank,
+  isCorrectAnswerer,
 }) => {
   const rigidbody = useRef(); // 움직임 관리
   const character = useRef(); // 각도 회전 관리
@@ -26,21 +27,6 @@ const CharacterController = ({
   const [action, setAction] = useState('Idle_A');
   // Jump only once
   const [isJumped, setIsJumped] = useState(false);
-
-  // model loading을 한 번만 수행한다.
-  const model = useMemo(() => {
-    console.log(`Loading model for ${nickname} from ${path}`);
-    return (
-      <Character
-        path={path}
-        matName={matName}
-        nickname={nickname}
-        scale={2}
-        actionType="Idle_A"
-        rank={rank}
-      />
-    );
-  }, [path, matName, nickname]);
 
   // 첫 렌더링 시 스폰 위치
   useEffect(() => {
@@ -67,7 +53,7 @@ const CharacterController = ({
     socket.emit('iMove', { nickName: nickname, position: myPos }); // 보내줄 데이터 {nickName, {x, y, z}}
   }, [myPos]);
 
-  const MOVEMENT_SPEED = 70;
+  const MOVEMENT_SPEED = 200;
   const JUMP_FORCE = 1.5;
   const MAX_LINVEL = 5;
 
@@ -75,6 +61,13 @@ const CharacterController = ({
   useFrame(() => {
     setAction('Idle_A'); // default action
     if (isChatFocused) return;
+
+    // console.log(isCorrectAnswerer);
+    // 정답자이면 멈추고 춤추기
+    if (isCorrectAnswerer) {
+      setAction('Fly');
+      return;
+    }
 
     const { forward, backward, leftward, rightward, jump } = getKeys();
 
@@ -139,7 +132,7 @@ const CharacterController = ({
         enabledRotations={[false, false, false]}
       >
         {/* collider 내 position: 모델으로부터의 상대적 위치 */}
-        <CapsuleCollider args={[0.5, 0.7]} position={[0, 1.25, 0]} />
+        <CapsuleCollider args={[0, 1.5]} position={[0, 1.55, 0]} />
         <group ref={character}>
           {action && (
             <Character

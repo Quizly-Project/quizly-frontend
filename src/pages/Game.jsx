@@ -39,17 +39,16 @@ export default function Game({
   clientModels,
   spotlight,
   rank,
+  // 클라이언트(나)의 정답 여부
+  isCorrectAnswerer,
+  // 클라이언트(다른)들의 정답 여부
+  quizAnswerer,
 }) {
   const { camera } = useThree();
   const cameraControls = useRef();
   const orbitControls = useRef();
-  const starRef = useRef();
+  // const starRef = useRef();
   const [initialTeacherViewSet, setInitialTeacherViewSet] = useState(false);
-
-  // test rank
-  useEffect(() => {
-    console.log(rank);
-  }, [rank]);
 
   const setTeacherView = useCallback(() => {
     if (orbitControls.current) {
@@ -163,6 +162,7 @@ export default function Game({
             isChatFocused={isChatFocused}
             updateClientCoords={updateClientCoords}
             rank={rank}
+            isCorrectAnswerer={isCorrectAnswerer}
           />
         )}
 
@@ -171,6 +171,12 @@ export default function Game({
           isJoined &&
           Object.keys(clientCoords).map(key => {
             if (key !== nickname) {
+              // 다른 클라이언트의 정답 여부
+              let isCorrect = false;
+              if (quizAnswerer.includes(key)) {
+                isCorrect = true;
+              }
+              // console.log(key, isCorrect);
               const { modelMapping, texture } = clientModels[key] || {};
               return modelMapping && texture ? (
                 <OtherCharacterController
@@ -181,6 +187,7 @@ export default function Game({
                   pos={clientCoords[key]}
                   scale={2}
                   rank={rank}
+                  isCorrectAnswerer={isCorrect}
                 />
               ) : null;
             }
