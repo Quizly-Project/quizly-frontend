@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import styles from './TopThreeParticipants.module.css';
 
-const TopThreeParticipants = ({ quizResult, isStarted, participants }) => {
+const TopThreeParticipants = ({
+  quizResult,
+  isStarted,
+  participants,
+  setShowTopThree,
+}) => {
   const { currRank } = quizResult;
   const [isVisible, setIsVisible] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
@@ -20,7 +25,10 @@ const TopThreeParticipants = ({ quizResult, isStarted, participants }) => {
     } else {
       if (isVisible) {
         setIsExiting(true);
-        const timer = setTimeout(() => setIsVisible(false), 500);
+        const timer = setTimeout(() => {
+          setIsVisible(false);
+          setShowTopThree(false);
+        }, 500);
         return () => clearTimeout(timer);
       }
     }

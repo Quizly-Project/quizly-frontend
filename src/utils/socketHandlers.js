@@ -10,6 +10,7 @@ export const createSocketHandlers = (
   setIsQuizEnded,
   setParticipants,
   setQuizCnt,
+  quizCnt,
   setQuizIndex,
   isTeacher,
   setAnswer,
@@ -110,6 +111,7 @@ export const createSocketHandlers = (
     if (!isTeacher) setQuizResult(null);
     setAnswer('');
     setQuizAnswerer('');
+    // if (currentQuizIndex >= quizCnt) setIsQuizEnded(true);
   };
 
   const handleTimerStart = duration => {
@@ -174,6 +176,7 @@ export const createSocketHandlers = (
         setIsCorrectAnswerer(false);
       }
     }
+
     setIsStarted(false);
   };
 
