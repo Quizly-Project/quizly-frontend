@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import QuizStartButton from '../QuizStartButton';
 import StudentResults from '../StudentResult/StudentResult';
 import styles from './TeacherUI.module.css';
@@ -13,11 +14,15 @@ const TeacherUI = ({
   quizCnt,
 }) => {
   const [isDashboardOpen, setIsDashboardOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleDashboard = () => {
     setIsDashboardOpen(!isDashboardOpen);
   };
 
+  const handleClick = () => {
+    navigate('/dashboard');
+  };
   return (
     <div className={styles.uiOverlay}>
       <div
@@ -38,14 +43,26 @@ const TeacherUI = ({
       >
         {isDashboardOpen ? '►' : '◄'}
       </button>
-      {!isStarted && !isQuizEnded && (
-        <div className={styles.startButtonContainer}>
-          <QuizStartButton
-            toggleQuizStart={handleClickQuizStart}
-            className={styles.quizStartButton}
-          />
-        </div>
-      )}
+      {!isStarted &&
+        (isQuizEnded ? (
+          <div className={styles.startButtonContainer}>
+            <QuizStartButton
+              toggleQuizStart={handleClick}
+              className={styles.quizStartButton}
+            >
+              종료
+            </QuizStartButton>
+          </div>
+        ) : (
+          <div className={styles.startButtonContainer}>
+            <QuizStartButton
+              toggleQuizStart={handleClickQuizStart}
+              className={styles.quizStartButton}
+            >
+              퀴즈 시작
+            </QuizStartButton>
+          </div>
+        ))}
     </div>
   );
 };
