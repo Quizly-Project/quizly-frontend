@@ -1,34 +1,45 @@
+/* Canvas와 비디오 컨테이너를 겹치게 배치하기 위한 스타일 */
+#canvas-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
 .video-container {
-    position: relative;
-    background: #3b3b3b;
-    aspect-ratio: 16/9;
-    border-radius: 6px;
-    overflow: hidden;
+  position: absolute;
+  top: 10px; /* 원하는 위치로 설정 */
+  right: 10px; /* 원하는 위치로 설정 */
+  max-width: 220px; /* 최대 너비 설정 */
+  background: #3b3b3b;
+  aspect-ratio: 16/9;
+  border-radius: 6px;
+  overflow: hidden;
+  z-index: 1; /* Canvas 위에 배치되도록 z-index 설정 */
 }
 
 .video-container video {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 .video-container .participant-data {
-    position: absolute;
-    top: 0;
-    left: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .participant-data p {
-    background: #f8f8f8;
-    margin: 0;
-    padding: 0 5px;
-    color: #777777;
-    font-weight: bold;
-    border-bottom-right-radius: 4px;
+  background: #f8f8f8;
+  margin: 0;
+  padding: 0 5px;
+  color: #777777;
+  font-weight: bold;
+  border-bottom-right-radius: 4px;
 }
 
 /* Media Queries */
-@media screen and (max-width: 480px) {
-    .video-container {
-        aspect-ratio: 9/16;
-    }
+@media screen and (max-width: 300px) {
+  .video-container {
+    aspect-ratio: 9/16;
+  }
 }
