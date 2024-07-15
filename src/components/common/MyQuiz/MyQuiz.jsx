@@ -16,7 +16,6 @@ const MyQuiz = () => {
   ];
 
   const handleQuizClick = quiz => {
-    console.log('퀴즈 클릭');
     setSelectQuiz(quiz);
   };
 
@@ -26,7 +25,7 @@ const MyQuiz = () => {
 
   const handleCreateRoom = () => {
     // 퀴즈 방 만들기
-    console.log('퀴즈 방 만들기');
+    // console.log('퀴즈 방 만들기');
   };
 
   return (

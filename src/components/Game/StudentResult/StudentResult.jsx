@@ -4,7 +4,6 @@ import styles from './StudentResult.module.css';
 const StudentResults = ({ quizResult, quiz, quizCnt }) => {
   const { answers, correctAnswer, currRank } = quizResult;
   const option = ['무응답', '⭕️', '❌'];
-  console.log('quiz', quiz);
   const getRankSymbol = index => {
     switch (index) {
       case 0:

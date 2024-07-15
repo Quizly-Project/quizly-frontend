@@ -108,7 +108,6 @@ export const createSocketHandlers = (
     setIsStarted(true);
     setIsCorrectAnswerer(false);
     setQuizIndex(currentQuizIndex + 1);
-    if (!isTeacher) setQuizResult(null);
     setAnswer('');
     setQuizAnswerer('');
     // if (currentQuizIndex >= quizCnt) setIsQuizEnded(true);

@@ -1,0 +1,92 @@
+.quizQuestionCompletion {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.slideIn {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.slideOut {
+  animation: fadeOut 0.3s ease forwards;
+}
+
+.content {
+  background-color: #ff4136;
+  color: white;
+  padding: 20px 40px;
+  border-radius: 10px;
+  font-size: 28px;
+  font-weight: bold;
+  text-transform: uppercase;
+  box-shadow: 0 0 20px rgba(255, 65, 54, 0.7);
+}
+
+.slideIn .content {
+  animation:
+    slideInLeft 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards,
+    flash 0.5s ease-in-out 3;
+}
+
+.slideOut .content {
+  animation: slideOutRight 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.message {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100vw);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100vw);
+  }
+}
+
+@keyframes flash {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}

@@ -28,13 +28,11 @@ const Dashboard = () => {
   const navigate = useNavigate();
   useEffect(() => {
     getQuizzes().then(res => {
-      console.log('res', res);
       setQuizItems(res);
     });
   }, []);
 
   const handleQuizClick = quiz => {
-    console.log('퀴즈 클릭');
     setQuizId(quiz.quizGroup);
     setSelectQuiz(quiz);
   };
@@ -44,7 +42,6 @@ const Dashboard = () => {
   };
 
   const handleRoomCode = roomCode => {
-    console.log('roomCode', roomCode);
     setRoomCode(roomCode);
     setSelectQuiz(null);
   };
@@ -77,8 +74,6 @@ const Dashboard = () => {
     if (!isConnected || !quizId) return;
     socket.emit('createRoom', { quizGroup: quizId });
     socket.on('roomCode', handleRoomCode);
-    console.log('socket', socket);
-    console.log('isConnected', isConnected);
     return () => {
       socket.off('roomCode', handleRoomCode);
       setBtnDisabled(true);

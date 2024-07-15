@@ -3,7 +3,6 @@ import Text from '../common/Text/Text.jsx';
 import '../../styles/game.css';
 
 export default function QuizResultText({ quizResult }) {
-  console.log(quizResult);
   return (
     <>
       <Text

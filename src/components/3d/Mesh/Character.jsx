@@ -10,7 +10,6 @@ const Character = React.memo(
     // console.log(actions);
 
     const getRankMedal = useMemo(() => {
-      console.log('getRankMedal', nickname, rank);
       if (rank[0]?.nickName === nickname) {
         return '👑';
       } else if (rank[1]?.nickName === nickname) {

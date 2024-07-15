@@ -17,7 +17,6 @@ const SignUp = () => {
   const signup = useAuthStore(state => state.signup);
 
   const onSubmit = async data => {
-    console.log(data);
     try {
       const success = await signup(data);
       if (success) {

@@ -7,6 +7,7 @@ const TopThreeParticipants = ({
   participants,
   setShowTopThree,
 }) => {
+  console.log('quizResult', quizResult);
   const { currRank } = quizResult;
   const [isVisible, setIsVisible] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
