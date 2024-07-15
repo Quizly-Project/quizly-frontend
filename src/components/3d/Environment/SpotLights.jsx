@@ -7,7 +7,7 @@ const SpotLights = ({ position, targetPosition }) => {
   const { scene } = useThree();
   const spotLightRef = useRef();
 
-  useHelper(spotLightRef, THREE.SpotLightHelper);
+  // useHelper(spotLightRef, THREE.SpotLightHelper);
 
   // 목표 위치
   const target = new THREE.Object3D();
@@ -20,9 +20,9 @@ const SpotLights = ({ position, targetPosition }) => {
       position={position}
       target={target}
       distance={100}
-      angle={0.6}
+      angle={0.7}
       intensity={10000}
-      scale={30}
+      scale={300}
       castShadow
     />
   );

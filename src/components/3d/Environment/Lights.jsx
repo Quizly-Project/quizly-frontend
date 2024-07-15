@@ -14,7 +14,7 @@ export default function Lights({ intensity, ambientIntensity }) {
     scene.add(shadowCameraRef.current);
 
     // toggle camera helper
-    // shadowCameraRef.current.visible = false;
+    shadowCameraRef.current.visible = false;
 
     return () => {
       scene.remove(shadowCameraRef.current);
