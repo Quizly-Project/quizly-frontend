@@ -126,19 +126,26 @@ export default function Game({
       )}
 
       {/* environment */}
-      <Sky
-        distance={400}
-        sunPosition={[0, 0, -500]} // 석양
-        turbidity={10}
-        rayleigh={2}
-        mieCoefficient={0.005}
-        mieDirectionalG={0.7}
-        inclination={0.6}
-        azimuth={0.25}
-      />
       {/* 문제 나올 때는 밝게, spotlight 켜질 때는 어둡게 */}
-      {isStarted && <Lights intensity={1.5} ambientIntensity={0.5} />}
-      {!isStarted && <Lights intensity={0.5} ambientIntensity={0.2} />}
+      {isStarted ? (
+        <>
+          <Sky /> <Lights intensity={1.5} ambientIntensity={0.5} />
+        </>
+      ) : (
+        <>
+          <Sky
+            distance={4000}
+            sunPosition={[0, -50, -500]} // 석양
+            turbidity={10}
+            rayleigh={2}
+            mieCoefficient={0.005}
+            mieDirectionalG={0.7}
+            inclination={0.6}
+            azimuth={0.25}
+          />
+          <Lights intensity={0.5} ambientIntensity={0.5} />
+        </>
+      )}
 
       {/* O spotlight */}
       {!isStarted && quizResult && spotlight === '1' && (
@@ -152,6 +159,9 @@ export default function Game({
       {/* 칠판 spotlight */}
       <SpotLights position={[70, 90, -50]} targetPosition={[10, 37, -120]} />
       <SpotLights position={[-80, 90, -50]} targetPosition={[10, 37, -120]} />
+
+      {/* Yes/NO spotlight */}
+      <SpotLights position={[0, 50, -10]} targetPosition={[0, 8.7, -50]} />
 
       {/* <ExplosionConfetti
         position-x={60}
