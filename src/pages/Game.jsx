@@ -20,6 +20,7 @@ import Wall from '../components/3d/Environment/Wall.jsx';
 
 // style
 import '../styles/game.css';
+import IslandMaterials from '../components/3d/Environment/IslandMaterial.jsx';
 
 export default function Game({
   isStarted,
@@ -147,6 +148,8 @@ export default function Game({
         {/* fixed elements */}
         <Island />
         {/* <IslandBaked rotation-y={Math.PI} /> */}
+        <IslandMaterials rotation-y={Math.PI} />
+
         <Wall />
         {isConnected && quiz && (
           <Blackboard position-y={70} position-z={-200} text={quiz} />
