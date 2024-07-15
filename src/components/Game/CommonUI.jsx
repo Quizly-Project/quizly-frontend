@@ -7,7 +7,7 @@ import ParticipantList from './ParticipantList/ParticipantList';
 import Timer from './Timer/Timer';
 import QuizProgress from './QuizProgress/QuizProgress';
 import TopThreeParticipants from './TopThreeParticipants/TopThreeParticipants';
-import QuizQuestionCompletion from './QuizQuestionCompletion';
+import QuizQuestionCompletion from './QuizQuestionCompletion/QuizQuestionCompletion';
 import { set } from 'react-hook-form';
 
 const CommonUI = ({
@@ -32,7 +32,6 @@ const CommonUI = ({
   const [showTopThree, setShowTopThree] = useState(false);
 
   const handleOnComplete = () => {
-    console.log('handleOnComplete');
     setShowCompletion(false);
     setShowTopThree(true);
   };

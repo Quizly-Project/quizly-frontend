@@ -28,7 +28,6 @@ function ChatComponent({ roomCode, nickName, setIsChatFocused, isTeacher }) {
 
   useEffect(() => {
     socket.current = io('http://localhost:3002');
-    console.log('Connected to socket server');
     return () => {
       socket.current.disconnect();
     };
@@ -45,7 +44,6 @@ function ChatComponent({ roomCode, nickName, setIsChatFocused, isTeacher }) {
 
   useEffect(() => {
     const handleNewMessage = message => {
-      console.log('채팅 왔음:', message);
       setMessages(prevMessages => [...prevMessages, message]);
       if (isExpanded) {
         resetHideTimeout();
