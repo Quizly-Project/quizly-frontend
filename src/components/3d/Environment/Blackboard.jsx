@@ -3,7 +3,7 @@ import { useGLTF, Text3D } from '@react-three/drei';
 import { MeshStandardMaterial } from 'three';
 
 export default function Blackboard(props) {
-  const { nodes, materials } = useGLTF('/Environment/Blackboard.glb');
+  // const { nodes, materials } = useGLTF('/Environment/Blackboard.glb');
 
   // material
   const chalkMaterial = new MeshStandardMaterial({
@@ -56,14 +56,14 @@ export default function Blackboard(props) {
 
   return (
     <group {...props} dispose={null}>
-      <mesh
+      {/* <mesh
         name="Blackboard_Q"
         castShadow
         receiveShadow
         geometry={nodes.Blackboard_Q.geometry}
         material={materials.phong1SG}
         scale={250}
-      />
+      /> */}
       {/* Text */}
       {lines &&
         lines.map((line, index) => (
@@ -71,7 +71,7 @@ export default function Blackboard(props) {
             key={index}
             scale={5}
             font="/fonts/UhBee_Regular.json"
-            position={[-50, 0 - index * 15, 110]} // 텍스트의 위치를 조정하여 줄바꿈
+            position={[-60, 0 - index * 15, 110]} // 텍스트의 위치를 조정하여 줄바꿈
           >
             {line}
             <meshStandardMaterial attach="material" {...chalkMaterial} />
@@ -81,4 +81,4 @@ export default function Blackboard(props) {
   );
 }
 
-useGLTF.preload('/Environment/Blackboard.glb');
+// useGLTF.preload('/Environment/Blackboard.glb');
