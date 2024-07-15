@@ -1,7 +1,7 @@
 import { Html } from '@react-three/drei';
 import Button from '../common/Button/Button.jsx';
 
-export default function QuizStartButton({ toggleQuizStart }) {
+export default function QuizStartButton({ toggleQuizStart, children }) {
   return (
     <>
       <Button
@@ -11,7 +11,7 @@ export default function QuizStartButton({ toggleQuizStart }) {
         round={true}
         onClick={toggleQuizStart}
       >
-        퀴즈 시작
+        {children}
       </Button>
     </>
   );

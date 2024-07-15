@@ -176,6 +176,8 @@ export const createSocketHandlers = (
       }
     }
 
+    if (data.quizEndVal) setIsQuizEnded(true);
+    console.log('quizEndVal', data.quizEndVal);
     setIsStarted(false);
   };
 

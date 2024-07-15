@@ -7,7 +7,6 @@ const TopThreeParticipants = ({
   participants,
   setShowTopThree,
 }) => {
-  console.log('quizResult', quizResult);
   const { currRank } = quizResult;
   const [isVisible, setIsVisible] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
@@ -16,7 +15,7 @@ const TopThreeParticipants = ({
     .sort((a, b) => b.totalScore - a.totalScore)
     .slice(0, 3);
 
-  const medals = ['🥈', '🥇', '🥉'];
+  const medals = ['silver', 'gold', 'bronze'];
   const rankOrder = [1, 0, 2]; // 2등, 1등, 3등 순서
 
   useEffect(() => {
@@ -44,7 +43,7 @@ const TopThreeParticipants = ({
       {rankOrder.map((order, index) => {
         const participant = sortedParticipants[order];
 
-        if (!participant) return null; // Check if participant is undefined
+        if (!participant) return null;
 
         const participantData = participants.find(
           p => p.nickName === participant.nickName
@@ -57,11 +56,12 @@ const TopThreeParticipants = ({
             className={`${styles.rankCard} ${styles[`rank${order + 1}`]}`}
             style={{
               transitionDelay: `${index * 0.5}s`,
-              order: index, // Flexbox order to control visual order
+              order: index,
             }}
           >
-            <div className={`${styles.medal} ${iconClass}`}>
-              {medals[index]}
+            <div className={styles.medalIcon}>
+              <div className={`${styles.characterIcon} ${iconClass}`}></div>
+              <div className={`${styles.medal} ${styles[medals[index]]}`}></div>
             </div>
             <h3 className={styles.nickname}>{participant.nickName}</h3>
             <p className={styles.score}>{participant.totalScore} 점</p>
