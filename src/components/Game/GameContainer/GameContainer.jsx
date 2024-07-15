@@ -192,7 +192,7 @@ const GameContainer = () => {
 
   // 소켓 초기화 및 데이터 설정
   useEffect(() => {
-    if (isTeacher) setNickName('선생님');
+    if (isTeacher) setNickName('teacher');
   }, []);
 
   /* ------- Socket listeners ------- */
