@@ -152,6 +152,7 @@ export const createSocketHandlers = (
 
   const handleQuizEnd = data => {
     console.log('퀴즈 종료', data);
+    endQuiz();
   };
 
   const handleSelectModel = data => {

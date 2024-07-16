@@ -62,11 +62,12 @@ const CharacterController = ({
   // 키보드 상하좌우로 움직인다.
   useFrame(() => {
     let newAction = 'Idle_A'; // default action
-    setAction('Idle_A'); // default action
-    if (isInputChatFocused || isInputGoldenbellFocused) return;
-    if (action !== newAction) {
-      setAction(newAction);
-      return;
+
+    if (isInputChatFocused || isInputGoldenbellFocused) {
+      if (action !== newAction) {
+        setAction(newAction);
+        return;
+      }
     }
 
     // console.log(isCorrectAnswerer);

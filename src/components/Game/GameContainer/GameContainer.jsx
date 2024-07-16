@@ -94,7 +94,7 @@ const GameContainer = () => {
         roomCode: code,
         type: type * 1,
         isStarted: false,
-        isFinish: false,
+        isFinished: false,
       });
     } else {
       setQuizRoom({
@@ -102,7 +102,7 @@ const GameContainer = () => {
         roomCode: code,
         type: type * 1,
         isStarted: false,
-        isFinish: false,
+        isFinished: false,
       });
     }
   }, [isTeacher, code, type, nickName, setQuizRoom]);

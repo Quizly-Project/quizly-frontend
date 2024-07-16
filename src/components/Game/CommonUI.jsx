@@ -9,6 +9,7 @@ import QuizQuestionCompletion from './QuizQuestionCompletion/QuizQuestionComplet
 import useQuizRoomStore from '../../store/quizRoomStore';
 import VoiceChat from './VoiceChat/VoiceChat.tsx';
 import { set } from 'react-hook-form';
+import FinalTopThreeParticipants from './FinalTopThreeParticipants/FinalTopThreeParticipants';
 
 const CommonUI = ({
   quizResult,
@@ -37,6 +38,8 @@ const CommonUI = ({
     if (!isStarted && quizResult) setShowCompletion(true);
   }, [isStarted, quizResult]);
 
+  console.log(isFinished);
+
   return (
     <div className="common-ui">
       {isJoined && (
@@ -53,7 +56,7 @@ const CommonUI = ({
           show={showCompletion}
         />
       }
-      {showTopThree && (
+      {!isFinished && showTopThree && (
         <TopThreeParticipants
           quizResult={quizResult}
           isStarted={isStarted}
@@ -62,7 +65,7 @@ const CommonUI = ({
         />
       )}
       <QuizProgress currentQuiz={quizIndex} totalQuizzes={quizCnt} />
-      {isFinished && <QuizResultText quizResult="퀴즈 종료" />}
+
       <ParticipantList
         participants={participants}
         isTeacher={isTeacher}
@@ -70,7 +73,21 @@ const CommonUI = ({
         selectedStudent={selectedStudent}
       />
       <Timer timer={timer} />
-      {nickName && (
+
+      {/* 퀴즈 종료되면 탑3 랭킹 */}
+      {isFinished && (
+        <>
+          <QuizResultText quizResult="퀴즈 종료" />
+          <FinalTopThreeParticipants
+            quizResult={quizResult}
+            isStarted={isStarted}
+            participants={participants}
+            setShowTopThree={setShowTopThree}
+          />
+        </>
+      )}
+      {/* 퀴즈 종료되면 캠 출력하도록 */}
+      {isFinished && nickName && (
         <VoiceChat
           roomCode={code}
           nickName={nickName}

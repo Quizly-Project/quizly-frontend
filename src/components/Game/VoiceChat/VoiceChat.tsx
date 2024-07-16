@@ -15,13 +15,15 @@ type TrackInfo = {
   participantIdentity: string;
 };
 
-let APPLICATION_SERVER_URL = '//ganjyul.shop/webrtc/';
-let LIVEKIT_URL = 'https://quizly.site';
+// let APPLICATION_SERVER_URL = '//ganjyul.shop/webrtc/';
+let APPLICATION_SERVER_URL = '';
+let LIVEKIT_URL = '';
+// let LIVEKIT_URL = 'https://quizly.site';
 
 const configureUrls = () => {
   if (!APPLICATION_SERVER_URL) {
     if (window.location.hostname === 'localhost') {
-      APPLICATION_SERVER_URL = 'http://localhost:6080/';
+      APPLICATION_SERVER_URL = 'http://localhost:3003/webrtc/';
     } else {
       APPLICATION_SERVER_URL = 'https://' + window.location.hostname + ':6443/';
     }
@@ -41,13 +43,13 @@ configureUrls();
 interface VoiceChatProps {
   roomCode: string;
   nickName: string;
-  selectedStudent?: string;
+  sortedParticipants: { nickName: string; totalScore: number }[];
 }
 
 const VoiceChat: React.FC<VoiceChatProps> = ({
   roomCode,
   nickName,
-  selectedStudent,
+  sortedParticipants,
 }) => {
   const [room, setRoom] = useState<Room | undefined>(undefined);
   const [localTrack, setLocalTrack] = useState<LocalVideoTrack | undefined>(
@@ -56,8 +58,10 @@ const VoiceChat: React.FC<VoiceChatProps> = ({
   const [remoteTracks, setRemoteTracks] = useState<TrackInfo[]>([]);
   const roomRef = useRef<Room | null>(null);
 
+  // console.log(sortedParticipants);
+
   useEffect(() => {
-    console.log('selected:');
+    console.log('join room.');
     joinRoom();
     return () => {
       leaveRoom();
@@ -118,6 +122,13 @@ const VoiceChat: React.FC<VoiceChatProps> = ({
     }
   }
 
+  const isParticipantInTopThree = (participantIdentity: string) => {
+    console.log(sortedParticipants);
+    return sortedParticipants?.some(
+      participant => participant.nickName === participantIdentity
+    );
+  };
+
   async function leaveRoom() {
     if (roomRef.current) {
       await roomRef.current.disconnect();
@@ -129,6 +140,7 @@ const VoiceChat: React.FC<VoiceChatProps> = ({
   }
 
   async function getToken(roomName: string, participantName: string) {
+    console.log(roomName, participantName);
     const response = await fetch(APPLICATION_SERVER_URL + 'token', {
       method: 'POST',
       headers: {
@@ -153,27 +165,29 @@ const VoiceChat: React.FC<VoiceChatProps> = ({
     <div id="room">
       <div id="layout-container">
         {/* 나 (Local) */}
-        {/* {localTrack && (
+        {localTrack && isParticipantInTopThree(nickName) && (
           <VideoComponent
             track={localTrack}
             participantIdentity={nickName}
             local={true}
           />
-        )} */}
+        )}
         {/* 다른 사람들 (Remote) */}
         {remoteTracks.map(remoteTrack =>
-          remoteTrack.trackPublication.kind === 'video' ? (
-            <VideoComponent
-              key={remoteTrack.trackPublication.trackSid}
-              track={remoteTrack.trackPublication.videoTrack!}
-              participantIdentity={remoteTrack.participantIdentity}
-            />
-          ) : (
-            <AudioComponent
-              key={remoteTrack.trackPublication.trackSid}
-              track={remoteTrack.trackPublication.audioTrack!}
-            />
-          )
+          isParticipantInTopThree(remoteTrack.participantIdentity) ? (
+            remoteTrack.trackPublication.kind === 'video' ? (
+              <VideoComponent
+                key={remoteTrack.trackPublication.trackSid}
+                track={remoteTrack.trackPublication.videoTrack!}
+                participantIdentity={remoteTrack.participantIdentity}
+              />
+            ) : (
+              <AudioComponent
+                key={remoteTrack.trackPublication.trackSid}
+                track={remoteTrack.trackPublication.audioTrack!}
+              />
+            )
+          ) : null
         )}
       </div>
     </div>

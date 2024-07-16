@@ -5,7 +5,7 @@ const initialQuizRoom = {
   type: '',
   roomCode: '',
   nickName: '',
-  isFinish: false,
+  isFinished: false,
   isStarted: false,
 };
 
@@ -30,13 +30,13 @@ const useQuizRoomStore = create((set, get) => ({
 
   endQuiz: () =>
     set(state => ({
-      quizRoom: { ...state.quizRoom, isStarted: false },
+      quizRoom: { ...state.quizRoom, isStarted: false, isFinished: true },
     })),
 
   // 선택자
   isQuizActive: () => {
-    const { isStarted, isFinish } = get().quizRoom;
-    return isStarted && !isFinish;
+    const { isStarted, isFinished } = get().quizRoom;
+    return isStarted && !isFinished;
   },
 }));
 
