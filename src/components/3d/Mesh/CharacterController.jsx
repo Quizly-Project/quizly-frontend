@@ -64,8 +64,8 @@ const CharacterController = ({
     let newAction = 'Idle_A'; // default action
     setAction('Idle_A'); // default action
     if (isInputChatFocused || isInputGodlenbellFocused) return;
-    if (isChatFocused) {
-      if (action !== newAction) setAction(newAction);
+    if (action !== newAction) {
+      setAction(newAction);
       return;
     }
 
