@@ -3,18 +3,19 @@ import { useKeyboardControls } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { CapsuleCollider, RigidBody } from '@react-three/rapier';
 import Character from './Character';
-
+import useInputFocusedStore from '../../../store/inputFocusedStore';
 const CharacterController = ({
   path,
   matName,
   nickname,
   socket,
-  isChatFocused,
   updateClientCoords,
   rank,
   isCorrectAnswerer,
   isStarted,
 }) => {
+  const { isInputChatFocused, isInputGodlenbellFocused } =
+    useInputFocusedStore();
   const rigidbody = useRef(); // 움직임 관리
   const character = useRef(); // 각도 회전 관리
 
@@ -62,6 +63,7 @@ const CharacterController = ({
   useFrame(() => {
     let newAction = 'Idle_A'; // default action
     setAction('Idle_A'); // default action
+    if (isInputChatFocused || isInputGodlenbellFocused) return;
     if (isChatFocused) {
       if (action !== newAction) setAction(newAction);
       return;

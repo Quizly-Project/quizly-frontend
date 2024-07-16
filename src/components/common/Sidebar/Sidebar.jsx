@@ -5,7 +5,6 @@ import Text from '../Text/Text';
 
 const Sidebar = ({ activeMenu, setActiveMenu }) => {
   const { user, logout } = useAuthStore();
-  console.log('user', user);
   const handleLogout = () => {
     logout();
   };

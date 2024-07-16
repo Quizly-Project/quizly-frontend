@@ -8,11 +8,17 @@ import NickNameInput from '../NickNameInput/NickNameInput';
 import useSocketStore from '../../../store/socketStore';
 import { createSocketHandlers } from '../../../utils/socketHandlers';
 import { useTimer } from '../../../hooks/useTimer';
+import useQuizRoomStore from '../../../store/quizRoomStore';
+import useInputFocusedStore from '../../../store/inputFocusedStore';
 
 import styles from './GameContainer.module.css';
 
 const GameContainer = () => {
-  const { code } = useParams();
+  const { code, type } = useParams();
+  const { setQuizRoom, updateQuizRoom, startQuiz, endQuiz } =
+    useQuizRoomStore();
+  const { isInputChatFocused, isInputGodlenbellFocused } =
+    useInputFocusedStore();
   const navigate = useNavigate();
   // useState로 관리해야 브라우저당 한 번만 접속한다.
   const [nickName, setNickName] = useState('');
@@ -32,14 +38,8 @@ const GameContainer = () => {
   /* 퀴즈 정보 */
   const [quiz, setQuiz] = useState(null);
 
-  /* 퀴즈 한문제 시작 여부 */
-  const [isStarted, setIsStarted] = useState(false);
-
   /* 퀴즈 결과 */
   const [quizResult, setQuizResult] = useState(null);
-
-  /* 퀴즈 종료 여부 */
-  const [isQuizEnded, setIsQuizEnded] = useState(false);
 
   /* 참가자 정보 */
   const [participants, setParticipants] = useState(0);
@@ -79,15 +79,33 @@ const GameContainer = () => {
   /* client들의 모델 정보 */
   const [clientModels, setClientModels] = useState({});
 
-  /* 채팅창 포커스 여부 */
-  const [isChatFocused, setIsChatFocused] = useState(false);
-
   const joinAttempted = useRef(false);
 
   const [selectedStudent, setSelectedStudent] = useState(null);
 
   const [isBgMusicPlaying, setIsBgMusicPlaying] = useState(false);
   const bgMusicRef = useRef(new Audio('/src/assets/YoHo Beat-Duck.mp3'));
+
+  useEffect(() => {
+    if (isTeacher) {
+      setNickName('선생님');
+      setQuizRoom({
+        nickName: '선생님',
+        roomCode: code,
+        type: type * 1,
+        isStarted: false,
+        isFinish: false,
+      });
+    } else {
+      setQuizRoom({
+        nickName,
+        roomCode: code,
+        type: type * 1,
+        isStarted: false,
+        isFinish: false,
+      });
+    }
+  }, [isTeacher, code, type, nickName, setQuizRoom]);
 
   useEffect(() => {
     if (!isTeacher) return;
@@ -156,11 +174,9 @@ const GameContainer = () => {
       createSocketHandlers(
         setClientCoords,
         setQuiz,
-        setIsStarted,
         nickName,
         setQuizResult,
         startTimer,
-        setIsQuizEnded,
         setParticipants,
         setQuizCnt,
         quizCnt,
@@ -173,14 +189,18 @@ const GameContainer = () => {
         setClientModels,
         setSpotlight,
         setRank,
-        setIsCorrectAnswerer
+        setIsCorrectAnswerer,
+        updateQuizRoom,
+        startQuiz,
+        endQuiz
       ),
-    [nickName]
+    [nickName, isTeacher, quizCnt, startTimer]
   );
 
   const handleNickNameBtn = input => {
     console.log('input:', input);
     setNickName(input);
+    updateQuizRoom(prevRoom => ({ ...prevRoom, nickName: input }));
   };
 
   /* ------- Socket events ------- */
@@ -322,15 +342,13 @@ const GameContainer = () => {
           { name: 'rightward', keys: ['ArrowRight', 'KeyD'] },
           { name: 'jump', keys: ['Space'] },
         ]}
-        disabled={isChatFocused}
+        disabled={isInputChatFocused || isInputGodlenbellFocused}
       >
         <Canvas shadows className={styles.canvas}>
           <Game
-            isStarted={isStarted}
             quiz={quiz}
             quizResult={quizResult}
             timer={timer}
-            isQuizEnded={isQuizEnded}
             quizCnt={quizCnt}
             quizIndex={quizIndex}
             clientCoords={clientCoords}
@@ -342,7 +360,6 @@ const GameContainer = () => {
             isJoined={isJoined}
             model={model}
             texture={texture}
-            isChatFocused={isChatFocused}
             selectedStudent={selectedStudent}
             updateClientCoords={updateClientCoords}
             clientModels={clientModels}
@@ -363,18 +380,15 @@ const GameContainer = () => {
         <GameUserInterface
           isTeacher={isTeacher}
           handleClickQuizStart={handleClickQuizStart}
-          isStarted={isStarted}
           quiz={quiz}
           quizResult={quizResult}
           timer={timer}
-          isQuizEnded={isQuizEnded}
           quizCnt={quizCnt}
           quizIndex={quizIndex}
           answer={answer}
           quizAnswerer={quizAnswerer}
           isJoined={isJoined}
           nickName={nickName}
-          setIsChatFocused={setIsChatFocused}
           code={code}
           participants={Object.keys(clientCoords).map(nickName => {
             const { modelMapping, texture } = clientModels[nickName] || {};

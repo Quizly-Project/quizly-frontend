@@ -23,7 +23,7 @@ const Landing = () => {
       console.log(response);
       if (response.success) {
         // 방이 존재하면 해당 방으로 이동
-        navigate(`/game/${roomCode}`);
+        navigate(`/game/${roomCode}/${response.quizType}`);
       } else {
         disconnectSocket();
         // 방이 존재하지 않으면 에러 메시지 표시

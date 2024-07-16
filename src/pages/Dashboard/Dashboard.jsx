@@ -9,6 +9,8 @@ import styles from './Dashboard.module.css';
 import QuizList from '../../components/common/QuizList/QuizList';
 import api, { getQuizzes } from '../../api/axios.js';
 import useSocketStore from '../../store/socketStore.js';
+import { LogLevel } from 'livekit-client';
+import { set } from 'react-hook-form';
 
 const Dashboard = () => {
   const [selectQuiz, setSelectQuiz] = useState(null);
@@ -16,6 +18,8 @@ const Dashboard = () => {
   const [quizItems, setQuizItems] = useState([]);
   const [quizId, setQuizId] = useState(null);
   const [btnDisabled, setBtnDisabled] = useState(false);
+  const [quizType, setQuizType] = useState('');
+
   const {
     socket,
     initSocket,
@@ -35,6 +39,7 @@ const Dashboard = () => {
   const handleQuizClick = quiz => {
     setQuizId(quiz.quizGroup);
     setSelectQuiz(quiz);
+    setQuizType(quiz.quizs[0].type);
   };
 
   const handleCloseModal = () => {
@@ -63,7 +68,7 @@ const Dashboard = () => {
   };
 
   const handlerMoveRoom = () => {
-    navigate(`/game/${roomCode}`);
+    navigate(`/game/${roomCode}/${quizType}`);
   };
 
   useEffect(() => {

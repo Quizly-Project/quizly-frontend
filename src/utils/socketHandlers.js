@@ -1,13 +1,9 @@
-import { set } from 'react-hook-form';
-
 export const createSocketHandlers = (
   setClientCoords,
   setQuiz,
-  setIsStarted,
   nickname,
   setQuizResult,
   startTimer,
-  setIsQuizEnded,
   setParticipants,
   setQuizCnt,
   quizCnt,
@@ -20,7 +16,10 @@ export const createSocketHandlers = (
   setClientModels,
   setSpotlight,
   setRank,
-  setIsCorrectAnswerer
+  setIsCorrectAnswerer,
+  updateQuizRoom,
+  startQuiz,
+  endQuiz
 ) => {
   /* ------- Socket events ------- */
   // 기존 접속중인 클라이언트의 위치 저장
@@ -102,15 +101,15 @@ export const createSocketHandlers = (
   };
 
   const handleQuiz = data => {
-    const { currentQuizIndex, quiz } = data;
     console.log('퀴즈 시작', data);
+    const { currentQuizIndex, quiz } = data;
     setQuiz(quiz);
-    setIsStarted(true);
+    console.log('퀴즈quiz', quiz);
+    startQuiz(); // 이미 정의된 startQuiz 액션 사용
     setIsCorrectAnswerer(false);
     setQuizIndex(currentQuizIndex + 1);
     setAnswer('');
     setQuizAnswerer('');
-    // if (currentQuizIndex >= quizCnt) setIsQuizEnded(true);
   };
 
   const handleTimerStart = duration => {
@@ -119,72 +118,40 @@ export const createSocketHandlers = (
   };
 
   const handleTimeOut = data => {
-    const options = ['무응답', 'O', 'X', '4'];
-    const correct = ['오답', '정답'];
     console.log('타이머 종료', data);
+    const options = ['무응답', 'O', 'X', '4'];
 
-    // spotlight를 켤 영역 찾기
     setSpotlight(data.correctAnswer);
-
-    // 현재 1, 2, 3위 계산
-    const topThree = data.currRank.slice(0, 3).map(rank => ({
-      nickName: rank.nickName,
-      totalScore: rank.totalScore,
-    }));
-
-    // 인원수가 1명이나 2명일 경우 예외 처리
-    // while (topThree.length < 3) {
-    //   topThree.push({ nickName: '', totalScore: 0 });
-    // }
-
-    setRank(topThree);
+    setRank(
+      data.currRank.slice(0, 3).map(rank => ({
+        nickName: rank.nickName,
+        totalScore: rank.totalScore,
+      }))
+    );
 
     if (isTeacher) {
-      /*
-       * answer: 정답
-       * nickName: {
-       *    result:[(0:틀림, 1:정답)], // 문제별 정답여부
-       *    selectOption:[(0:무효 1~4:선택한 답)], // 문제별 선택한 답
-       *    totalScore:0, // 총점
-       * }
-       */
       const { correctAnswerList } = data;
       setQuizResult(data);
       setQuizAnswerer(correctAnswerList);
-      // console.log(correctAnswerList);
     } else {
-      /* answer: 정답
-       * userAnwer: 유저 대답(0:무효, 1~4:선택한 답)
-       * correntAnswerList: 정답자 리스트
-       * nickName: 내이름
-       * quizScore: 퀴즈점수
-       * result: 정답여부(0:틀림 1:정답)
-       * totalScore:내 점수 */
-
-      const { answer, result, totalScore, correctAnswerList } = data;
+      const { answer, correctAnswerList } = data;
       setQuizResult(data);
       setAnswer(options[answer]);
-      // console.log(options[answer]);
       setQuizAnswerer(correctAnswerList);
-
-      // console.log(correctAnswerList);
-      // 정답 맞혔는지 여부
-      if (correctAnswerList.includes(nickname)) {
-        setIsCorrectAnswerer(true);
-      } else {
-        setIsCorrectAnswerer(false);
-      }
+      setIsCorrectAnswerer(correctAnswerList.includes(nickname));
     }
 
-    if (data.quizEndVal) setIsQuizEnded(true);
+    if (data.quizEndVal) {
+      endQuiz(); // 스토어에 정의된 endQuiz 액션 사용
+    } else {
+      updateQuizRoom({ isStarted: false });
+    }
+
     console.log('quizEndVal', data.quizEndVal);
-    setIsStarted(false);
   };
 
   const handleQuizEnd = data => {
     console.log('퀴즈 종료', data);
-    // setQuizResult(data);
-    setIsQuizEnded(true);
   };
 
   const handleSelectModel = data => {
