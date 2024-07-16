@@ -17,7 +17,7 @@ const GameContainer = () => {
   const { code, type } = useParams();
   const { setQuizRoom, updateQuizRoom, startQuiz, endQuiz } =
     useQuizRoomStore();
-  const { isInputChatFocused, isInputGodlenbellFocused } =
+  const { isInputChatFocused, isInputGoldenbellFocused } =
     useInputFocusedStore();
   const navigate = useNavigate();
   // useState로 관리해야 브라우저당 한 번만 접속한다.
@@ -342,7 +342,7 @@ const GameContainer = () => {
           { name: 'rightward', keys: ['ArrowRight', 'KeyD'] },
           { name: 'jump', keys: ['Space'] },
         ]}
-        disabled={isInputChatFocused || isInputGodlenbellFocused}
+        disabled={isInputChatFocused || isInputGoldenbellFocused}
       >
         <Canvas shadows className={styles.canvas}>
           <Game
