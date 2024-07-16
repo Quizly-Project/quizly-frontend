@@ -14,7 +14,7 @@ const CharacterController = ({
   isCorrectAnswerer,
   isStarted,
 }) => {
-  const { isInputChatFocused, isInputGodlenbellFocused } =
+  const { isInputChatFocused, isInputGoldenbellFocused } =
     useInputFocusedStore();
   const rigidbody = useRef(); // 움직임 관리
   const character = useRef(); // 각도 회전 관리
@@ -63,7 +63,7 @@ const CharacterController = ({
   useFrame(() => {
     let newAction = 'Idle_A'; // default action
     setAction('Idle_A'); // default action
-    if (isInputChatFocused || isInputGodlenbellFocused) return;
+    if (isInputChatFocused || isInputGoldenbellFocused) return;
     if (action !== newAction) {
       setAction(newAction);
       return;
