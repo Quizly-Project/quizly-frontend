@@ -211,6 +211,9 @@ const GameContainer = () => {
   };
 
   // 소켓 초기화 및 데이터 설정
+  useEffect(() => {
+    if (isTeacher) setNickName('teacher');
+  }, []);
 
   /* ------- Socket listeners ------- */
   // 리스너를 마운트 될 때 한 번만 생성한다.

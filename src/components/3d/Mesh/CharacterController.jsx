@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useMemo } from 'react';
+import React, { useRef, useEffect, useState, useMemo, act } from 'react';
 import { useKeyboardControls } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { CapsuleCollider, RigidBody } from '@react-three/rapier';
@@ -12,6 +12,7 @@ const CharacterController = ({
   updateClientCoords,
   rank,
   isCorrectAnswerer,
+  isStarted,
 }) => {
   const { isInputChatFocused, isInputGodlenbellFocused } =
     useInputFocusedStore();
@@ -60,15 +61,26 @@ const CharacterController = ({
 
   // 키보드 상하좌우로 움직인다.
   useFrame(() => {
+    let newAction = 'Idle_A'; // default action
     setAction('Idle_A'); // default action
     if (isInputChatFocused || isInputGodlenbellFocused) return;
-
-    // console.log(isCorrectAnswerer);
-    // 정답자이면 멈추고 춤추기
-    if (isCorrectAnswerer) {
-      setAction('Fly');
+    if (isChatFocused) {
+      if (action !== newAction) setAction(newAction);
       return;
     }
+
+    // console.log(isCorrectAnswerer);
+    // 정답자이면 멈추고 춤추기, 틀리면 데굴데굴
+    if (!isStarted && isCorrectAnswerer) {
+      newAction = 'Fly';
+      if (action !== newAction) setAction(newAction);
+      return;
+    }
+    // else if (!isStarted && !isCorrectAnswerer) {
+    //   newAction = 'Roll';
+    //   if (action !== newAction) setAction(newAction);
+    //   return;
+    // }
 
     const { forward, backward, leftward, rightward, jump } = getKeys();
 
@@ -78,27 +90,27 @@ const CharacterController = ({
     let changeRotation = false;
 
     if (forward && linvel.z > -MAX_LINVEL) {
-      setAction('Walk');
+      newAction = 'Walk';
       impulse.z -= MOVEMENT_SPEED;
       changeRotation = true;
     }
     if (backward && linvel.z < MAX_LINVEL) {
-      setAction('Walk');
+      newAction = 'Walk';
       impulse.z += MOVEMENT_SPEED;
       changeRotation = true;
     }
     if (leftward && linvel.x > -MAX_LINVEL) {
-      setAction('Walk');
+      newAction = 'Walk';
       impulse.x -= MOVEMENT_SPEED;
       changeRotation = true;
     }
     if (rightward && linvel.x < MAX_LINVEL) {
-      setAction('Walk');
+      newAction = 'Walk';
       impulse.x += MOVEMENT_SPEED;
       changeRotation = true;
     }
     if (!isJumped && jump) {
-      setAction('Jump');
+      newAction = 'Jump';
       setIsJumped(true);
       impulse.y += JUMP_FORCE;
     }
@@ -122,6 +134,9 @@ const CharacterController = ({
       const angle = Math.atan2(impulse.x, impulse.z);
       character.current.rotation.y = angle;
     }
+
+    // action이 바뀔 때만 setAction
+    if (action !== newAction) setAction(newAction);
   });
 
   return (

@@ -6,22 +6,19 @@ import { useThree, useFrame } from '@react-three/fiber';
 import useQuizRoomStore from '../store/quizRoomStore.js';
 
 // Environment
+import IslandMaterials from '../components/3d/Environment/IslandMaterial.jsx';
 import Lights from '../components/3d/Environment/Lights.jsx';
 import SpotLights from '../components/3d/Environment/SpotLights.jsx';
-import Island from '../components/3d/Environment/Island.jsx';
 import Blackboard from '../components/3d/Environment/Blackboard.jsx';
+import Wall from '../components/3d/Environment/Wall.jsx';
 import ExplosionConfetti from '../components/3d/Environment/ExplosionConfetti.jsx';
-import Stars from '../components/3d/Environment/Stars.jsx';
-import IslandBaked from '../components/3d/Environment/IslandBaked.jsx';
 
 // Character
 import CharacterController from '../components/3d/Mesh/CharacterController.jsx';
 import OtherCharacterController from '../components/3d/Mesh/OtherCharacterController.jsx';
-import Wall from '../components/3d/Environment/Wall.jsx';
 
 // style
 import '../styles/game.css';
-import IslandMaterials from '../components/3d/Environment/IslandMaterial.jsx';
 
 export default function Game({
   nickname,
@@ -47,10 +44,11 @@ export default function Game({
   const { camera } = useThree();
   const cameraControls = useRef();
   const orbitControls = useRef();
-  // const starRef = useRef();
   const [initialTeacherViewSet, setInitialTeacherViewSet] = useState(false);
 
   const { isStarted } = useQuizRoomStore(state => state.quizRoom);
+
+  const CAMERA_TILT = 20;
 
   const setTeacherView = useCallback(() => {
     if (orbitControls.current) {
@@ -61,11 +59,15 @@ export default function Game({
           studentPos.y + 15,
           studentPos.z
         );
-        camera.position.set(studentPos.x, studentPos.y + 30, studentPos.z + 30);
+        camera.position.set(
+          studentPos.x,
+          studentPos.y + CAMERA_TILT,
+          studentPos.z + CAMERA_TILT
+        );
       } else {
         // 선생님 기본 시점
-        orbitControls.current.target.set(0, 15, 0);
-        camera.position.set(0, 30, 30);
+        orbitControls.current.target.set(0, CAMERA_TILT, -10);
+        camera.position.set(0, CAMERA_TILT, CAMERA_TILT);
       }
       orbitControls.current.update();
     }
@@ -109,7 +111,7 @@ export default function Game({
   return (
     <>
       {/* debugging tools */}
-      {/* <Perf /> */}
+      <Perf />
 
       {/* camera controls */}
       {isTeacher ? (
@@ -118,14 +120,34 @@ export default function Game({
           enableRotate={true}
           enableZoom={true}
           enablePan={true}
+          minDistance={5} // 최소 거리 (줌 인 제한)
+          maxDistance={80} // 최대 거리 (줌 아웃 제한)
         />
       ) : (
         <CameraControls ref={cameraControls} />
       )}
 
       {/* environment */}
-      <Sky />
-      <Lights intensity={1.5} ambientIntensity={0.5} />
+      {/* 문제 나올 때는 밝게, spotlight 켜질 때는 어둡게 */}
+      {isStarted ? (
+        <>
+          <Sky /> <Lights intensity={1.5} ambientIntensity={0.5} />
+        </>
+      ) : (
+        <>
+          <Sky
+            distance={4000}
+            sunPosition={[0, -50, -500]} // 석양
+            turbidity={10}
+            rayleigh={2}
+            mieCoefficient={0.005}
+            mieDirectionalG={0.7}
+            inclination={0.6}
+            azimuth={0.25}
+          />
+          <Lights intensity={0.5} ambientIntensity={0.5} />
+        </>
+      )}
 
       {/* O spotlight */}
       {!isStarted && quizResult && spotlight === '1' && (
@@ -135,6 +157,14 @@ export default function Game({
       {!isStarted && quizResult && spotlight === '2' && (
         <SpotLights position={[60, 50, 0]} targetPosition={[60, 8.7, 0]} />
       )}
+
+      {/* 칠판 spotlight */}
+      <SpotLights position={[70, 90, -50]} targetPosition={[10, 37, -120]} />
+      <SpotLights position={[-80, 90, -50]} targetPosition={[10, 37, -120]} />
+
+      {/* Yes/NO spotlight */}
+      <SpotLights position={[0, 50, -10]} targetPosition={[0, 8.7, -50]} />
+
       {/* <ExplosionConfetti
         position-x={60}
         rate={2}
@@ -142,16 +172,15 @@ export default function Game({
         amount={50}
         isExploding
       /> */}
-      {/* <Stars ref={starRef} scale={10} /> */}
 
+      {/* <Physics debug> */}
       <Physics>
-        {/* <Physics>gg */}
         {/* fixed elements */}
         {/* <Island /> */}
         {/* <IslandBaked rotation-y={Math.PI} /> */}
         <IslandMaterials rotation-y={Math.PI} />
-
         <Wall />
+
         {isConnected && quiz && (
           <Blackboard position-y={70} position-z={-200} text={quiz} />
         )}
@@ -166,6 +195,7 @@ export default function Game({
             updateClientCoords={updateClientCoords}
             rank={rank}
             isCorrectAnswerer={isCorrectAnswerer}
+            isStarted={isStarted}
           />
         )}
 
@@ -191,6 +221,7 @@ export default function Game({
                   scale={2}
                   rank={rank}
                   isCorrectAnswerer={isCorrect}
+                  isStarted={isStarted}
                 />
               ) : null;
             }

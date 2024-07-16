@@ -6,8 +6,9 @@ import Timer from './Timer/Timer';
 import QuizProgress from './QuizProgress/QuizProgress';
 import TopThreeParticipants from './TopThreeParticipants/TopThreeParticipants';
 import QuizQuestionCompletion from './QuizQuestionCompletion/QuizQuestionCompletion';
-
 import useQuizRoomStore from '../../store/quizRoomStore';
+import VoiceChat from './VoiceChat/VoiceChat.tsx';
+import { set } from 'react-hook-form';
 
 const CommonUI = ({
   quizResult,
@@ -69,6 +70,13 @@ const CommonUI = ({
         selectedStudent={selectedStudent}
       />
       <Timer timer={timer} />
+      {nickName && (
+        <VoiceChat
+          roomCode={code}
+          nickName={nickName}
+          selectedStudent={selectedStudent}
+        />
+      )}
     </div>
   );
 };
