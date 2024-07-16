@@ -1,8 +1,12 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import io from 'socket.io-client';
+
+import useInputFocusedStore from '../../../store/inputFocusedStore';
+
 import styles from './ChatComponent.module.css';
 
-function ChatComponent({ roomCode, nickName, setIsChatFocused, isTeacher }) {
+function ChatComponent({ roomCode, nickName, isTeacher }) {
+  const { setIsInputChatFocused } = useInputFocusedStore();
   const [messages, setMessages] = useState([
     { message: `${nickName}(님)이 참여했습니다.`, type: 'system' },
   ]);
@@ -22,9 +26,9 @@ function ChatComponent({ roomCode, nickName, setIsChatFocused, isTeacher }) {
     }
     hideTimeoutRef.current = setTimeout(() => {
       setIsExpanded(false);
-      setIsChatFocused(false);
+      setIsInputChatFocused(false);
     }, 10000);
-  }, [setIsChatFocused]);
+  }, [setIsInputChatFocused]);
 
   useEffect(() => {
     socket.current = io('http://localhost:3002');
@@ -130,8 +134,8 @@ function ChatComponent({ roomCode, nickName, setIsChatFocused, isTeacher }) {
             onChange={e => setInputMessage(e.target.value)}
             placeholder="Type a message"
             className={styles.inputField}
-            onFocus={() => setIsChatFocused(true)}
-            onBlur={() => setIsChatFocused(false)}
+            onFocus={() => setIsInputChatFocused(true)}
+            onBlur={() => setIsInputChatFocused(false)}
           />
           <button type="submit" className={styles.sendButton}>
             Send

@@ -15,7 +15,7 @@ import useAuthStore from './store/authStore';
 import GameContainer from './components/Game/GameContainer/GameContainer.jsx';
 import Test from './pages/Test.jsx';
 import ChatComponent from './components/common/ChatComponent/ChatComponent.jsx';
-import VoiceChat from './components/Game/VoiceChat/VoiceChat.tsx'
+import VoiceChat from './components/Game/VoiceChat/VoiceChat.tsx';
 
 const PrivateRoute = ({ children }) => {
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
@@ -55,11 +55,10 @@ function App() {
         <Route path="/" element={<Navigate to="/landing" />} />
         <Route path="/landing" element={<Landing />} />
         <Route path="/game" element={<Navigate to="/landing" />} />
-        <Route path="/game/:code" element={<GameContainer />} />
+        <Route path="/game/:code/:type" element={<GameContainer />} />
         <Route path="test" element={<Test />} />
         <Route path="/chat" element={<ChatComponent />} />
         <Route path="/voice" element={<VoiceChat />} />
-
       </Routes>
     </Router>
   );

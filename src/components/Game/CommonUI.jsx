@@ -1,27 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import QuizResultText from './QuizResultText';
-import Question from './Question';
-import Text from '../common/Text/Text';
 import ChatComponent from '../common/ChatComponent/ChatComponent';
 import ParticipantList from './ParticipantList/ParticipantList';
 import Timer from './Timer/Timer';
 import QuizProgress from './QuizProgress/QuizProgress';
 import TopThreeParticipants from './TopThreeParticipants/TopThreeParticipants';
 import QuizQuestionCompletion from './QuizQuestionCompletion/QuizQuestionCompletion';
-import { set } from 'react-hook-form';
+
+import useQuizRoomStore from '../../store/quizRoomStore';
 
 const CommonUI = ({
   quizResult,
-  isStarted,
   quiz,
   timer,
-  isQuizEnded,
   quizCnt,
   quizIndex,
   quizAnswerer,
   nickName,
   isJoined,
-  setIsChatFocused,
   code,
   participants,
   onSelectStudent,
@@ -30,7 +26,7 @@ const CommonUI = ({
 }) => {
   const [showCompletion, setShowCompletion] = useState(false);
   const [showTopThree, setShowTopThree] = useState(false);
-
+  const { isStarted, isFinished } = useQuizRoomStore(state => state.quizRoom);
   const handleOnComplete = () => {
     setShowCompletion(false);
     setShowTopThree(true);
@@ -46,7 +42,6 @@ const CommonUI = ({
         <ChatComponent
           roomCode={code}
           nickName={nickName}
-          setIsChatFocused={setIsChatFocused}
           isTeacher={isTeacher}
         />
       )}
@@ -66,7 +61,7 @@ const CommonUI = ({
         />
       )}
       <QuizProgress currentQuiz={quizIndex} totalQuizzes={quizCnt} />
-      {isQuizEnded && <QuizResultText quizResult="퀴즈 종료" />}
+      {isFinished && <QuizResultText quizResult="퀴즈 종료" />}
       <ParticipantList
         participants={participants}
         isTeacher={isTeacher}

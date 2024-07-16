@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import QuizStartButton from '../QuizStartButton';
 import StudentResults from '../StudentResult/StudentResult';
+
+import useQuizRoomStore from '../../../store/quizRoomStore';
+
 import styles from './TeacherUI.module.css';
 
 const TeacherUI = ({
   handleClickQuizStart,
-  isStarted,
-  isQuizEnded,
   quizResult,
   participants,
   quiz,
@@ -15,6 +16,7 @@ const TeacherUI = ({
 }) => {
   const [isDashboardOpen, setIsDashboardOpen] = useState(false);
   const navigate = useNavigate();
+  const { isStarted, isFinish } = useQuizRoomStore(state => state.quizRoom);
 
   const toggleDashboard = () => {
     setIsDashboardOpen(!isDashboardOpen);
@@ -44,7 +46,7 @@ const TeacherUI = ({
         {isDashboardOpen ? '►' : '◄'}
       </button>
       {!isStarted &&
-        (isQuizEnded ? (
+        (isFinish ? (
           <div className={styles.startButtonContainer}>
             <QuizStartButton
               toggleQuizStart={handleClick}

@@ -3,6 +3,7 @@ import { Sky, OrbitControls, CameraControls } from '@react-three/drei';
 import { Physics, vec3 } from '@react-three/rapier';
 import { Perf } from 'r3f-perf';
 import { useThree, useFrame } from '@react-three/fiber';
+import useQuizRoomStore from '../store/quizRoomStore.js';
 
 // Environment
 import Lights from '../components/3d/Environment/Lights.jsx';
@@ -23,7 +24,6 @@ import '../styles/game.css';
 import IslandMaterials from '../components/3d/Environment/IslandMaterial.jsx';
 
 export default function Game({
-  isStarted,
   nickname,
   socket,
   isConnected,
@@ -34,7 +34,6 @@ export default function Game({
   texture,
   quiz,
   quizResult,
-  isChatFocused,
   selectedStudent,
   updateClientCoords,
   clientModels,
@@ -50,6 +49,8 @@ export default function Game({
   const orbitControls = useRef();
   // const starRef = useRef();
   const [initialTeacherViewSet, setInitialTeacherViewSet] = useState(false);
+
+  const { isStarted } = useQuizRoomStore(state => state.quizRoom);
 
   const setTeacherView = useCallback(() => {
     if (orbitControls.current) {
@@ -146,7 +147,7 @@ export default function Game({
       <Physics>
         {/* <Physics>gg */}
         {/* fixed elements */}
-        <Island />
+        {/* <Island /> */}
         {/* <IslandBaked rotation-y={Math.PI} /> */}
         <IslandMaterials rotation-y={Math.PI} />
 
@@ -162,7 +163,6 @@ export default function Game({
             matName={texture}
             nickname={nickname}
             socket={socket}
-            isChatFocused={isChatFocused}
             updateClientCoords={updateClientCoords}
             rank={rank}
             isCorrectAnswerer={isCorrectAnswerer}
