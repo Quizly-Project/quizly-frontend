@@ -31,7 +31,7 @@ const ExplosionConfetti = forwardRef(function ExplosionConfetti(
     areaWidth = 50,
     areaHeight = 20,
     fallingHeight = 10,
-    fallingSpeed = 8,
+    fallingSpeed = 15,
     colors = [0x0000ff, 0xff0000, 0xffff00],
     enableShadows = false,
     ...props
