@@ -66,6 +66,8 @@ const MultipleChoiceForm = () => {
       }),
     };
 
+    console.log(formattedData);
+
     try {
       const result = await createQuiz(formattedData);
       console.log(result);
