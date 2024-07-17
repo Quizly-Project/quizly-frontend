@@ -71,7 +71,7 @@ const MultipleChoiceForm = () => {
     try {
       const result = await createQuiz(formattedData);
       console.log(result);
-      navigate(`/`); // 퀴즈 상세 페이지로 이동
+      navigate(`/dashboard`); // 퀴즈 상세 페이지로 이동
     } catch (err) {
       setError(
         err.response?.data?.message ||
