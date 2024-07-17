@@ -7,7 +7,6 @@ export default defineConfig({
   server: {
     host: true,
     port: 3001,
-    https: true,
   },
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
