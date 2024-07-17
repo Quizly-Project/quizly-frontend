@@ -4,14 +4,16 @@ import { Physics, vec3 } from '@react-three/rapier';
 import { Perf } from 'r3f-perf';
 import { useThree, useFrame } from '@react-three/fiber';
 import useQuizRoomStore from '../store/quizRoomStore.js';
+import { gsap } from 'gsap';
 
 // Environment
 import IslandMaterials from '../components/3d/Environment/IslandMaterial.jsx';
 import Lights from '../components/3d/Environment/Lights.jsx';
-import SpotLights from '../components/3d/Environment/SpotLights.jsx';
 import Blackboard from '../components/3d/Environment/Blackboard.jsx';
 import Wall from '../components/3d/Environment/Wall.jsx';
-import ExplosionConfetti from '../components/3d/Environment/ExplosionConfetti.jsx';
+import BasicSpotLights from '../components/3d/Environment/BasicSpotLights.jsx';
+import OEffects from '../components/3d/Environment/OEffects.jsx';
+import XEffects from '../components/3d/Environment/XEffects.jsx';
 
 // Character
 import CharacterController from '../components/3d/Mesh/CharacterController.jsx';
@@ -48,63 +50,113 @@ export default function Game({
 
   const { isStarted } = useQuizRoomStore(state => state.quizRoom);
 
+  const CAMERA_UP = 10;
   const CAMERA_TILT = 20;
+  const DURATION = 5;
 
-  const setTeacherView = useCallback(() => {
-    if (orbitControls.current) {
-      if (selectedStudent && clientCoords[selectedStudent]) {
-        const studentPos = clientCoords[selectedStudent];
-        orbitControls.current.target.set(
-          studentPos.x,
-          studentPos.y + 15,
-          studentPos.z
-        );
-        camera.position.set(
-          studentPos.x,
-          studentPos.y + CAMERA_TILT,
-          studentPos.z + CAMERA_TILT
-        );
-      } else {
-        // 선생님 기본 시점
-        orbitControls.current.target.set(0, CAMERA_TILT, -10);
-        camera.position.set(0, CAMERA_TILT, CAMERA_TILT);
+  const setTeacherView = useCallback(
+    (currentSelectedStudent, currentClientCoords) => {
+      if (orbitControls.current) {
+        let targetPosition, cameraPosition;
+
+        if (
+          currentSelectedStudent &&
+          currentClientCoords[currentSelectedStudent]
+        ) {
+          const studentPos = currentClientCoords[currentSelectedStudent];
+          targetPosition = {
+            x: studentPos.x,
+            y: studentPos.y + CAMERA_UP,
+            z: studentPos.z,
+          };
+          cameraPosition = {
+            x: studentPos.x,
+            y: studentPos.y + CAMERA_UP,
+            z: studentPos.z + CAMERA_TILT,
+          };
+        } else {
+          // 선생님 기본 시점
+          targetPosition = { x: 0, y: CAMERA_TILT, z: -CAMERA_UP };
+          cameraPosition = { x: 0, y: CAMERA_TILT, z: CAMERA_TILT };
+        }
+
+        // GSAP를 사용하여 부드럽게 애니메이션
+        gsap.to(orbitControls.current.target, {
+          duration: DURATION,
+          x: targetPosition.x,
+          y: targetPosition.y,
+          z: targetPosition.z,
+          onUpdate: () => orbitControls.current.update(),
+        });
+
+        gsap.to(camera.position, {
+          duration: DURATION,
+          x: cameraPosition.x,
+          y: cameraPosition.y,
+          z: cameraPosition.z,
+          onUpdate: () => orbitControls.current.update(),
+        });
       }
-      orbitControls.current.update();
-    }
-  }, [selectedStudent, clientCoords, camera]);
+    },
+    [camera]
+  );
 
-  useEffect(() => {
-    if (isTeacher && !initialTeacherViewSet) {
-      setTeacherView();
-      setInitialTeacherViewSet(true);
-    }
-  }, [isTeacher, initialTeacherViewSet, setTeacherView]);
+  const updateStudentCamera = useCallback(() => {
+    if (!isTeacher && cameraControls.current && clientCoords[nickname]) {
+      const playerPos = clientCoords[nickname];
+      const cameraOffset = { x: 0, y: 25, z: 50 };
 
+      // 카메라 위치와 타겟
+      cameraControls.current.setLookAt(
+        playerPos.x + cameraOffset.x,
+        playerPos.y + cameraOffset.y,
+        playerPos.z + cameraOffset.z,
+        playerPos.x,
+        playerPos.y + cameraOffset.y,
+        playerPos.z,
+        true
+      );
+
+      // 카메라 고개 들기
+      const rotationAngle = Math.PI / 60;
+      cameraControls.current.rotate(0, rotationAngle, 0, true);
+    }
+  }, [isTeacher, nickname, clientCoords]);
+
+  // 선생님 시점 + 초기
   useEffect(() => {
     if (isTeacher) {
-      setTeacherView();
+      setTeacherView(selectedStudent, clientCoords);
     }
-  }, [isTeacher, selectedStudent, setTeacherView]);
+  }, [isTeacher, setTeacherView]);
 
+  // 선생님 시점 + 이동 후
+  useEffect(() => {
+    if (isTeacher && !initialTeacherViewSet) {
+      setTeacherView(selectedStudent, clientCoords);
+      setInitialTeacherViewSet(true);
+    }
+  }, [
+    isTeacher,
+    initialTeacherViewSet,
+    setTeacherView,
+    selectedStudent,
+    clientCoords,
+  ]);
+
+  // 학생 시점 이동
+  useEffect(() => {
+    if (!isTeacher) {
+      updateStudentCamera();
+    }
+  }, [isTeacher, updateStudentCamera]);
+
+  // 실시간 카메라 업데이트를 위한 useFrame
   useFrame(() => {
-    if (cameraControls.current && !isTeacher) {
-      const cameraDistanceY = 12;
-      const cameraDistanceZ = 30;
-      let playerWorldPos;
-
-      if (clientCoords[nickname]) {
-        // 학생 시점
-        playerWorldPos = vec3(clientCoords[nickname]);
-        cameraControls.current.setLookAt(
-          playerWorldPos.x,
-          playerWorldPos.y + cameraDistanceY,
-          playerWorldPos.z + cameraDistanceZ,
-          playerWorldPos.x,
-          playerWorldPos.y + 15,
-          playerWorldPos.z,
-          true
-        );
-      }
+    if (isTeacher && selectedStudent && clientCoords[selectedStudent]) {
+      setTeacherView(selectedStudent, clientCoords);
+    } else {
+      updateStudentCamera();
     }
   });
 
@@ -149,35 +201,17 @@ export default function Game({
         </>
       )}
 
-      {/* O spotlight */}
-      {!isStarted && quizResult && spotlight === '1' && (
-        <SpotLights position={[-60, 50, 0]} targetPosition={[-60, 8.7, 0]} />
-      )}
-      {/* X spotlight */}
-      {!isStarted && quizResult && spotlight === '2' && (
-        <SpotLights position={[60, 50, 0]} targetPosition={[60, 8.7, 0]} />
-      )}
+      {/* 칠판, Yes/No 표지판의 spotlight */}
+      <BasicSpotLights />
 
-      {/* 칠판 spotlight */}
-      <SpotLights position={[70, 90, -50]} targetPosition={[10, 37, -120]} />
-      <SpotLights position={[-80, 90, -50]} targetPosition={[10, 37, -120]} />
-
-      {/* Yes/NO spotlight */}
-      <SpotLights position={[0, 50, -10]} targetPosition={[0, 8.7, -50]} />
-
-      {/* <ExplosionConfetti
-        position-x={60}
-        rate={2}
-        fallingHeight={20}
-        amount={50}
-        isExploding
-      /> */}
+      {/* O spotlight & confetti */}
+      {!isStarted && quizResult && spotlight === '1' && <OEffects />}
+      {/* X spotlight & confetti */}
+      {!isStarted && quizResult && spotlight === '2' && <XEffects />}
 
       {/* <Physics debug> */}
       <Physics>
         {/* fixed elements */}
-        {/* <Island /> */}
-        {/* <IslandBaked rotation-y={Math.PI} /> */}
         <IslandMaterials rotation-y={Math.PI} />
         <Wall />
 

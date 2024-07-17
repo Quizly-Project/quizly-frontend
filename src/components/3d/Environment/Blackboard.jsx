@@ -1,10 +1,8 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { useGLTF, Text3D } from '@react-three/drei';
+import React, { useEffect, useState } from 'react';
+import { Text3D } from '@react-three/drei';
 import { MeshStandardMaterial } from 'three';
 
 export default function Blackboard(props) {
-  // const { nodes, materials } = useGLTF('/Environment/Blackboard.glb');
-
   // material
   const chalkMaterial = new MeshStandardMaterial({
     color: '#FFFFF0',
@@ -56,14 +54,6 @@ export default function Blackboard(props) {
 
   return (
     <group {...props} dispose={null}>
-      {/* <mesh
-        name="Blackboard_Q"
-        castShadow
-        receiveShadow
-        geometry={nodes.Blackboard_Q.geometry}
-        material={materials.phong1SG}
-        scale={250}
-      /> */}
       {/* Text */}
       {lines &&
         lines.map((line, index) => (
@@ -80,5 +70,3 @@ export default function Blackboard(props) {
     </group>
   );
 }
-
-// useGLTF.preload('/Environment/Blackboard.glb');
