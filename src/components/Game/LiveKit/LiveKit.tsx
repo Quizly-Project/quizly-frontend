@@ -7,7 +7,7 @@ import {
   Room,
   RoomEvent,
 } from 'livekit-client';
-import { useVoiceChatStore } from '../../../store/liveKitStore';
+import { useLiveKitStore } from '../../../store/liveKitStore';
 import useQuizRoomStore from '../../../store/quizRoomStore';
 
 // Configuration for URLs
@@ -41,11 +41,6 @@ const configureUrls = () => {
 
 configureUrls();
 
-interface VoiceChatProps {
-  quizResult: any;
-}
-
-// const LiveKit: React.FC<VoiceChatProps> = () => {
 const LiveKit = () => {
   // voice chat을 위해 필요한 정보 voice chat store에서 가져옴
   const {
@@ -59,7 +54,7 @@ const LiveKit = () => {
     removeRemoteTrack,
     setIsJoined,
     setRemoteVideoTrack,
-  } = useVoiceChatStore();
+  } = useLiveKitStore();
 
   // 클라이언트(본인)의 닉네임과 룸 코드를 store에서 꺼내온다.
   const { roomCode, nickName } = useQuizRoomStore(state => state.quizRoom);
