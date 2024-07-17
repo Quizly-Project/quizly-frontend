@@ -161,8 +161,6 @@ export default function Game({
       {/* <Physics debug> */}
       <Physics>
         {/* fixed elements */}
-        {/* <Island /> */}
-        {/* <IslandBaked rotation-y={Math.PI} /> */}
         <IslandMaterials rotation-y={Math.PI} />
         <Wall />
 
