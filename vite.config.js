@@ -23,5 +23,6 @@ export default defineConfig({
         '.ts': 'tsx',
       },
     },
+    exclude: ['livekit-client'],
   },
 });

@@ -86,14 +86,6 @@ const CommonUI = ({
           />
         </>
       )}
-      {/* 퀴즈 종료되면 캠 출력하도록 */}
-      {isFinished && nickName && (
-        <VoiceChat
-          roomCode={code}
-          nickName={nickName}
-          selectedStudent={selectedStudent}
-        />
-      )}
     </div>
   );
 };

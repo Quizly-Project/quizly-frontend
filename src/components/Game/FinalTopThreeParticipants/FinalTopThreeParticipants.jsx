@@ -70,13 +70,7 @@ const FinalTopThreeParticipants = ({
             <div className={styles.medalIcon}>
               {/* <div className={`${styles.characterIcon} ${iconClass}`}></div> */}
               {/* 모델 초상화 대신 탑3 랭킹 학생들의 캠+음성을 출력한다. */}
-              {sortedParticipants && (
-                <VoiceChat
-                  roomCode={roomCode}
-                  nickName={nickName}
-                  sortedParticipants={sortedParticipants}
-                />
-              )}
+              <VoiceChat quizResult={quizResult} />
               <div className={`${styles.medal} ${styles[medals[index]]}`}></div>
             </div>
             <h3 className={styles.nickname}>{participant.nickName}</h3>
