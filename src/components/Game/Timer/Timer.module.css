@@ -11,6 +11,11 @@
 
 .timerGauge {
   height: 100%;
+  width: var(--timer-width, 100%);
+  background-image: var(
+    --timer-gradient,
+    linear-gradient(90deg, hsl(120, 100%, 50%), hsl(80, 100%, 50%))
+  );
   transition:
     width 0.1s linear,
     background-image 0.3s ease;
@@ -19,6 +24,7 @@
   justify-content: flex-end;
   padding-right: 10px;
   box-sizing: border-box;
+  will-change: width, background-image;
 }
 
 .timerText {
@@ -71,25 +77,5 @@
       0 0 80px #ff00de,
       0 0 100px #ff00de,
       0 0 150px #ff00de;
-  }
-}
-
-@keyframes shake {
-  10%,
-  90% {
-    transform: translate3d(-1px, 0, 0);
-  }
-  20%,
-  80% {
-    transform: translate3d(2px, 0, 0);
-  }
-  30%,
-  50%,
-  70% {
-    transform: translate3d(-4px, 0, 0);
-  }
-  40%,
-  60% {
-    transform: translate3d(4px, 0, 0);
   }
 }
