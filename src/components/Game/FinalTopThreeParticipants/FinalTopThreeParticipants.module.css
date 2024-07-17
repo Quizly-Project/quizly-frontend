@@ -52,7 +52,6 @@
 
 .rankCard {
   width: 180px;
-  /* height: 120px; */
   padding: 20px;
   margin: 0 10px;
   border-radius: 15px;
@@ -145,32 +144,6 @@
   transform: translateZ(5px);
 }
 
-.bg-Seagull,
-.bg-Sardine,
-.bg-Turtle,
-.bg-Tuna,
-.bg-Octopus,
-.bg-Salmon,
-.bg-Jellyfish,
-.bg-Prawn {
-  width: 180px;
-  height: 180px;
-  background-image: url('/src/assets/icon_sprites.png');
-  transform: translateZ(30px);
-  transition: transform 0.3s ease;
-}
-
-.rankCard:hover .bg-Seagull,
-.rankCard:hover .bg-Sardine,
-.rankCard:hover .bg-Turtle,
-.rankCard:hover .bg-Tuna,
-.rankCard:hover .bg-Octopus,
-.rankCard:hover .bg-Salmon,
-.rankCard:hover .bg-Jellyfish,
-.rankCard:hover .bg-Prawn {
-  transform: translateZ(40px) scale(1.1);
-}
-
 @keyframes dropOut {
   0% {
     transform: translateY(0) rotateY(-5deg) rotateX(5deg);
@@ -198,50 +171,25 @@
   animation-delay: 0.2s;
 }
 
-.bg-Seagull {
-  width: 180px;
-  height: 180px;
-  background: url('/src/assets/icon_sprites.png') -10px -10px;
+@keyframes drumroll {
+  0%,
+  100% {
+    transform: translateY(0) rotateY(-5deg) rotateX(5deg);
+  }
+  25% {
+    transform: translateY(-5px) rotateY(-5deg) rotateX(5deg);
+  }
+  75% {
+    transform: translateY(5px) rotateY(-5deg) rotateX(5deg);
+  }
 }
 
-.bg-Sardine {
-  width: 180px;
-  height: 180px;
-  background: url('/src/assets/icon_sprites.png') -210px -10px;
+.rankCard.drumroll {
+  animation: drumroll 0.1s ease-in-out infinite;
 }
 
-.bg-Turtle {
-  width: 180px;
-  height: 180px;
-  background: url('/src/assets/icon_sprites.png') -10px -210px;
-}
-
-.bg-Tuna {
-  width: 180px;
-  height: 180px;
-  background: url('/src/assets/icon_sprites.png') -210px -210px;
-}
-
-.bg-Octopus {
-  width: 180px;
-  height: 180px;
-  background: url('/src/assets/icon_sprites.png') -410px -10px;
-}
-
-.bg-Salmon {
-  width: 180px;
-  height: 180px;
-  background: url('/src/assets/icon_sprites.png') -410px -210px;
-}
-
-.bg-Jellyfish {
-  width: 180px;
-  height: 180px;
-  background: url('/src/assets/icon_sprites.png') -10px -410px;
-}
-
-.bg-Prawn {
-  width: 180px;
-  height: 180px;
-  background: url('/src/assets/icon_sprites.png') -210px -410px;
+.rankCard.reveal {
+  animation:
+    dropIn 1s ease-out forwards,
+    float 3s ease-in-out infinite 1s;
 }

@@ -59,14 +59,6 @@ const CommonUI = ({
         />
       }
 
-      {!isFinished && showTopThree && quizResult && (
-        <TopThreeParticipants
-          quizResult={quizResult}
-          isStarted={isStarted}
-          participants={participants}
-          setShowTopThree={setShowTopThree}
-        />
-      )}
       <QuizProgress currentQuiz={quizIndex} totalQuizzes={quizCnt} />
 
       <ParticipantList
@@ -76,6 +68,19 @@ const CommonUI = ({
         selectedStudent={selectedStudent}
       />
       <Timer timer={timer} />
+
+      {/* 마지막 문제 전까지의 리더보드 */}
+      {!isFinished &&
+        showTopThree &&
+        quizResult &&
+        quizIndex === quizCnt - 1 && (
+          <TopThreeParticipants
+            quizResult={quizResult}
+            isStarted={isStarted}
+            participants={participants}
+            setShowTopThree={setShowTopThree}
+          />
+        )}
 
       {/* 퀴즈 종료되면 탑3 랭킹 */}
       {isFinished && showTopThree && (

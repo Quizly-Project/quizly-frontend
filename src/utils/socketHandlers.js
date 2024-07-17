@@ -161,12 +161,12 @@ export const createSocketHandlers = (
   };
 
   const handleQuizEnd = data => {
-    console.log('퀴즈 종료', data);
+    // console.log('퀴즈 종료', data);
     endQuiz();
   };
 
   const handleSelectModel = data => {
-    console.log('model files', data, nickname);
+    // console.log('model files', data, nickname);
     // console.log(data['name'], data['texture']);
     const modelMapping = data['name'];
     const texture = data['texture'];

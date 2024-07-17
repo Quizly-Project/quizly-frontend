@@ -1,9 +1,8 @@
-import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Sky, OrbitControls, CameraControls } from '@react-three/drei';
-import { Physics, vec3 } from '@react-three/rapier';
+import { Physics } from '@react-three/rapier';
 import { Perf } from 'r3f-perf';
 import { useThree, useFrame } from '@react-three/fiber';
-import useQuizRoomStore from '../store/quizRoomStore.js';
 import { gsap } from 'gsap';
 
 // Environment
@@ -14,10 +13,14 @@ import Wall from '../components/3d/Environment/Wall.jsx';
 import BasicSpotLights from '../components/3d/Environment/BasicSpotLights.jsx';
 import OEffects from '../components/3d/Environment/OEffects.jsx';
 import XEffects from '../components/3d/Environment/XEffects.jsx';
+import SpotLights from '../components/3d/Environment/SpotLights.jsx';
 
 // Character
 import CharacterController from '../components/3d/Mesh/CharacterController.jsx';
 import OtherCharacterController from '../components/3d/Mesh/OtherCharacterController.jsx';
+
+// store
+import useQuizRoomStore from '../store/quizRoomStore.js';
 
 // style
 import '../styles/game.css';
@@ -48,7 +51,7 @@ export default function Game({
   const orbitControls = useRef();
   const [initialTeacherViewSet, setInitialTeacherViewSet] = useState(false);
 
-  const { isStarted } = useQuizRoomStore(state => state.quizRoom);
+  const { type, isStarted } = useQuizRoomStore(state => state.quizRoom);
 
   const CAMERA_UP = 10;
   const CAMERA_TILT = 20;
@@ -208,6 +211,46 @@ export default function Game({
       {!isStarted && quizResult && spotlight === '1' && <OEffects />}
       {/* X spotlight & confetti */}
       {!isStarted && quizResult && spotlight === '2' && <XEffects />}
+
+      {/* 골든벨 정답자 spotlight */}
+      {!isStarted && type === 2 && (
+        <>
+          {isCorrectAnswerer && clientCoords[nickname] && (
+            <SpotLights
+              position={[
+                clientCoords[nickname].x,
+                clientCoords[nickname].y + 10,
+                clientCoords[nickname].z,
+              ]}
+              targetPosition={[
+                clientCoords[nickname].x,
+                clientCoords[nickname].y,
+                clientCoords[nickname].z,
+              ]}
+            />
+          )}
+          {quizAnswerer.map(answerer => {
+            if (answerer !== nickname && clientCoords[answerer]) {
+              return (
+                <SpotLights
+                  key={answerer}
+                  position={[
+                    clientCoords[answerer].x,
+                    clientCoords[answerer].y + 10,
+                    clientCoords[answerer].z,
+                  ]}
+                  targetPosition={[
+                    clientCoords[answerer].x,
+                    clientCoords[answerer].y,
+                    clientCoords[answerer].z,
+                  ]}
+                />
+              );
+            }
+            return null;
+          })}
+        </>
+      )}
 
       {/* <Physics debug> */}
       <Physics>
