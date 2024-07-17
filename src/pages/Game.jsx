@@ -8,10 +8,11 @@ import useQuizRoomStore from '../store/quizRoomStore.js';
 // Environment
 import IslandMaterials from '../components/3d/Environment/IslandMaterial.jsx';
 import Lights from '../components/3d/Environment/Lights.jsx';
-import SpotLights from '../components/3d/Environment/SpotLights.jsx';
 import Blackboard from '../components/3d/Environment/Blackboard.jsx';
 import Wall from '../components/3d/Environment/Wall.jsx';
-import ExplosionConfetti from '../components/3d/Environment/ExplosionConfetti.jsx';
+import BasicSpotLights from '../components/3d/Environment/BasicSpotLights.jsx';
+import OEffects from '../components/3d/Environment/OEffects.jsx';
+import XEffects from '../components/3d/Environment/XEffects.jsx';
 
 // Character
 import CharacterController from '../components/3d/Mesh/CharacterController.jsx';
@@ -149,29 +150,13 @@ export default function Game({
         </>
       )}
 
-      {/* O spotlight */}
-      {!isStarted && quizResult && spotlight === '1' && (
-        <SpotLights position={[-60, 50, 0]} targetPosition={[-60, 8.7, 0]} />
-      )}
-      {/* X spotlight */}
-      {!isStarted && quizResult && spotlight === '2' && (
-        <SpotLights position={[60, 50, 0]} targetPosition={[60, 8.7, 0]} />
-      )}
+      {/* 칠판, Yes/No 표지판의 spotlight */}
+      <BasicSpotLights />
 
-      {/* 칠판 spotlight */}
-      <SpotLights position={[70, 90, -50]} targetPosition={[10, 37, -120]} />
-      <SpotLights position={[-80, 90, -50]} targetPosition={[10, 37, -120]} />
-
-      {/* Yes/NO spotlight */}
-      <SpotLights position={[0, 50, -10]} targetPosition={[0, 8.7, -50]} />
-
-      {/* <ExplosionConfetti
-        position-x={60}
-        rate={2}
-        fallingHeight={20}
-        amount={50}
-        isExploding
-      /> */}
+      {/* O spotlight & confetti */}
+      {!isStarted && quizResult && spotlight === '1' && <OEffects />}
+      {/* X spotlight & confetti */}
+      {!isStarted && quizResult && spotlight === '2' && <XEffects />}
 
       {/* <Physics debug> */}
       <Physics>
