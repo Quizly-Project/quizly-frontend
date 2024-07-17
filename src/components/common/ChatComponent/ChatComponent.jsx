@@ -5,6 +5,8 @@ import useInputFocusedStore from '../../../store/inputFocusedStore';
 
 import styles from './ChatComponent.module.css';
 
+const chatURL = import.meta.env.VITE_CHAT_API_URL || 'http://localhost:3002';
+
 function ChatComponent({ roomCode, nickName, isTeacher }) {
   const { setIsInputChatFocused } = useInputFocusedStore();
   const [messages, setMessages] = useState([
@@ -31,7 +33,7 @@ function ChatComponent({ roomCode, nickName, isTeacher }) {
   }, [setIsInputChatFocused]);
 
   useEffect(() => {
-    socket.current = io('http://localhost:3002');
+    socket.current = io(chatURL);
     return () => {
       socket.current.disconnect();
     };
