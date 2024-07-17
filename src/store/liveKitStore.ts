@@ -1,4 +1,4 @@
-// voiceChatStore.ts
+// liveKitStore.ts
 import { create } from 'zustand';
 import {
   LocalVideoTrack,
@@ -17,7 +17,7 @@ export type Participant = {
   totalScore: number;
 };
 
-interface VoiceChatStore {
+interface liveKitStore {
   room: Room | null;
   localTrack: LocalVideoTrack | null;
   remoteTracks: TrackInfo[];
@@ -37,7 +37,7 @@ interface VoiceChatStore {
   setRanks: (ranks: Participant[]) => void;
 }
 
-export const useVoiceChatStore = create<VoiceChatStore>(set => ({
+export const useLiveKitStore = create<liveKitStore>(set => ({
   room: null,
   localTrack: null,
   remoteTracks: [],
