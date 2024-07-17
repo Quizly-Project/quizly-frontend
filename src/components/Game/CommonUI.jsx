@@ -7,7 +7,6 @@ import QuizProgress from './QuizProgress/QuizProgress';
 import TopThreeParticipants from './TopThreeParticipants/TopThreeParticipants';
 import QuizQuestionCompletion from './QuizQuestionCompletion/QuizQuestionCompletion';
 import useQuizRoomStore from '../../store/quizRoomStore';
-import VoiceChat from './VoiceChat/VoiceChat.tsx';
 import RoundEndMessage from './RounEndMessage/RoundEndMessage';
 import FinalTopThreeParticipants from './FinalTopThreeParticipants/FinalTopThreeParticipants';
 
@@ -37,8 +36,6 @@ const CommonUI = ({
   useEffect(() => {
     if (!isStarted && quizResult) setShowCompletion(true);
   }, [isStarted, quizResult]);
-
-  console.log(isFinished);
 
   return (
     <div className="common-ui">
@@ -83,7 +80,7 @@ const CommonUI = ({
       {/* 퀴즈 종료되면 탑3 랭킹 */}
       {isFinished && (
         <>
-          <QuizResultText quizResult="퀴즈 종료" />
+          {/* <QuizResultText quizResult="퀴즈 종료" /> */}
           <FinalTopThreeParticipants
             quizResult={quizResult}
             isStarted={isStarted}

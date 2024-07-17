@@ -1,4 +1,4 @@
-// VoiceChat.tsx
+// OpenVidu.tsx
 import React, { useEffect, useRef } from 'react';
 import {
   RemoteParticipant,
@@ -7,8 +7,6 @@ import {
   Room,
   RoomEvent,
 } from 'livekit-client';
-import VideoComponent from './components/VideoComponent';
-import AudioComponent from './components/AudioComponent';
 import { useVoiceChatStore } from '../../../store/voiceChatStore';
 import useQuizRoomStore from '../../../store/quizRoomStore';
 
@@ -47,7 +45,8 @@ interface VoiceChatProps {
   quizResult: any;
 }
 
-const VoiceChat: React.FC<VoiceChatProps> = ({ quizResult }) => {
+// const LiveKit: React.FC<VoiceChatProps> = () => {
+const LiveKit = () => {
   // voice chat을 위해 필요한 정보 voice chat store에서 가져옴
   const {
     room,
@@ -67,14 +66,13 @@ const VoiceChat: React.FC<VoiceChatProps> = ({ quizResult }) => {
   const roomRef = useRef<Room | null>(null);
 
   useEffect(() => {
-    console.log(quizResult.currRank);
-
-    if (!isJoined && !roomRef.current) {
+    if (!isJoined) {
       joinRoom();
     }
   }, []);
 
   async function joinRoom() {
+    console.log(roomRef);
     if (roomRef.current) {
       console.log('already joined');
       return;
@@ -158,35 +156,7 @@ const VoiceChat: React.FC<VoiceChatProps> = ({ quizResult }) => {
     return data.token;
   }
 
-  return (
-    <div id="room">
-      <div id="layout-container">
-        {/* 나 (Local) */}
-        {localTrack && (
-          <VideoComponent
-            track={localTrack}
-            participantIdentity={nickName}
-            local={true}
-          />
-        )}
-        {/* 다른 사람들 (Remote) */}
-        {remoteTracks.map(remoteTrack =>
-          remoteTrack.trackPublication.kind === 'video' ? (
-            <VideoComponent
-              key={remoteTrack.trackPublication.trackSid}
-              track={remoteTrack.trackPublication.videoTrack!}
-              participantIdentity={remoteTrack.participantIdentity}
-            />
-          ) : (
-            <AudioComponent
-              key={remoteTrack.trackPublication.trackSid}
-              track={remoteTrack.trackPublication.audioTrack!}
-            />
-          )
-        )}
-      </div>
-    </div>
-  );
+  return <></>;
 };
 
-export default VoiceChat;
+export default LiveKit;
