@@ -24,6 +24,7 @@ import useQuizRoomStore from '../store/quizRoomStore.js';
 
 // style
 import '../styles/game.css';
+import ExplosionConfetti from '../components/3d/Environment/ExplosionConfetti.jsx';
 
 export default function Game({
   nickname,
@@ -163,6 +164,8 @@ export default function Game({
     }
   });
 
+  console.log(isCorrectAnswerer, quizAnswerer);
+
   return (
     <>
       {/* debugging tools */}
@@ -213,38 +216,60 @@ export default function Game({
       {!isStarted && quizResult && spotlight === '2' && <XEffects />}
 
       {/* 골든벨 정답자 spotlight */}
-      {!isStarted && type === 2 && (
+      {!isStarted && type === 2 && quizAnswerer && (
         <>
           {isCorrectAnswerer && clientCoords[nickname] && (
-            <SpotLights
-              position={[
-                clientCoords[nickname].x,
-                clientCoords[nickname].y + 10,
-                clientCoords[nickname].z,
-              ]}
-              targetPosition={[
-                clientCoords[nickname].x,
-                clientCoords[nickname].y,
-                clientCoords[nickname].z,
-              ]}
-            />
+            <>
+              <ExplosionConfetti
+                position-x={0}
+                rate={2}
+                fallingHeight={30}
+                amount={200}
+                areaWidth={100}
+                isExploding
+              />
+              <SpotLights
+                position={[
+                  clientCoords[nickname].x,
+                  clientCoords[nickname].y + 10,
+                  clientCoords[nickname].z,
+                ]}
+                targetPosition={[
+                  clientCoords[nickname].x,
+                  clientCoords[nickname].y,
+                  clientCoords[nickname].z,
+                ]}
+                intensity={300}
+              />
+            </>
           )}
           {quizAnswerer.map(answerer => {
             if (answerer !== nickname && clientCoords[answerer]) {
               return (
-                <SpotLights
-                  key={answerer}
-                  position={[
-                    clientCoords[answerer].x,
-                    clientCoords[answerer].y + 10,
-                    clientCoords[answerer].z,
-                  ]}
-                  targetPosition={[
-                    clientCoords[answerer].x,
-                    clientCoords[answerer].y,
-                    clientCoords[answerer].z,
-                  ]}
-                />
+                <>
+                  <ExplosionConfetti
+                    position-x={0}
+                    rate={2}
+                    fallingHeight={30}
+                    amount={200}
+                    areaWidth={100}
+                    isExploding
+                  />
+                  <SpotLights
+                    key={answerer}
+                    position={[
+                      clientCoords[answerer].x,
+                      clientCoords[answerer].y + 10,
+                      clientCoords[answerer].z,
+                    ]}
+                    targetPosition={[
+                      clientCoords[answerer].x,
+                      clientCoords[answerer].y,
+                      clientCoords[answerer].z,
+                    ]}
+                    intensity={1000}
+                  />
+                </>
               );
             }
             return null;
