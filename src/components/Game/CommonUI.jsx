@@ -7,7 +7,7 @@ import QuizProgress from './QuizProgress/QuizProgress';
 import TopThreeParticipants from './TopThreeParticipants/TopThreeParticipants';
 import QuizQuestionCompletion from './QuizQuestionCompletion/QuizQuestionCompletion';
 import useQuizRoomStore from '../../store/quizRoomStore';
-import RoundEndMessage from './RounEndMessage/RoundEndMessage';
+import RoundEndMessage from './RoundEndMessage/RoundEndMessage';
 import FinalTopThreeParticipants from './FinalTopThreeParticipants/FinalTopThreeParticipants';
 
 const CommonUI = ({
