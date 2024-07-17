@@ -55,7 +55,7 @@ const ShortAnswerForm = () => {
     try {
       const result = await createQuiz(formattedData);
       console.log(result);
-      navigate('/'); // Navigate to quiz detail page
+      navigate('/dashboard'); // Navigate to quiz detail page
     } catch (err) {
       setError(
         err.response?.data?.message ||
