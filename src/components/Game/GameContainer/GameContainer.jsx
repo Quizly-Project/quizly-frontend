@@ -341,7 +341,7 @@ const GameContainer = () => {
       {showLiveKit && <LiveKit />}
       {localTrack && nickName && showLiveKit && (
         <div className={styles.camera}>
-          <MyCameraOtherVoice />
+          <MyCameraOtherVoice selectedStudent={selectedStudent} />
         </div>
       )}
       <div className={styles.container}>
