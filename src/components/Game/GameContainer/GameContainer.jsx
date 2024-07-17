@@ -91,8 +91,8 @@ const GameContainer = () => {
 
   const [selectedStudent, setSelectedStudent] = useState(null);
 
-  const { isBgMusicPlaying, toggleBackgroundMusic } =
-    useBackgroundMusic(isTeacher);
+  // const { isBgMusicPlaying, toggleBackgroundMusic } =
+  //   useBackgroundMusic(isTeacher);
 
   useEffect(() => {
     if (isTeacher) {
