@@ -12,6 +12,7 @@ const Character = React.memo(
     // console.log(actions);
 
     const { getParticipantsMap } = useQuizRoomStore();
+    const { type } = useQuizRoomStore(state => state.quizRoom);
     const participants = getParticipantsMap();
     const writeStatus = useMemo(() => {
       if (participants[nickname]?.writeStatus === 'Done')
@@ -55,27 +56,41 @@ const Character = React.memo(
               frustumCulled={false}
             />
             <primitive object={nodes.root} />
-            <Html position={[0, 3.5, 0]} center distanceFactor={60}>
-              <div className="status-bubble">
-                <div className="name-tag">
-                  {getRankEmoji && (
-                    <span className="crown-icon">{getRankEmoji}</span>
-                  )}
-                  <span className="nickname">{nickname}</span>
+            {type === 1 && (
+              <Html
+                position={[0, 3, 0]}
+                wrapperClass="label"
+                center
+                distanceFactor={10}
+                scale={400}
+              >
+                {getRankEmoji}
+                {nickname}
+              </Html>
+            )}
+            {type === 2 && (
+              <Html position={[0, 3.5, 0]} center distanceFactor={60}>
+                <div className="status-bubble">
+                  <div className="name-tag">
+                    {getRankEmoji && (
+                      <span className="crown-icon">{getRankEmoji}</span>
+                    )}
+                    <span className="nickname">{nickname}</span>
+                  </div>
+                  <div className="status-text">
+                    {writeStatus === 'isWriting' ? (
+                      <div className="typing-indicator">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
+                    ) : (
+                      writeStatus
+                    )}
+                  </div>
                 </div>
-                <div className="status-text">
-                  {writeStatus === 'isWriting' ? (
-                    <div className="typing-indicator">
-                      <span></span>
-                      <span></span>
-                      <span></span>
-                    </div>
-                  ) : (
-                    writeStatus
-                  )}
-                </div>
-              </div>
-            </Html>
+              </Html>
+            )}
           </group>
         </group>
       </group>
