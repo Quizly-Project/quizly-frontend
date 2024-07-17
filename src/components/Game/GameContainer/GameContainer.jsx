@@ -33,6 +33,8 @@ const GameContainer = () => {
     removeParticipant,
     updateParticipantWriteStatus,
     resetAllParticipantsWriteStatus,
+    updateParticipantWriteAnswer,
+    resetAllParticipantsWriteAnswer,
   } = useQuizRoomStore();
   const { isInputChatFocused, isInputGoldenbellFocused } =
     useInputFocusedStore();
@@ -175,7 +177,9 @@ const GameContainer = () => {
         addParticipant,
         removeParticipant,
         updateParticipantWriteStatus,
-        resetAllParticipantsWriteStatus
+        updateParticipantWriteAnswer,
+        resetAllParticipantsWriteStatus,
+        resetAllParticipantsWriteAnswer
       ),
     [nickName, isTeacher, quizCnt, startTimer]
   );

@@ -100,7 +100,34 @@ const useQuizRoomStore = create((set, get) => ({
         ),
       },
     })),
+  updateParticipantWriteAnswer: (nickName, answer) =>
+    set(state => ({
+      quizRoom: {
+        ...state.quizRoom,
+        participants: {
+          ...state.quizRoom.participants,
+          [nickName]: {
+            ...state.quizRoom.participants[nickName],
+            userAnswer: answer,
+          },
+        },
+      },
+    })),
 
+  resetAllParticipantsWriteAnswer: () =>
+    set(state => ({
+      quizRoom: {
+        ...state.quizRoom,
+        participants: Object.fromEntries(
+          Object.entries(state.quizRoom.participants).map(
+            ([nickName, participant]) => [
+              nickName,
+              { ...participant, userAnswer: '' },
+            ]
+          )
+        ),
+      },
+    })),
   // 선택자
   isQuizActive: () => {
     const { isStarted, isFinished } = get().quizRoom;

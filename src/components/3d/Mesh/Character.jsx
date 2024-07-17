@@ -14,7 +14,8 @@ const Character = React.memo(
     const { getParticipantsMap } = useQuizRoomStore();
     const participants = getParticipantsMap();
     const writeStatus = useMemo(() => {
-      if (participants[nickname]?.writeStatus === 'Done') return '✅';
+      if (participants[nickname]?.writeStatus === 'Done')
+        return participants[nickname]?.userAnswer;
       else if (participants[nickname]?.writeStatus === 'isWriting')
         return 'isWriting';
       else return '';

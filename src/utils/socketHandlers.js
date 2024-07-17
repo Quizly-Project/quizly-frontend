@@ -23,7 +23,9 @@ export const createSocketHandlers = (
   addParticipant,
   removeParticipant,
   updateParticipantWriteStatus,
-  resetAllParticipantsWriteStatus
+  updateParticipantWriteAnswer,
+  resetAllParticipantsWriteStatus,
+  resetAllParticipantsWriteAnswer
 ) => {
   /* ------- Socket events ------- */
   // 기존 접속중인 클라이언트의 위치 저장
@@ -117,6 +119,7 @@ export const createSocketHandlers = (
     setAnswer('');
     setQuizAnswerer('');
     resetAllParticipantsWriteStatus();
+    resetAllParticipantsWriteAnswer();
   };
 
   const handleTimerStart = duration => {
@@ -188,6 +191,7 @@ export const createSocketHandlers = (
 
     if (nickName && statusObj && statusObj.writeStatus) {
       updateParticipantWriteStatus(nickName, statusObj.writeStatus);
+      updateParticipantWriteAnswer(nickName, statusObj.userAnswer);
     } else {
       console.error('Invalid data structure for writeStatus update', data);
     }
