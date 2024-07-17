@@ -11,8 +11,8 @@ import { useVoiceChatStore } from '../../../store/liveKitStore';
 import useQuizRoomStore from '../../../store/quizRoomStore';
 
 // Configuration for URLs
-let APPLICATION_SERVER_URL = '';
-let LIVEKIT_URL = '';
+let APPLICATION_SERVER_URL = import.meta.env.VITE_APPLICATION_SERVER_URL || '';
+let LIVEKIT_URL = import.meta.env.VITE_LIVEKIT_URL || '';
 // let APPLICATION_SERVER_URL = '//ganjyul.shop/webrtc/';
 // let LIVEKIT_URL = 'https://quizly.site';
 
