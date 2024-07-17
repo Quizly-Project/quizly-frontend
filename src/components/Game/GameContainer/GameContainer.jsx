@@ -6,17 +6,21 @@ import { KeyboardControls } from '@react-three/drei';
 import Game from '../../../pages/Game';
 import GameUserInterface from '../GameUserInterface/GameUserInterface';
 import NickNameInput from '../NickNameInput/NickNameInput';
+import MyCameraOtherVoice from '../MyCameraOtherVoice/MyCameraOtherVoice';
 
 import { createSocketHandlers } from '../../../utils/socketHandlers';
 
 import useSocketStore from '../../../store/socketStore';
 import useQuizRoomStore from '../../../store/quizRoomStore';
 import useInputFocusedStore from '../../../store/inputFocusedStore';
+import LiveKit from '../LiveKit/LiveKit';
+import { useVoiceChatStore } from '../../../store/liveKitStore';
 
 import { useTimer } from '../../../hooks/useTimer';
 import useBackgroundMusic from '../../../hooks/useBackgroundMusic';
 
 import styles from './GameContainer.module.css';
+import { set } from 'react-hook-form';
 
 const GameContainer = () => {
   const { code, type } = useParams();
@@ -91,8 +95,13 @@ const GameContainer = () => {
 
   const [selectedStudent, setSelectedStudent] = useState(null);
 
-  // const { isBgMusicPlaying, toggleBackgroundMusic } =
-  //   useBackgroundMusic(isTeacher);
+  // LiveKit 컴포넌트의 렌더링 상태를 관리
+  const [showLiveKit, setShowLiveKit] = useState(false);
+
+  const { localTrack, remoteTracks } = useVoiceChatStore();
+
+  const { isBgMusicPlaying, toggleBackgroundMusic } =
+    useBackgroundMusic(isTeacher);
 
   useEffect(() => {
     if (isTeacher) {
@@ -309,76 +318,94 @@ const GameContainer = () => {
     }
   }, [initSocket, isConnected]);
 
+  useEffect(() => {
+    console.log('showLiveKit, localTrack:', showLiveKit, localTrack);
+  }, [showLiveKit, localTrack]);
+
+  useEffect(() => {
+    if (!isJoined && nickName) {
+      setShowLiveKit(true);
+    }
+  }, [isJoined, nickName]);
+
   return (
-    <div className={styles.container}>
-      <KeyboardControls
-        map={[
-          { name: 'forward', keys: ['ArrowUp', 'KeyW'] },
-          { name: 'backward', keys: ['ArrowDown', 'KeyS'] },
-          { name: 'leftward', keys: ['ArrowLeft', 'KeyA'] },
-          { name: 'rightward', keys: ['ArrowRight', 'KeyD'] },
-          { name: 'jump', keys: ['Space'] },
-        ]}
-        disabled={isInputChatFocused || isInputGoldenbellFocused}
-      >
-        <Canvas shadows className={styles.canvas}>
-          <Game
+    <>
+      {showLiveKit && <LiveKit />}
+      {localTrack && nickName && showLiveKit && (
+        <div className={styles.camera}>
+          <MyCameraOtherVoice />
+        </div>
+      )}
+      <div className={styles.container}>
+        <KeyboardControls
+          map={[
+            { name: 'forward', keys: ['ArrowUp', 'KeyW'] },
+            { name: 'backward', keys: ['ArrowDown', 'KeyS'] },
+            { name: 'leftward', keys: ['ArrowLeft', 'KeyA'] },
+            { name: 'rightward', keys: ['ArrowRight', 'KeyD'] },
+            { name: 'jump', keys: ['Space'] },
+          ]}
+          disabled={isInputChatFocused || isInputGoldenbellFocused}
+        >
+          <Canvas shadows className={styles.canvas}>
+            <Game
+              quiz={quiz}
+              quizResult={quizResult}
+              timer={timer}
+              quizCnt={quizCnt}
+              quizIndex={quizIndex}
+              clientCoords={clientCoords}
+              socket={socket}
+              isConnected={isConnected}
+              isTeacher={isTeacher}
+              code={code}
+              nickname={nickName}
+              isJoined={isJoined}
+              model={model}
+              texture={texture}
+              selectedStudent={selectedStudent}
+              updateClientCoords={updateClientCoords}
+              clientModels={clientModels}
+              spotlight={spotlight}
+              rank={rank}
+              isCorrectAnswerer={isCorrectAnswerer}
+              quizAnswerer={quizAnswerer}
+            />
+          </Canvas>
+        </KeyboardControls>
+        <div>
+          {!isJoined && !isTeacher && (
+            <NickNameInput
+              className={styles.nickNameInput}
+              onClick={handleNickNameBtn}
+            />
+          )}
+          <GameUserInterface
+            isTeacher={isTeacher}
+            handleClickQuizStart={handleClickQuizStart}
             quiz={quiz}
             quizResult={quizResult}
             timer={timer}
             quizCnt={quizCnt}
             quizIndex={quizIndex}
-            clientCoords={clientCoords}
-            socket={socket}
-            isConnected={isConnected}
-            isTeacher={isTeacher}
-            code={code}
-            nickname={nickName}
-            isJoined={isJoined}
-            model={model}
-            texture={texture}
-            selectedStudent={selectedStudent}
-            updateClientCoords={updateClientCoords}
-            clientModels={clientModels}
-            spotlight={spotlight}
-            rank={rank}
-            isCorrectAnswerer={isCorrectAnswerer}
+            answer={answer}
             quizAnswerer={quizAnswerer}
+            isJoined={isJoined}
+            nickName={nickName}
+            code={code}
+            participants={Object.keys(clientCoords).map(nickName => {
+              const { modelMapping, texture } = clientModels[nickName] || {};
+              return {
+                nickName,
+                icon: `bg-${texture?.split('_')[1]}`,
+              };
+            })}
+            onSelectStudent={handleSelectStudent}
+            selectedStudent={selectedStudent}
           />
-        </Canvas>
-      </KeyboardControls>
-      <div>
-        {!isJoined && !isTeacher && (
-          <NickNameInput
-            className={styles.nickNameInput}
-            onClick={handleNickNameBtn}
-          />
-        )}
-        <GameUserInterface
-          isTeacher={isTeacher}
-          handleClickQuizStart={handleClickQuizStart}
-          quiz={quiz}
-          quizResult={quizResult}
-          timer={timer}
-          quizCnt={quizCnt}
-          quizIndex={quizIndex}
-          answer={answer}
-          quizAnswerer={quizAnswerer}
-          isJoined={isJoined}
-          nickName={nickName}
-          code={code}
-          participants={Object.keys(clientCoords).map(nickName => {
-            const { modelMapping, texture } = clientModels[nickName] || {};
-            return {
-              nickName,
-              icon: `bg-${texture?.split('_')[1]}`,
-            };
-          })}
-          onSelectStudent={handleSelectStudent}
-          selectedStudent={selectedStudent}
-        />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

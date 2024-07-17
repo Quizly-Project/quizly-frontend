@@ -1,7 +1,7 @@
 .quizProgressContainer {
   position: fixed;
   top: 20px;
-  right: 20px;
+  left: calc(50% - 40px);
   background: rgba(0, 0, 0, 0.5);
   opacity: 0.9;
   border-radius: 15px;

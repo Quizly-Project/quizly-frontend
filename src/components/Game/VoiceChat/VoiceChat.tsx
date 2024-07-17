@@ -1,4 +1,4 @@
-// OpenVidu.tsx
+// VoiceChat.tsx
 import React, { useEffect, useRef } from 'react';
 import {
   RemoteParticipant,
@@ -7,6 +7,8 @@ import {
   Room,
   RoomEvent,
 } from 'livekit-client';
+import VideoComponent from '../LiveKit/components/VideoComponent';
+import AudioComponent from '../LiveKit/components/AudioComponent';
 import { useVoiceChatStore } from '../../../store/liveKitStore';
 import useQuizRoomStore from '../../../store/quizRoomStore';
 
@@ -45,8 +47,7 @@ interface VoiceChatProps {
   quizResult: any;
 }
 
-// const LiveKit: React.FC<VoiceChatProps> = () => {
-const LiveKit = () => {
+const VoiceChat: React.FC<VoiceChatProps> = ({ quizResult }) => {
   // voice chat을 위해 필요한 정보 voice chat store에서 가져옴
   const {
     room,
@@ -58,7 +59,6 @@ const LiveKit = () => {
     addRemoteTrack,
     removeRemoteTrack,
     setIsJoined,
-    setRemoteVideoTrack,
   } = useVoiceChatStore();
 
   // 클라이언트(본인)의 닉네임과 룸 코드를 store에서 꺼내온다.
@@ -67,13 +67,14 @@ const LiveKit = () => {
   const roomRef = useRef<Room | null>(null);
 
   useEffect(() => {
-    if (!isJoined) {
+    console.log(quizResult.currRank);
+
+    if (!isJoined && !roomRef.current) {
       joinRoom();
     }
   }, []);
 
   async function joinRoom() {
-    console.log(roomRef);
     if (roomRef.current) {
       console.log('already joined');
       return;
@@ -87,42 +88,29 @@ const LiveKit = () => {
     newRoom.on(
       RoomEvent.TrackSubscribed,
       (
-        track: RemoteTrack,
+        _track: RemoteTrack,
         publication: RemoteTrackPublication,
         participant: RemoteParticipant
       ) => {
-        if (track.kind === 'audio') {
-          addRemoteTrack({
-            trackPublication: publication,
-            participantIdentity: participant.identity,
-          });
-        } else if (track.kind === 'video') {
-          setRemoteVideoTrack(participant.identity, track as any);
-        }
+        addRemoteTrack({
+          trackPublication: publication,
+          participantIdentity: participant.identity,
+        });
       }
     );
 
     newRoom.on(
       RoomEvent.TrackUnsubscribed,
-      (
-        track: RemoteTrack,
-        publication: RemoteTrackPublication,
-        participant: RemoteParticipant
-      ) => {
-        if (track.kind === 'audio') {
-          removeRemoteTrack(publication.trackSid);
-        } else if (track.kind === 'video') {
-          setRemoteVideoTrack(participant.identity, null);
-        }
+      (_track: RemoteTrack, publication: RemoteTrackPublication) => {
+        removeRemoteTrack(publication.trackSid);
       }
     );
 
     try {
-      console.log('livKit: roomCOde, nickName', roomCode, nickName);
+      console.log(roomCode, nickName);
       const token = await getToken(roomCode, nickName);
       await newRoom.connect(LIVEKIT_URL, token);
       await newRoom.localParticipant.enableCameraAndMicrophone();
-
       setLocalTrack(
         newRoom.localParticipant.videoTrackPublications.values().next().value
           .videoTrack
@@ -149,7 +137,7 @@ const LiveKit = () => {
   }
 
   async function getToken(roomName: string, participantName: string) {
-    console.log('getToken', roomName, participantName);
+    console.log(roomName, participantName);
     const response = await fetch(APPLICATION_SERVER_URL + 'token', {
       method: 'POST',
       headers: {
@@ -170,7 +158,35 @@ const LiveKit = () => {
     return data.token;
   }
 
-  return <></>;
+  return (
+    <div id="room">
+      <div id="layout-container">
+        {/* 나 (Local) */}
+        {localTrack && (
+          <VideoComponent
+            track={localTrack}
+            participantIdentity={nickName}
+            local={true}
+          />
+        )}
+        {/* 다른 사람들 (Remote) */}
+        {remoteTracks.map(remoteTrack =>
+          remoteTrack.trackPublication.kind === 'video' ? (
+            <VideoComponent
+              key={remoteTrack.trackPublication.trackSid}
+              track={remoteTrack.trackPublication.videoTrack!}
+              participantIdentity={remoteTrack.participantIdentity}
+            />
+          ) : (
+            <AudioComponent
+              key={remoteTrack.trackPublication.trackSid}
+              track={remoteTrack.trackPublication.audioTrack!}
+            />
+          )
+        )}
+      </div>
+    </div>
+  );
 };
 
-export default LiveKit;
+export default VoiceChat;
