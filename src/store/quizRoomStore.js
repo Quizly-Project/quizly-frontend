@@ -99,7 +99,6 @@ const useQuizRoomStore = create((set, get) => ({
           )
         ),
       },
-      quizRoom: { ...state.quizRoom, isStarted: false, isFinished: true },
     })),
 
   // 선택자

@@ -62,7 +62,7 @@ const CommonUI = ({
         />
       }
 
-      {!isFinished && showTopThree && (
+      {!isFinished && showTopThree && quizResult && (
         <TopThreeParticipants
           quizResult={quizResult}
           isStarted={isStarted}

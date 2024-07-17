@@ -30,8 +30,6 @@ const GameContainer = () => {
     updateParticipantWriteStatus,
     resetAllParticipantsWriteStatus,
   } = useQuizRoomStore();
-  const { isInputChatFocused, isInputGodlenbellFocused } =
-    useQuizRoomStore();
   const { isInputChatFocused, isInputGoldenbellFocused } =
     useInputFocusedStore();
   const navigate = useNavigate();
