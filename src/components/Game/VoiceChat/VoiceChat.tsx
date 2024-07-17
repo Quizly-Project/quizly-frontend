@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+// VoiceChat.tsx
+import React, { useEffect, useRef } from 'react';
 import {
-  LocalVideoTrack,
   RemoteParticipant,
   RemoteTrack,
   RemoteTrackPublication,
@@ -9,19 +9,24 @@ import {
 } from 'livekit-client';
 import VideoComponent from './components/VideoComponent';
 import AudioComponent from './components/AudioComponent';
+import { useVoiceChatStore } from '../../../store/voiceChatStore';
+import useQuizRoomStore from '../../../store/quizRoomStore';
+
+// Configuration for URLs
+let APPLICATION_SERVER_URL = '';
+let LIVEKIT_URL = '';
+// let APPLICATION_SERVER_URL = '//ganjyul.shop/webrtc/';
+// let LIVEKIT_URL = 'https://quizly.site';
 
 type TrackInfo = {
   trackPublication: RemoteTrackPublication;
   participantIdentity: string;
 };
 
-let APPLICATION_SERVER_URL = '//ganjyul.shop/webrtc/';
-let LIVEKIT_URL = 'https://quizly.site';
-
 const configureUrls = () => {
   if (!APPLICATION_SERVER_URL) {
     if (window.location.hostname === 'localhost') {
-      APPLICATION_SERVER_URL = 'http://localhost:6080/';
+      APPLICATION_SERVER_URL = 'http://localhost:3003/webrtc/';
     } else {
       APPLICATION_SERVER_URL = 'https://' + window.location.hostname + ':6443/';
     }
@@ -39,76 +44,78 @@ const configureUrls = () => {
 configureUrls();
 
 interface VoiceChatProps {
-  roomCode: string;
-  nickName: string;
-  selectedStudent?: string;
+  quizResult: any;
 }
 
-const VoiceChat: React.FC<VoiceChatProps> = ({
-  roomCode,
-  nickName,
-  selectedStudent,
-}) => {
-  const [room, setRoom] = useState<Room | undefined>(undefined);
-  const [localTrack, setLocalTrack] = useState<LocalVideoTrack | undefined>(
-    undefined
-  );
-  const [remoteTracks, setRemoteTracks] = useState<TrackInfo[]>([]);
+const VoiceChat: React.FC<VoiceChatProps> = ({ quizResult }) => {
+  // voice chat을 위해 필요한 정보 voice chat store에서 가져옴
+  const {
+    room,
+    localTrack,
+    remoteTracks,
+    isJoined,
+    setRoom,
+    setLocalTrack,
+    addRemoteTrack,
+    removeRemoteTrack,
+    setIsJoined,
+  } = useVoiceChatStore();
+
+  // 클라이언트(본인)의 닉네임과 룸 코드를 store에서 꺼내온다.
+  const { roomCode, nickName } = useQuizRoomStore(state => state.quizRoom);
+
   const roomRef = useRef<Room | null>(null);
 
   useEffect(() => {
-    console.log('selected:');
-    joinRoom();
-    return () => {
-      leaveRoom();
-    };
-  }, []); // 빈 의존성 배열로 설정하여 컴포넌트 마운트 시 한 번만 실행
+    console.log(quizResult.currRank);
+
+    if (!isJoined && !roomRef.current) {
+      joinRoom();
+    }
+  }, []);
 
   async function joinRoom() {
     if (roomRef.current) {
-      return; // 이미 방에 참가한 경우
+      console.log('already joined');
+      return;
     }
-    const room = new Room();
-    roomRef.current = room;
-    setRoom(room);
+    console.log('join room');
 
-    room.on(
+    const newRoom = new Room();
+    roomRef.current = newRoom;
+    setRoom(newRoom);
+
+    newRoom.on(
       RoomEvent.TrackSubscribed,
       (
         _track: RemoteTrack,
         publication: RemoteTrackPublication,
         participant: RemoteParticipant
       ) => {
-        setRemoteTracks(prev => [
-          ...prev,
-          {
-            trackPublication: publication,
-            participantIdentity: participant.identity,
-          },
-        ]);
+        addRemoteTrack({
+          trackPublication: publication,
+          participantIdentity: participant.identity,
+        });
       }
     );
 
-    room.on(
+    newRoom.on(
       RoomEvent.TrackUnsubscribed,
       (_track: RemoteTrack, publication: RemoteTrackPublication) => {
-        setRemoteTracks(prev =>
-          prev.filter(
-            track => track.trackPublication.trackSid !== publication.trackSid
-          )
-        );
+        removeRemoteTrack(publication.trackSid);
       }
     );
 
     try {
       console.log(roomCode, nickName);
       const token = await getToken(roomCode, nickName);
-      await room.connect(LIVEKIT_URL, token);
-      await room.localParticipant.enableCameraAndMicrophone();
+      await newRoom.connect(LIVEKIT_URL, token);
+      await newRoom.localParticipant.enableCameraAndMicrophone();
       setLocalTrack(
-        room.localParticipant.videoTrackPublications.values().next().value
+        newRoom.localParticipant.videoTrackPublications.values().next().value
           .videoTrack
       );
+      setIsJoined(true);
     } catch (error) {
       console.log(
         'There was an error connecting to the room:',
@@ -119,16 +126,18 @@ const VoiceChat: React.FC<VoiceChatProps> = ({
   }
 
   async function leaveRoom() {
+    console.log('leave');
     if (roomRef.current) {
       await roomRef.current.disconnect();
       roomRef.current = null;
     }
-    setRoom(undefined);
-    setLocalTrack(undefined);
-    setRemoteTracks([]);
+    setRoom(null);
+    setLocalTrack(null);
+    setIsJoined(false);
   }
 
   async function getToken(roomName: string, participantName: string) {
+    console.log(roomName, participantName);
     const response = await fetch(APPLICATION_SERVER_URL + 'token', {
       method: 'POST',
       headers: {
@@ -153,13 +162,13 @@ const VoiceChat: React.FC<VoiceChatProps> = ({
     <div id="room">
       <div id="layout-container">
         {/* 나 (Local) */}
-        {/* {localTrack && (
+        {localTrack && (
           <VideoComponent
             track={localTrack}
             participantIdentity={nickName}
             local={true}
           />
-        )} */}
+        )}
         {/* 다른 사람들 (Remote) */}
         {remoteTracks.map(remoteTrack =>
           remoteTrack.trackPublication.kind === 'video' ? (
