@@ -10,26 +10,107 @@ body,
   background: lightskyblue;
 }
 
-.label > div {
-  font-family: Helvetica, Arial;
-  position: absolute;
-  color: white;
-  font-size: 100px;
-  white-space: nowrap;
-  overflow: hidden;
-  user-select: none;
+.status-bubble {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  padding: 12px 20px;
+  font-size: 14px;
+  min-width: 120px;
+  text-align: center;
+  color: #333;
+  font-weight: 500;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
 
-.question > div {
-  font-family: Helvetica, Arial;
+.status-bubble::after {
+  content: '';
   position: absolute;
-  color: white;
-  padding: 15px;
-  width: 300px; /* 원하는 넓이로 설정 */
-  max-width: 500px; /* 최대 넓이 설정 */
-  white-space: normal; /* 줄바꿈 허용 */
-  overflow: hidden;
-  border-radius: 30px;
-  user-select: none;
-  word-wrap: break-word; /* 텍스트가 박스를 벗어나지 않도록 설정 */
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-top: 12px solid rgba(255, 255, 255, 0.9);
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+}
+
+.name-tag {
+  font-size: 18px;
+  color: #1a1a1a;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 8px;
+}
+
+.crown-icon {
+  font-size: 22px;
+  position: absolute;
+  left: 20px;
+  animation: rotate 3s linear infinite;
+}
+
+.status-text {
+  font-size: 14px;
+  color: #666;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+.nickname {
+  text-align: center;
+}
+
+.status-text {
+  font-size: 14px;
+  color: #666;
+}
+
+.typing-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+.typing-indicator span {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  background-color: #333;
+  border-radius: 50%;
+  opacity: 0.3;
+  animation: blink 1.4s infinite both;
+}
+
+.typing-indicator span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0.3;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.3;
+  }
 }

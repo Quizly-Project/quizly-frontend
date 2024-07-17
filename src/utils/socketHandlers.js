@@ -19,7 +19,11 @@ export const createSocketHandlers = (
   setIsCorrectAnswerer,
   updateQuizRoom,
   startQuiz,
-  endQuiz
+  endQuiz,
+  addParticipant,
+  removeParticipant,
+  updateParticipantWriteStatus,
+  resetAllParticipantsWriteStatus
 ) => {
   /* ------- Socket events ------- */
   // 기존 접속중인 클라이언트의 위치 저장
@@ -60,6 +64,7 @@ export const createSocketHandlers = (
     console.log('new client pos', data);
     const { clientInfo, userlocations } = data;
     setParticipants(clientInfo);
+    addParticipant({ nickName: userlocations.nickName, score: 0 });
     setClientCoords(prevCoords => {
       return {
         ...prevCoords,
@@ -93,6 +98,7 @@ export const createSocketHandlers = (
     console.log('someone exit', data);
     const { nickName, clientInfo } = data;
     setParticipants(clientInfo);
+    removeParticipant(nickName);
     setClientCoords(prevCoords => {
       const newCoords = { ...prevCoords };
       delete newCoords[nickName];
@@ -110,6 +116,7 @@ export const createSocketHandlers = (
     setQuizIndex(currentQuizIndex + 1);
     setAnswer('');
     setQuizAnswerer('');
+    resetAllParticipantsWriteStatus();
   };
 
   const handleTimerStart = duration => {
@@ -173,6 +180,19 @@ export const createSocketHandlers = (
     });
   };
 
+  const handleUpdateWriteStatus = data => {
+    console.log('write status', data);
+
+    // 객체의 첫 번째 (유일한) 키-값 쌍을 추출
+    const [nickName, statusObj] = Object.entries(data)[0];
+
+    if (nickName && statusObj && statusObj.writeStatus) {
+      updateParticipantWriteStatus(nickName, statusObj.writeStatus);
+    } else {
+      console.error('Invalid data structure for writeStatus update', data);
+    }
+  };
+
   return {
     handleEveryonePosition,
     handleNewClientPosition,
@@ -183,5 +203,6 @@ export const createSocketHandlers = (
     handleTimeOut,
     handleQuizEnd,
     handleSelectModel,
+    handleUpdateWriteStatus,
   };
 };

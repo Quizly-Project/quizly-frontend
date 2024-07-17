@@ -2,35 +2,45 @@ import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Canvas } from '@react-three/fiber';
 import { KeyboardControls } from '@react-three/drei';
+
 import Game from '../../../pages/Game';
 import GameUserInterface from '../GameUserInterface/GameUserInterface';
 import NickNameInput from '../NickNameInput/NickNameInput';
-import useSocketStore from '../../../store/socketStore';
+
 import { createSocketHandlers } from '../../../utils/socketHandlers';
-import { useTimer } from '../../../hooks/useTimer';
+
+import useSocketStore from '../../../store/socketStore';
 import useQuizRoomStore from '../../../store/quizRoomStore';
 import useInputFocusedStore from '../../../store/inputFocusedStore';
+
+import { useTimer } from '../../../hooks/useTimer';
+import useBackgroundMusic from '../../../hooks/useBackgroundMusic';
 
 import styles from './GameContainer.module.css';
 
 const GameContainer = () => {
   const { code, type } = useParams();
-  const { setQuizRoom, updateQuizRoom, startQuiz, endQuiz } =
+  const {
+    setQuizRoom,
+    updateQuizRoom,
+    startQuiz,
+    endQuiz,
+    addParticipant,
+    removeParticipant,
+    updateParticipantWriteStatus,
+    resetAllParticipantsWriteStatus,
+  } = useQuizRoomStore();
+  const { isInputChatFocused, isInputGodlenbellFocused } =
     useQuizRoomStore();
   const { isInputChatFocused, isInputGoldenbellFocused } =
     useInputFocusedStore();
   const navigate = useNavigate();
+
   // useState로 관리해야 브라우저당 한 번만 접속한다.
   const [nickName, setNickName] = useState('');
 
-  const {
-    socket,
-    initSocket,
-    setSocketData,
-    isConnected,
-    isTeacher,
-    disconnectSocket,
-  } = useSocketStore(); // 소켓 연결 시도를 useEffect 내에서 처리한다.
+  const { socket, initSocket, isConnected, isTeacher, disconnectSocket } =
+    useSocketStore(); // 소켓 연결 시도를 useEffect 내에서 처리한다.
 
   /* client의 좌표 */
   const [clientCoords, setClientCoords] = useState({});
@@ -83,8 +93,8 @@ const GameContainer = () => {
 
   const [selectedStudent, setSelectedStudent] = useState(null);
 
-  const [isBgMusicPlaying, setIsBgMusicPlaying] = useState(false);
-  const bgMusicRef = useRef(new Audio('/src/assets/YoHo Beat-Duck.mp3'));
+  const { isBgMusicPlaying, toggleBackgroundMusic } =
+    useBackgroundMusic(isTeacher);
 
   useEffect(() => {
     if (isTeacher) {
@@ -106,45 +116,6 @@ const GameContainer = () => {
       });
     }
   }, [isTeacher, code, type, nickName, setQuizRoom]);
-
-  useEffect(() => {
-    if (!isTeacher) return;
-    const bgMusic = bgMusicRef.current;
-    bgMusic.loop = true;
-    bgMusic.volume = 0.3;
-    const playMusic = () => {
-      bgMusic.play().catch(error => {
-        console.error('음악 재생 실패:', error);
-        // 자동 재생 실패 시 사용자에게 알림
-        // alert('배경 음악을 재생하려면 화면을 클릭해주세요.');
-      });
-      setIsBgMusicPlaying(true);
-      // 이벤트 리스너 제거
-      document.removeEventListener('click', playMusic);
-    };
-
-    // 컴포넌트 마운트 시 음악 재생 시도
-    playMusic();
-
-    // 자동 재생 실패를 대비해 클릭 이벤트 리스너 추가
-    document.addEventListener('click', playMusic);
-
-    return () => {
-      bgMusic.pause();
-      bgMusic.currentTime = 0;
-      document.removeEventListener('click', playMusic);
-    };
-  }, []);
-
-  const toggleBackgroundMusic = useCallback(() => {
-    const bgMusic = bgMusicRef.current;
-    if (isBgMusicPlaying) {
-      bgMusic.pause();
-    } else {
-      bgMusic.play().catch(console.error);
-    }
-    setIsBgMusicPlaying(!isBgMusicPlaying);
-  }, [isBgMusicPlaying]);
 
   const updateClientCoords = (nickname, newPos) => {
     setClientCoords(prev => ({
@@ -169,6 +140,7 @@ const GameContainer = () => {
     handleTimeOut,
     handleQuizEnd,
     handleSelectModel,
+    handleUpdateWriteStatus,
   } = useMemo(
     () =>
       createSocketHandlers(
@@ -192,7 +164,11 @@ const GameContainer = () => {
         setIsCorrectAnswerer,
         updateQuizRoom,
         startQuiz,
-        endQuiz
+        endQuiz,
+        addParticipant,
+        removeParticipant,
+        updateParticipantWriteStatus,
+        resetAllParticipantsWriteStatus
       ),
     [nickName, isTeacher, quizCnt, startTimer]
   );
@@ -253,6 +229,7 @@ const GameContainer = () => {
       navigate('/');
     });
 
+    if (type === '2') socket.on('updateWriteStatus', handleUpdateWriteStatus);
     // 컴포넌트 언마운트 시 이벤트 리스너 제거
     return () => {
       socket.off('everyonePosition', handleEveryonePosition);
@@ -263,6 +240,8 @@ const GameContainer = () => {
       socket.off('timerStart', handleTimerStart);
       socket.off('timeout', handleTimeOut);
       socket.off('selectModel', handleSelectModel);
+      if (type === '2')
+        socket.off('updateWriteStatus', handleUpdateWriteStatus);
       stopTimer();
     };
   }, [
