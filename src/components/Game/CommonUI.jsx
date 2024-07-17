@@ -8,7 +8,7 @@ import TopThreeParticipants from './TopThreeParticipants/TopThreeParticipants';
 import QuizQuestionCompletion from './QuizQuestionCompletion/QuizQuestionCompletion';
 import useQuizRoomStore from '../../store/quizRoomStore';
 import VoiceChat from './VoiceChat/VoiceChat.tsx';
-import { set } from 'react-hook-form';
+import RoundEndMessage from './RounEndMessage/RoundEndMessage';
 
 const CommonUI = ({
   quizResult,
@@ -47,13 +47,18 @@ const CommonUI = ({
         />
       )}
       {
-        <QuizQuestionCompletion
+        // <QuizQuestionCompletion
+        //   message={'정지!'}
+        //   onComplete={handleOnComplete}
+        //   show={showCompletion}
+        // />
+        <RoundEndMessage
           message={'정지!'}
           onComplete={handleOnComplete}
           show={showCompletion}
         />
       }
-      {showTopThree && (
+      {showTopThree && quizResult && (
         <TopThreeParticipants
           quizResult={quizResult}
           isStarted={isStarted}

@@ -20,8 +20,16 @@ import styles from './GameContainer.module.css';
 
 const GameContainer = () => {
   const { code, type } = useParams();
-  const { setQuizRoom, updateQuizRoom, startQuiz, endQuiz } =
-    useQuizRoomStore();
+  const {
+    setQuizRoom,
+    updateQuizRoom,
+    startQuiz,
+    endQuiz,
+    addParticipant,
+    removeParticipant,
+    updateParticipantWriteStatus,
+    resetAllParticipantsWriteStatus,
+  } = useQuizRoomStore();
   const { isInputChatFocused, isInputGodlenbellFocused } =
     useInputFocusedStore();
   const navigate = useNavigate();
@@ -130,6 +138,7 @@ const GameContainer = () => {
     handleTimeOut,
     handleQuizEnd,
     handleSelectModel,
+    handleUpdateWriteStatus,
   } = useMemo(
     () =>
       createSocketHandlers(
@@ -153,7 +162,11 @@ const GameContainer = () => {
         setIsCorrectAnswerer,
         updateQuizRoom,
         startQuiz,
-        endQuiz
+        endQuiz,
+        addParticipant,
+        removeParticipant,
+        updateParticipantWriteStatus,
+        resetAllParticipantsWriteStatus
       ),
     [nickName, isTeacher, quizCnt, startTimer]
   );
@@ -214,6 +227,7 @@ const GameContainer = () => {
       navigate('/');
     });
 
+    if (type === '2') socket.on('updateWriteStatus', handleUpdateWriteStatus);
     // 컴포넌트 언마운트 시 이벤트 리스너 제거
     return () => {
       socket.off('everyonePosition', handleEveryonePosition);
@@ -224,6 +238,8 @@ const GameContainer = () => {
       socket.off('timerStart', handleTimerStart);
       socket.off('timeout', handleTimeOut);
       socket.off('selectModel', handleSelectModel);
+      if (type === '2')
+        socket.off('updateWriteStatus', handleUpdateWriteStatus);
       stopTimer();
     };
   }, [

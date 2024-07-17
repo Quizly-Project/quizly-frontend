@@ -14,14 +14,19 @@ const GoldenbellUI = () => {
   const sendMessage = e => {
     e.preventDefault();
     if (inputMessage && isConnected) {
-      socket.emit('submitAnswer', { roomCode, answer: inputMessage, nickName });
+      socket.emit('submitAnswer', {
+        roomCode,
+        answer: inputMessage,
+        nickName,
+        writeStatus: 'done',
+      });
       setIsInputGoldenbellFocused(false);
       setIsDisabled(true);
     }
   };
 
   const handleFocus = () => {
-    socket.emit('isWriting', { roomCode, nickName });
+    socket.emit('isWriting', { roomCode, nickName, writeStatus: 'isWriting' });
     setIsInputGoldenbellFocused(true);
   };
 

@@ -1,0 +1,100 @@
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, #ffb6c1, #87cefa, #98fb98, #fafad2);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+
+.shape {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  animation: colorChange 4s linear infinite; /* 애니메이션 속도를 더 빠르게 조정 */
+}
+
+.bannerContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100px;
+  width: 100%;
+}
+
+.bannerLeft,
+.bannerRight {
+  flex: 1;
+  height: 100%;
+  background-color: #ff69b4;
+}
+
+.bannerMiddle {
+  width: 60%;
+  height: 120%;
+  background-color: #4169e1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: skew(-10deg);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.message {
+  font-size: 48px;
+  font-weight: bold;
+  color: #fff;
+  text-transform: uppercase;
+  transform: skew(10deg);
+  text-shadow:
+    2px 2px 0 #ff1493,
+    -2px -2px 0 #00ffff;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes colorChange {
+  0% {
+    background-color: rgba(255, 105, 180, 0.5);
+  }
+  33% {
+    background-color: rgba(135, 206, 250, 0.5);
+  }
+  66% {
+    background-color: rgba(152, 251, 152, 0.5);
+  }
+  100% {
+    background-color: rgba(255, 105, 180, 0.5);
+  }
+}
+
+@media (max-width: 768px) {
+  .message {
+    font-size: 36px;
+  }
+}
