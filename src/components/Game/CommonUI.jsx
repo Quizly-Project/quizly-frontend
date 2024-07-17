@@ -78,7 +78,7 @@ const CommonUI = ({
       <Timer timer={timer} />
 
       {/* 퀴즈 종료되면 탑3 랭킹 */}
-      {isFinished && (
+      {isFinished && showTopThree && (
         <>
           {/* <QuizResultText quizResult="퀴즈 종료" /> */}
           <FinalTopThreeParticipants

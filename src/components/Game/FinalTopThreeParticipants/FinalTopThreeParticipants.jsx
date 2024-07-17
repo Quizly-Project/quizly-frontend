@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import VideoAudio from '../LiveKit/VideoAudio.tsx';
 import LiveKit from '../LiveKit/LiveKit.tsx';
 import styles from './FinalTopThreeParticipants.module.css';
+import RemoteVideoDisplay from '../RemoteVideoDisplay/RemoteVideoDisplay.tsx';
 
 const FinalTopThreeParticipants = ({
   quizResult,
@@ -21,15 +22,6 @@ const FinalTopThreeParticipants = ({
 
   const medals = ['silver', 'gold', 'bronze'];
   const rankOrder = [1, 0, 2]; // 2등, 1등, 3등 순서
-
-  // LiveKit 컴포넌트의 렌더링 상태를 관리
-  const [showLiveKit, setShowLiveKit] = useState(false);
-
-  useEffect(() => {
-    // chat 접속
-    console.log('Live!');
-    setShowLiveKit(true);
-  }, []);
 
   useEffect(() => {
     if (!isStarted) {
@@ -51,7 +43,6 @@ const FinalTopThreeParticipants = ({
 
   return (
     <>
-      {showLiveKit && <LiveKit />}
       <div
         className={`${styles.rankingContainer} ${isExiting ? styles.exiting : ''} ${!isVisible ? styles.hidden : ''}`}
       >
@@ -78,7 +69,7 @@ const FinalTopThreeParticipants = ({
                 {/* <div className={`${styles.characterIcon} ${iconClass}`}></div> */}
                 {/* 모델 초상화 대신 탑3 랭킹 학생들의 캠+음성을 출력한다. */}
                 {/* local videocomponent, remote videocomponent + audiocomponent 출력 */}
-                <VideoAudio />
+                <RemoteVideoDisplay participantId={participant.nickName} />
                 <div
                   className={`${styles.medal} ${styles[medals[index]]}`}
                 ></div>

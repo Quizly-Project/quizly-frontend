@@ -32,7 +32,7 @@ const useQuizRoomStore = create((set, get) => ({
 
   endQuiz: () =>
     set(state => ({
-      quizRoom: { ...state.quizRoom, isFinished: true },
+      quizRoom: { ...state.quizRoom, isFinished: true, isStarted: false },
     })),
 
   addParticipant: nickName =>

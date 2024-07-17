@@ -2,7 +2,7 @@
 import React from 'react';
 import VideoComponent from './components/VideoComponent';
 import AudioComponent from './components/AudioComponent';
-import { useVoiceChatStore } from '../../../store/voiceChatStore';
+import { useVoiceChatStore } from '../../../store/liveKitStore';
 import useQuizRoomStore from '../../../store/quizRoomStore';
 
 interface VoiceChatProps {
