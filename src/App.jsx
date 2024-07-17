@@ -58,7 +58,7 @@ function App() {
         <Route path="/game/:code/:type" element={<GameContainer />} />
         <Route path="test" element={<Test />} />
         <Route path="/chat" element={<ChatComponent />} />
-        <Route path="/voice" element={<VoiceChat />} />
+        {/* <Route path="/voice" element={<VoiceChat />} /> */}
       </Routes>
     </Router>
   );

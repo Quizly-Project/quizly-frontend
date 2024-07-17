@@ -159,13 +159,25 @@ export const createSocketHandlers = (
 
   const handleQuizEnd = data => {
     console.log('퀴즈 종료', data);
+    endQuiz();
   };
 
   const handleSelectModel = data => {
-    // console.log('model files', data);
+    console.log('model files', data, nickname);
     // console.log(data['name'], data['texture']);
-    setModel(data['name']);
-    setTexture(data['texture']);
+    const modelMapping = data['name'];
+    const texture = data['texture'];
+    setModel(modelMapping);
+    setTexture(texture);
+
+    // clientModels에 내 모델-텍스쳐 정보 저장
+    setClientModels(prevModels => {
+      const newModels = { ...prevModels };
+
+      newModels[nickname] = { modelMapping, texture };
+
+      return newModels;
+    });
   };
 
   const handleUpdateWriteStatus = data => {

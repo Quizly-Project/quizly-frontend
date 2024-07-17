@@ -31,6 +31,8 @@ const GameContainer = () => {
     resetAllParticipantsWriteStatus,
   } = useQuizRoomStore();
   const { isInputChatFocused, isInputGodlenbellFocused } =
+    useQuizRoomStore();
+  const { isInputChatFocused, isInputGoldenbellFocused } =
     useInputFocusedStore();
   const navigate = useNavigate();
 
@@ -102,7 +104,7 @@ const GameContainer = () => {
         roomCode: code,
         type: type * 1,
         isStarted: false,
-        isFinish: false,
+        isFinished: false,
       });
     } else {
       setQuizRoom({
@@ -110,7 +112,7 @@ const GameContainer = () => {
         roomCode: code,
         type: type * 1,
         isStarted: false,
-        isFinish: false,
+        isFinished: false,
       });
     }
   }, [isTeacher, code, type, nickName, setQuizRoom]);
@@ -319,7 +321,7 @@ const GameContainer = () => {
           { name: 'rightward', keys: ['ArrowRight', 'KeyD'] },
           { name: 'jump', keys: ['Space'] },
         ]}
-        disabled={isInputChatFocused || isInputGodlenbellFocused}
+        disabled={isInputChatFocused || isInputGoldenbellFocused}
       >
         <Canvas shadows className={styles.canvas}>
           <Game

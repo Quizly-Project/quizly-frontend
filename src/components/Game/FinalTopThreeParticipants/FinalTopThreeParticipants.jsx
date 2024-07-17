@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import styles from './TopThreeParticipants.module.css';
+import useQuizRoomStore from '../../../store/quizRoomStore';
+import VoiceChat from '../VoiceChat/VoiceChat';
 
-const TopThreeParticipants = ({
+import styles from './FinalTopThreeParticipants.module.css';
+
+const FinalTopThreeParticipants = ({
   quizResult,
   isStarted,
   participants,
   setShowTopThree,
 }) => {
+  // 클라이언트(본인)의 닉네임과 룸 코드를 store에서 꺼내온다.
+  const { roomCode, nickName } = useQuizRoomStore(state => state.quizRoom);
+
   const { currRank } = quizResult;
   const [isVisible, setIsVisible] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
@@ -15,10 +21,11 @@ const TopThreeParticipants = ({
     .sort((a, b) => b.totalScore - a.totalScore)
     .slice(0, 3);
 
+  console.log('final!!!', sortedParticipants);
+
   const medals = ['silver', 'gold', 'bronze'];
   const rankOrder = [1, 0, 2]; // 2등, 1등, 3등 순서
 
-  console.log('topthree', sortedParticipants);
   useEffect(() => {
     if (!isStarted) {
       setIsExiting(false);
@@ -61,7 +68,9 @@ const TopThreeParticipants = ({
             }}
           >
             <div className={styles.medalIcon}>
-              <div className={`${styles.characterIcon} ${iconClass}`}></div>
+              {/* <div className={`${styles.characterIcon} ${iconClass}`}></div> */}
+              {/* 모델 초상화 대신 탑3 랭킹 학생들의 캠+음성을 출력한다. */}
+              <VoiceChat quizResult={quizResult} />
               <div className={`${styles.medal} ${styles[medals[index]]}`}></div>
             </div>
             <h3 className={styles.nickname}>{participant.nickName}</h3>
@@ -73,4 +82,4 @@ const TopThreeParticipants = ({
   );
 };
 
-export default TopThreeParticipants;
+export default FinalTopThreeParticipants;

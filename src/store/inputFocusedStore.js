@@ -2,10 +2,10 @@ import { create } from 'zustand';
 
 const useInputFocusedStore = create(set => ({
   isInputChatFocused: false,
-  isInputGodlenbellFocused: false,
+  isInputGoldenbellFocused: false,
   setIsInputChatFocused: isInputChatFocused => set({ isInputChatFocused }),
-  setIsInputGoldenbellFocused: isInputGodlenbellFocused =>
-    set({ isInputGodlenbellFocused }),
+  setIsInputGoldenbellFocused: isInputGoldenbellFocused =>
+    set({ isInputGoldenbellFocused }),
 }));
 
 export default useInputFocusedStore;
