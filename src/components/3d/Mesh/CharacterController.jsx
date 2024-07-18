@@ -50,6 +50,7 @@ const CharacterController = ({
 
   // 내 위치가 바뀌면 서버에 위치를 전송한다.
   useEffect(() => {
+    console.log(myPos);
     socket.emit('iMove', { nickName: nickname, position: myPos }); // 보내줄 데이터 {nickName, {x, y, z}}
   }, [myPos]);
 

@@ -25,6 +25,7 @@ import useQuizRoomStore from '../store/quizRoomStore.js';
 // style
 import '../styles/game.css';
 import ExplosionConfetti from '../components/3d/Environment/ExplosionConfetti.jsx';
+import BoomIsland from '../components/3d/Environment/BoomIsland.jsx';
 
 export default function Game({
   nickname,
@@ -174,7 +175,7 @@ export default function Game({
           enableZoom={true}
           enablePan={true}
           minDistance={5}
-          maxDistance={80}
+          // maxDistance={80}
         />
       ) : (
         <CameraControls ref={cameraControls} />
@@ -200,10 +201,76 @@ export default function Game({
         </>
       )}
       <BasicSpotLights />
-      {!isStarted && quizResult && spotlight === '1' && <OEffects />}
-      {!isStarted && quizResult && spotlight === '2' && <XEffects />}
-      <Physics>
+
+      {!isStarted && type === 1 && spotlight === '1' && <OEffects />}
+      {!isStarted && type === 1 && spotlight === '2' && <XEffects />}
+
+      {!isStarted && type === 2 && quizAnswerer && (
+        <>
+          {isCorrectAnswerer && clientCoords[nickname] && (
+            <>
+              <ExplosionConfetti
+                position-x={0}
+                rate={2}
+                fallingHeight={30}
+                amount={200}
+                areaWidth={100}
+                isExploding
+              />
+              <SpotLights
+                position={[
+                  clientCoords[nickname].x,
+                  clientCoords[nickname].y + 10,
+                  clientCoords[nickname].z,
+                ]}
+                targetPosition={[
+                  clientCoords[nickname].x,
+                  clientCoords[nickname].y,
+                  clientCoords[nickname].z,
+                ]}
+                intensity={300}
+              />
+            </>
+          )}
+          {quizAnswerer.map(answerer => {
+            if (answerer !== nickname && clientCoords[answerer]) {
+              return (
+                <>
+                  <ExplosionConfetti
+                    position-x={0}
+                    rate={2}
+                    fallingHeight={30}
+                    amount={200}
+                    areaWidth={100}
+                    isExploding
+                  />
+                  <SpotLights
+                    key={answerer}
+                    position={[
+                      clientCoords[answerer].x,
+                      clientCoords[answerer].y + 10,
+                      clientCoords[answerer].z,
+                    ]}
+                    targetPosition={[
+                      clientCoords[answerer].x,
+                      clientCoords[answerer].y,
+                      clientCoords[answerer].z,
+                    ]}
+                    intensity={1000}
+                  />
+                </>
+              );
+            }
+            return null;
+          })}
+        </>
+      )}
+
+      <Physics debug>
         <IslandMaterials rotation-y={Math.PI} />
+        {/* <BoomIsland rotation-y={Math.PI} /> */}
+        {/* <BoomIsland rotation-y={Math.PI} scale-x={-1} /> */}
+
         <Wall />
         {isConnected && quiz && (
           <Blackboard position-y={70} position-z={-200} text={quiz} />
