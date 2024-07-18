@@ -166,7 +166,7 @@ export default function Game({
 
   return (
     <>
-      <Perf />
+      {/* <Perf /> */}
 
       {isTeacher ? (
         <OrbitControls
