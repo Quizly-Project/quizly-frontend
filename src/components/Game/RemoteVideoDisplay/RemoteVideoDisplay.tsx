@@ -1,18 +1,14 @@
-// VideoAudio.tsx
+// RemoteVideoDisplay.tsx
 import React from 'react';
 import VideoComponent from '../LiveKit/components/VideoComponent';
 import AudioComponent from '../LiveKit/components/AudioComponent'; // Update import statement
-import { useVoiceChatStore } from '../../../store/liveKitStore';
+import { useLiveKitStore } from '../../../store/liveKitStore';
 import useQuizRoomStore from '../../../store/quizRoomStore';
-
-interface VoiceChatProps {
-  quizResult: any;
-}
 
 const RemoteVideoDisplay: React.FC<{ participantId: string }> = ({
   participantId,
 }) => {
-  const remoteVideoTrack = useVoiceChatStore(state =>
+  const remoteVideoTrack = useLiveKitStore(state =>
     state.remoteVideoTracks.get(participantId)
   );
 

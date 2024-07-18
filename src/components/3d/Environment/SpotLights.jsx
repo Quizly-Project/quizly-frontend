@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { SpotLight, useHelper } from '@react-three/drei';
 import { useThree } from '@react-three/fiber';
 
-const SpotLights = ({ position, targetPosition }) => {
+const SpotLights = ({ position, targetPosition, intensity }) => {
   const { scene } = useThree();
   const spotLightRef = useRef();
 
@@ -21,9 +21,11 @@ const SpotLights = ({ position, targetPosition }) => {
       target={target}
       distance={100}
       angle={0.7}
-      intensity={10000}
+      intensity={intensity}
       scale={300}
       castShadow
+      penumbra={0.5}
+      volumetric
     />
   );
 };

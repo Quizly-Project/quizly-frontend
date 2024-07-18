@@ -1,9 +1,8 @@
-import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Sky, OrbitControls, CameraControls } from '@react-three/drei';
-import { Physics, vec3 } from '@react-three/rapier';
+import { Physics } from '@react-three/rapier';
 import { Perf } from 'r3f-perf';
 import { useThree, useFrame } from '@react-three/fiber';
-import useQuizRoomStore from '../store/quizRoomStore.js';
 import { gsap } from 'gsap';
 
 // Environment
@@ -14,13 +13,18 @@ import Wall from '../components/3d/Environment/Wall.jsx';
 import BasicSpotLights from '../components/3d/Environment/BasicSpotLights.jsx';
 import OEffects from '../components/3d/Environment/OEffects.jsx';
 import XEffects from '../components/3d/Environment/XEffects.jsx';
+import SpotLights from '../components/3d/Environment/SpotLights.jsx';
 
 // Character
 import CharacterController from '../components/3d/Mesh/CharacterController.jsx';
 import OtherCharacterController from '../components/3d/Mesh/OtherCharacterController.jsx';
 
+// store
+import useQuizRoomStore from '../store/quizRoomStore.js';
+
 // style
 import '../styles/game.css';
+import ExplosionConfetti from '../components/3d/Environment/ExplosionConfetti.jsx';
 
 export default function Game({
   nickname,
@@ -48,7 +52,7 @@ export default function Game({
   const orbitControls = useRef();
   const [initialTeacherViewSet, setInitialTeacherViewSet] = useState(false);
 
-  const { isStarted } = useQuizRoomStore(state => state.quizRoom);
+  const { type, isStarted } = useQuizRoomStore(state => state.quizRoom);
 
   const CAMERA_UP = 10;
   const CAMERA_TILT = 20;
