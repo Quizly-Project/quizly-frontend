@@ -4,7 +4,11 @@ import ExplosionConfetti from './ExplosionConfetti';
 const XEffects = () => {
   return (
     <>
-      <SpotLights position={[60, 50, 0]} targetPosition={[60, 8.7, 0]} />
+      <SpotLights
+        position={[60, 50, 0]}
+        targetPosition={[60, 8.7, 0]}
+        intensity={10000}
+      />
       <ExplosionConfetti
         position-x={60}
         rate={2}

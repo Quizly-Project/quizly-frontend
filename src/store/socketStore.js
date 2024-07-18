@@ -14,7 +14,10 @@ const useSocketStore = create((set, get) => ({
   initSocket: () => {
     const storedData = JSON.parse(sessionStorage.getItem('socketData'));
     if (!get().socket) {
-      const socket = io(`${socketURL}/quizly`);
+      const socket = io(`${socketURL}/quizly`, {
+        secure: true,
+        transports: ['websocket'],
+      });
 
       socket.on('connect', () => {
         console.log('Socket connected');

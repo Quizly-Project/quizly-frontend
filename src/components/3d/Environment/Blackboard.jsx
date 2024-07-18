@@ -54,14 +54,13 @@ export default function Blackboard(props) {
 
   return (
     <group {...props} dispose={null}>
-      {/* Text */}
       {lines &&
         lines.map((line, index) => (
           <Text3D
             key={index}
             scale={5}
             font="/fonts/UhBee_Regular.json"
-            position={[-60, 0 - index * 15, 110]} // 텍스트의 위치를 조정하여 줄바꿈
+            position={[-60, 0 - index * 15, 110]}
           >
             {line}
             <meshStandardMaterial attach="material" {...chalkMaterial} />

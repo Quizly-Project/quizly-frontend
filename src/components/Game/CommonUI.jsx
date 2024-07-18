@@ -7,7 +7,7 @@ import QuizProgress from './QuizProgress/QuizProgress';
 import TopThreeParticipants from './TopThreeParticipants/TopThreeParticipants';
 import QuizQuestionCompletion from './QuizQuestionCompletion/QuizQuestionCompletion';
 import useQuizRoomStore from '../../store/quizRoomStore';
-import RoundEndMessage from './RounEndMessage/RoundEndMessage';
+import RoundEndMessage from './RoundEndMessage/RoundEndMessage';
 import FinalTopThreeParticipants from './FinalTopThreeParticipants/FinalTopThreeParticipants';
 
 const CommonUI = ({
@@ -59,14 +59,6 @@ const CommonUI = ({
         />
       }
 
-      {!isFinished && showTopThree && quizResult && (
-        <TopThreeParticipants
-          quizResult={quizResult}
-          isStarted={isStarted}
-          participants={participants}
-          setShowTopThree={setShowTopThree}
-        />
-      )}
       <QuizProgress currentQuiz={quizIndex} totalQuizzes={quizCnt} />
 
       <ParticipantList
@@ -76,6 +68,20 @@ const CommonUI = ({
         selectedStudent={selectedStudent}
       />
       <Timer timer={timer} />
+
+      {/* 마지막 문제 전까지의 리더보드 */}
+      {!isFinished &&
+        showTopThree &&
+        quizResult &&
+        quizIndex > 0 &&
+        quizIndex <= quizCnt - 1 && (
+          <TopThreeParticipants
+            quizResult={quizResult}
+            isStarted={isStarted}
+            participants={participants}
+            setShowTopThree={setShowTopThree}
+          />
+        )}
 
       {/* 퀴즈 종료되면 탑3 랭킹 */}
       {isFinished && showTopThree && (

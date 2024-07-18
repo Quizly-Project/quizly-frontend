@@ -49,6 +49,16 @@ body,
   gap: 8px;
 }
 
+.label > div {
+  font-family: Helvetica, Arial;
+  position: absolute;
+  color: white;
+  font-size: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  user-select: none;
+}
+
 .crown-icon {
   font-size: 22px;
   position: absolute;

@@ -1,9 +1,8 @@
-import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Sky, OrbitControls, CameraControls } from '@react-three/drei';
-import { Physics, vec3 } from '@react-three/rapier';
+import { Physics } from '@react-three/rapier';
 import { Perf } from 'r3f-perf';
 import { useThree, useFrame } from '@react-three/fiber';
-import useQuizRoomStore from '../store/quizRoomStore.js';
 import { gsap } from 'gsap';
 
 // Environment
@@ -14,13 +13,18 @@ import Wall from '../components/3d/Environment/Wall.jsx';
 import BasicSpotLights from '../components/3d/Environment/BasicSpotLights.jsx';
 import OEffects from '../components/3d/Environment/OEffects.jsx';
 import XEffects from '../components/3d/Environment/XEffects.jsx';
+import SpotLights from '../components/3d/Environment/SpotLights.jsx';
 
 // Character
 import CharacterController from '../components/3d/Mesh/CharacterController.jsx';
 import OtherCharacterController from '../components/3d/Mesh/OtherCharacterController.jsx';
 
+// store
+import useQuizRoomStore from '../store/quizRoomStore.js';
+
 // style
 import '../styles/game.css';
+import ExplosionConfetti from '../components/3d/Environment/ExplosionConfetti.jsx';
 
 export default function Game({
   nickname,
@@ -48,7 +52,7 @@ export default function Game({
   const orbitControls = useRef();
   const [initialTeacherViewSet, setInitialTeacherViewSet] = useState(false);
 
-  const { isStarted } = useQuizRoomStore(state => state.quizRoom);
+  const { type, isStarted } = useQuizRoomStore(state => state.quizRoom);
 
   const CAMERA_UP = 10;
   const CAMERA_TILT = 20;
@@ -162,25 +166,21 @@ export default function Game({
 
   return (
     <>
-      {/* debugging tools */}
       <Perf />
 
-      {/* camera controls */}
       {isTeacher ? (
         <OrbitControls
           ref={orbitControls}
           enableRotate={true}
           enableZoom={true}
           enablePan={true}
-          minDistance={5} // 최소 거리 (줌 인 제한)
-          maxDistance={80} // 최대 거리 (줌 아웃 제한)
+          minDistance={5}
+          maxDistance={80}
         />
       ) : (
         <CameraControls ref={cameraControls} />
       )}
 
-      {/* environment */}
-      {/* 문제 나올 때는 밝게, spotlight 켜질 때는 어둡게 */}
       {isStarted ? (
         <>
           <Sky /> <Lights intensity={1.5} ambientIntensity={0.5} />
@@ -189,7 +189,7 @@ export default function Game({
         <>
           <Sky
             distance={4000}
-            sunPosition={[0, -50, -500]} // 석양
+            sunPosition={[0, -50, -500]}
             turbidity={10}
             rayleigh={2}
             mieCoefficient={0.005}
@@ -201,17 +201,73 @@ export default function Game({
         </>
       )}
 
-      {/* 칠판, Yes/No 표지판의 spotlight */}
       <BasicSpotLights />
 
-      {/* O spotlight & confetti */}
-      {!isStarted && quizResult && spotlight === '1' && <OEffects />}
-      {/* X spotlight & confetti */}
-      {!isStarted && quizResult && spotlight === '2' && <XEffects />}
+      {!isStarted && type === 1 && spotlight === '1' && <OEffects />}
+      {!isStarted && type === 1 && spotlight === '2' && <XEffects />}
 
-      {/* <Physics debug> */}
+      {!isStarted && type === 2 && quizAnswerer && (
+        <>
+          {isCorrectAnswerer && clientCoords[nickname] && (
+            <>
+              <ExplosionConfetti
+                position-x={0}
+                rate={2}
+                fallingHeight={30}
+                amount={200}
+                areaWidth={100}
+                isExploding
+              />
+              <SpotLights
+                position={[
+                  clientCoords[nickname].x,
+                  clientCoords[nickname].y + 10,
+                  clientCoords[nickname].z,
+                ]}
+                targetPosition={[
+                  clientCoords[nickname].x,
+                  clientCoords[nickname].y,
+                  clientCoords[nickname].z,
+                ]}
+                intensity={300}
+              />
+            </>
+          )}
+          {quizAnswerer.map(answerer => {
+            if (answerer !== nickname && clientCoords[answerer]) {
+              return (
+                <>
+                  <ExplosionConfetti
+                    position-x={0}
+                    rate={2}
+                    fallingHeight={30}
+                    amount={200}
+                    areaWidth={100}
+                    isExploding
+                  />
+                  <SpotLights
+                    key={answerer}
+                    position={[
+                      clientCoords[answerer].x,
+                      clientCoords[answerer].y + 10,
+                      clientCoords[answerer].z,
+                    ]}
+                    targetPosition={[
+                      clientCoords[answerer].x,
+                      clientCoords[answerer].y,
+                      clientCoords[answerer].z,
+                    ]}
+                    intensity={1000}
+                  />
+                </>
+              );
+            }
+            return null;
+          })}
+        </>
+      )}
+
       <Physics>
-        {/* fixed elements */}
         <IslandMaterials rotation-y={Math.PI} />
         <Wall />
 
@@ -219,7 +275,6 @@ export default function Game({
           <Blackboard position-y={70} position-z={-200} text={quiz} />
         )}
 
-        {/* me */}
         {isConnected && !isTeacher && isJoined && (
           <CharacterController
             path={model}
@@ -233,17 +288,14 @@ export default function Game({
           />
         )}
 
-        {/* others */}
         {isConnected &&
           isJoined &&
           Object.keys(clientCoords).map(key => {
             if (key !== nickname) {
-              // 다른 클라이언트의 정답 여부
               let isCorrect = false;
               if (quizAnswerer.includes(key)) {
                 isCorrect = true;
               }
-              // console.log(key, isCorrect);
               const { modelMapping, texture } = clientModels[key] || {};
               return modelMapping && texture ? (
                 <OtherCharacterController

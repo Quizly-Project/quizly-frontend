@@ -7,18 +7,27 @@
 .video-container {
   position: absolute;
   top: 10px; /* 원하는 위치로 설정 */
-  right: 10px; /* 원하는 위치로 설정 */
-  max-width: 220px; /* 최대 너비 설정 */
-  background: #3b3b3b;
+  right: 0px; /* 원하는 위치로 설정 */
+  /* max-width: 220px; 최대 너비 설정 */
+  max-height: 300px;
+  /* background: #3b3b3b; */
   aspect-ratio: 16/9;
   border-radius: 6px;
   overflow: hidden;
 }
 
 .video-container video {
-  width: 100%;
+  width: 178%;
   height: 100%;
+  transform: scaleX(-1);
 }
+
+/* <style > ._nickname_fc25t_134 {
+  font-size: 24px;
+  color: white;
+  margin: 40px;
+  transform: translateZ(10px);
+} */
 
 .video-container .participant-data {
   position: absolute;

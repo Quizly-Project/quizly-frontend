@@ -3,24 +3,28 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Canvas } from '@react-three/fiber';
 import { KeyboardControls } from '@react-three/drei';
 
+// components
 import Game from '../../../pages/Game';
 import GameUserInterface from '../GameUserInterface/GameUserInterface';
 import NickNameInput from '../NickNameInput/NickNameInput';
 import MyCameraOtherVoice from '../MyCameraOtherVoice/MyCameraOtherVoice';
+import LiveKit from '../LiveKit/LiveKit';
 
+// utils
 import { createSocketHandlers } from '../../../utils/socketHandlers';
 
+// store
 import useSocketStore from '../../../store/socketStore';
 import useQuizRoomStore from '../../../store/quizRoomStore';
 import useInputFocusedStore from '../../../store/inputFocusedStore';
-import LiveKit from '../LiveKit/LiveKit';
-import { useVoiceChatStore } from '../../../store/liveKitStore';
+import { useLiveKitStore } from '../../../store/liveKitStore';
 
+// hooks
 import { useTimer } from '../../../hooks/useTimer';
 import useBackgroundMusic from '../../../hooks/useBackgroundMusic';
 
+// styles
 import styles from './GameContainer.module.css';
-import { set } from 'react-hook-form';
 
 const GameContainer = () => {
   const { code, type } = useParams();
@@ -33,6 +37,8 @@ const GameContainer = () => {
     removeParticipant,
     updateParticipantWriteStatus,
     resetAllParticipantsWriteStatus,
+    updateParticipantWriteAnswer,
+    resetAllParticipantsWriteAnswer,
   } = useQuizRoomStore();
   const { isInputChatFocused, isInputGoldenbellFocused } =
     useInputFocusedStore();
@@ -98,7 +104,7 @@ const GameContainer = () => {
   // LiveKit 컴포넌트의 렌더링 상태를 관리
   const [showLiveKit, setShowLiveKit] = useState(false);
 
-  const { localTrack, remoteTracks } = useVoiceChatStore();
+  const { localTrack, remoteTracks } = useLiveKitStore();
 
   const { isBgMusicPlaying, toggleBackgroundMusic } =
     useBackgroundMusic(isTeacher);
@@ -175,7 +181,9 @@ const GameContainer = () => {
         addParticipant,
         removeParticipant,
         updateParticipantWriteStatus,
-        resetAllParticipantsWriteStatus
+        updateParticipantWriteAnswer,
+        resetAllParticipantsWriteStatus,
+        resetAllParticipantsWriteAnswer
       ),
     [nickName, isTeacher, quizCnt, startTimer]
   );
@@ -333,7 +341,7 @@ const GameContainer = () => {
       {showLiveKit && <LiveKit />}
       {localTrack && nickName && showLiveKit && (
         <div className={styles.camera}>
-          <MyCameraOtherVoice />
+          <MyCameraOtherVoice selectedStudent={selectedStudent} />
         </div>
       )}
       <div className={styles.container}>
