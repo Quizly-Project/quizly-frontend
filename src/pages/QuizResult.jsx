@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import getQuizResult from '../api/axios.js';
 import { useNavigate } from 'react-router-dom';
+import Button from '../components/common/Button/Button.jsx';
+import useQuizRoomStore from '../store/quizRoomStore.js';
 import styles from './QuizResult.module.css';
 
 const QuizResult = () => {
   const [results, setResults] = useState([]);
   const navigate = useNavigate();
+  const { roomCode } = useQuizRoomStore(state => state.quizRoom);
 
   useEffect(() => {
-    getQuizResult('quizResult/uYkv').then(res => {
+    getQuizResult(`quizResult/${roomCode}`).then(res => {
       const parsedResults = res.data.map(item => ({
         ...item,
         selectOption: JSON.parse(item.selectOption),
@@ -40,10 +43,10 @@ const QuizResult = () => {
           <table>
             <thead>
               <tr>
-                <th>Nickname</th>
-                <th>Select Option</th>
-                <th>Result</th>
-                <th>Total Score</th>
+                <th>이름</th>
+                <th>선택지</th>
+                <th>결과</th>
+                <th>총점</th>
               </tr>
             </thead>
             <tbody>
@@ -75,6 +78,9 @@ const QuizResult = () => {
           </table>
         </div>
       )}
+      <Button onClick={() => navigate('/dashboard')} color="primary">
+        홈
+      </Button>
     </div>
   );
 };
