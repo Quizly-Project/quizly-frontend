@@ -24,8 +24,8 @@ const TeacherUI = ({
 
   const handleClick = () => {
     // TOOD: 퀴즈 종료 시 퀴즈 결과 페이지로 이동하게 만들어라.
-    // navigate('/dashboard');
-    navigate('/QuizResult');
+    navigate('/dashboard');
+    // navigate('/QuizResult');
   };
   return (
     <div className={styles.uiOverlay}>
