@@ -8,7 +8,6 @@ const getGradient = percent => {
 
 const Timer = React.memo(({ timer }) => {
   const { percent, remainingTime } = timer;
-  const [isBgMusicPlaying, setIsBgMusicPlaying] = useState(false);
 
   const timerStyle = useMemo(
     () => ({

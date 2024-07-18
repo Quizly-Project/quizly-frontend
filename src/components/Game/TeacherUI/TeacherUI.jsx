@@ -16,7 +16,9 @@ const TeacherUI = ({
 }) => {
   const [isDashboardOpen, setIsDashboardOpen] = useState(false);
   const navigate = useNavigate();
-  const { isStarted, isFinished } = useQuizRoomStore(state => state.quizRoom);
+  const { isStarted, isFinished, roomCode } = useQuizRoomStore(
+    state => state.quizRoom
+  );
 
   const toggleDashboard = () => {
     setIsDashboardOpen(!isDashboardOpen);
@@ -25,7 +27,7 @@ const TeacherUI = ({
   const handleClick = () => {
     // TOOD: 퀴즈 종료 시 퀴즈 결과 페이지로 이동하게 만들어라.
     // navigate('/dashboard');
-    navigate('/QuizResult');
+    navigate(`/QuizResult/${roomCode}`);
   };
   return (
     <div className={styles.uiOverlay}>

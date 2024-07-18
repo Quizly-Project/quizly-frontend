@@ -162,34 +162,29 @@ export default function Game({
 
   return (
     <>
-      {/* debugging tools */}
       <Perf />
-
-      {/* camera controls */}
       {isTeacher ? (
         <OrbitControls
           ref={orbitControls}
           enableRotate={true}
           enableZoom={true}
           enablePan={true}
-          minDistance={5} // 최소 거리 (줌 인 제한)
-          maxDistance={80} // 최대 거리 (줌 아웃 제한)
+          minDistance={5}
+          maxDistance={80}
         />
       ) : (
         <CameraControls ref={cameraControls} />
       )}
-
-      {/* environment */}
-      {/* 문제 나올 때는 밝게, spotlight 켜질 때는 어둡게 */}
       {isStarted ? (
         <>
-          <Sky /> <Lights intensity={1.5} ambientIntensity={0.5} />
+          <Sky />
+          <Lights intensity={1.5} ambientIntensity={0.5} />
         </>
       ) : (
         <>
           <Sky
             distance={4000}
-            sunPosition={[0, -50, -500]} // 석양
+            sunPosition={[0, -50, -500]}
             turbidity={10}
             rayleigh={2}
             mieCoefficient={0.005}
@@ -200,26 +195,15 @@ export default function Game({
           <Lights intensity={0.5} ambientIntensity={0.5} />
         </>
       )}
-
-      {/* 칠판, Yes/No 표지판의 spotlight */}
       <BasicSpotLights />
-
-      {/* O spotlight & confetti */}
       {!isStarted && quizResult && spotlight === '1' && <OEffects />}
-      {/* X spotlight & confetti */}
       {!isStarted && quizResult && spotlight === '2' && <XEffects />}
-
-      {/* <Physics debug> */}
       <Physics>
-        {/* fixed elements */}
         <IslandMaterials rotation-y={Math.PI} />
         <Wall />
-
         {isConnected && quiz && (
           <Blackboard position-y={70} position-z={-200} text={quiz} />
         )}
-
-        {/* me */}
         {isConnected && !isTeacher && isJoined && (
           <CharacterController
             path={model}
@@ -232,18 +216,11 @@ export default function Game({
             isStarted={isStarted}
           />
         )}
-
-        {/* others */}
         {isConnected &&
           isJoined &&
           Object.keys(clientCoords).map(key => {
             if (key !== nickname) {
-              // 다른 클라이언트의 정답 여부
-              let isCorrect = false;
-              if (quizAnswerer.includes(key)) {
-                isCorrect = true;
-              }
-              // console.log(key, isCorrect);
+              const isCorrect = quizAnswerer.includes(key);
               const { modelMapping, texture } = clientModels[key] || {};
               return modelMapping && texture ? (
                 <OtherCharacterController
