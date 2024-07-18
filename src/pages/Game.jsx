@@ -166,8 +166,7 @@ export default function Game({
 
   return (
     <>
-      {/* <Perf /> */}
-
+      <Perf />
       {isTeacher ? (
         <OrbitControls
           ref={orbitControls}
@@ -180,10 +179,10 @@ export default function Game({
       ) : (
         <CameraControls ref={cameraControls} />
       )}
-
       {isStarted ? (
         <>
-          <Sky /> <Lights intensity={1.5} ambientIntensity={0.5} />
+          <Sky />
+          <Lights intensity={1.5} ambientIntensity={0.5} />
         </>
       ) : (
         <>
@@ -200,81 +199,15 @@ export default function Game({
           <Lights intensity={0.5} ambientIntensity={0.5} />
         </>
       )}
-
       <BasicSpotLights />
-
-      {!isStarted && type === 1 && spotlight === '1' && <OEffects />}
-      {!isStarted && type === 1 && spotlight === '2' && <XEffects />}
-
-      {!isStarted && type === 2 && quizAnswerer && (
-        <>
-          {isCorrectAnswerer && clientCoords[nickname] && (
-            <>
-              <ExplosionConfetti
-                position-x={0}
-                rate={2}
-                fallingHeight={30}
-                amount={200}
-                areaWidth={100}
-                isExploding
-              />
-              <SpotLights
-                position={[
-                  clientCoords[nickname].x,
-                  clientCoords[nickname].y + 10,
-                  clientCoords[nickname].z,
-                ]}
-                targetPosition={[
-                  clientCoords[nickname].x,
-                  clientCoords[nickname].y,
-                  clientCoords[nickname].z,
-                ]}
-                intensity={300}
-              />
-            </>
-          )}
-          {quizAnswerer.map(answerer => {
-            if (answerer !== nickname && clientCoords[answerer]) {
-              return (
-                <>
-                  <ExplosionConfetti
-                    position-x={0}
-                    rate={2}
-                    fallingHeight={30}
-                    amount={200}
-                    areaWidth={100}
-                    isExploding
-                  />
-                  <SpotLights
-                    key={answerer}
-                    position={[
-                      clientCoords[answerer].x,
-                      clientCoords[answerer].y + 10,
-                      clientCoords[answerer].z,
-                    ]}
-                    targetPosition={[
-                      clientCoords[answerer].x,
-                      clientCoords[answerer].y,
-                      clientCoords[answerer].z,
-                    ]}
-                    intensity={1000}
-                  />
-                </>
-              );
-            }
-            return null;
-          })}
-        </>
-      )}
-
+      {!isStarted && quizResult && spotlight === '1' && <OEffects />}
+      {!isStarted && quizResult && spotlight === '2' && <XEffects />}
       <Physics>
         <IslandMaterials rotation-y={Math.PI} />
         <Wall />
-
         {isConnected && quiz && (
           <Blackboard position-y={70} position-z={-200} text={quiz} />
         )}
-
         {isConnected && !isTeacher && isJoined && (
           <CharacterController
             path={model}
@@ -287,15 +220,11 @@ export default function Game({
             isStarted={isStarted}
           />
         )}
-
         {isConnected &&
           isJoined &&
           Object.keys(clientCoords).map(key => {
             if (key !== nickname) {
-              let isCorrect = false;
-              if (quizAnswerer.includes(key)) {
-                isCorrect = true;
-              }
+              const isCorrect = quizAnswerer.includes(key);
               const { modelMapping, texture } = clientModels[key] || {};
               return modelMapping && texture ? (
                 <OtherCharacterController

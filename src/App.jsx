@@ -59,7 +59,7 @@ function App() {
         <Route path="/game/:code/:type" element={<GameContainer />} />
         <Route path="test" element={<Test />} />
         <Route path="/chat" element={<ChatComponent />} />
-        <Route path="/QuizResult" element={<QuizResult />} />
+        <Route path="/QuizResult/:code" element={<QuizResult />} />
       </Routes>
     </Router>
   );

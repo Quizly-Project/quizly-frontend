@@ -1,86 +1,97 @@
 import React, { useState, useEffect } from 'react';
-import getQuizResult from '../api/axios.js';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { getQuizResult } from '../api/axios';
 import Button from '../components/common/Button/Button.jsx';
-import useQuizRoomStore from '../store/quizRoomStore.js';
-import styles from './QuizResult.module.css';
+
+import '../styles/QuizResult.css';
 
 const QuizResult = () => {
   const [results, setResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [animate, setAnimate] = useState(false);
+  const { code } = useParams();
   const navigate = useNavigate();
-  const { roomCode } = useQuizRoomStore(state => state.quizRoom);
 
   useEffect(() => {
-    getQuizResult(`quizResult/${roomCode}`).then(res => {
-      const parsedResults = res.data.map(item => ({
-        ...item,
-        selectOption: JSON.parse(item.selectOption),
-        result: JSON.parse(item.result),
-      }));
-      setResults(parsedResults);
-    });
-  }, []);
+    const fetchResults = async () => {
+      setIsLoading(true);
+      try {
+        const response = await getQuizResult(`${code}`);
+        const parsedResults = response.map(item => ({
+          ...item,
+          selectOption:
+            typeof item.selectOption === 'string'
+              ? JSON.parse(item.selectOption)
+              : item.selectOption,
+          result:
+            typeof item.result === 'string'
+              ? JSON.parse(item.result)
+              : item.result,
+        }));
+        setResults(parsedResults);
+        // Trigger animation after a short delay to ensure DOM is ready
+        setTimeout(() => setAnimate(true), 100);
+      } catch (err) {
+        console.error('Failed to fetch or process quiz results:', err);
+        setError('Failed to load quiz results. Please try again.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const getOptionDisplay = option => {
-    return option === 1 ? 'O' : 'X';
-  };
+    fetchResults();
+  }, [code]);
 
-  const getResultDisplay = result => {
-    return result === 1 ? (
-      <span className={styles['result-icon']}>🟢</span>
-    ) : (
-      <span className={styles['result-icon']}>🔴</span>
-    );
-  };
+  if (isLoading) return <div className="loading">Loading...</div>;
+  if (error) return <div className="error">{error}</div>;
+
+  const maxScore = Math.max(...results.map(r => r.totalScore), 1);
 
   return (
-    <div className={styles.container}>
-      <h1>Quiz Results</h1>
-      {results.length === 0 ? (
-        <p className={styles.loading}>Loading...</p>
-      ) : (
-        <div>
-          <table>
-            <thead>
-              <tr>
-                <th>이름</th>
-                <th>선택지</th>
-                <th>결과</th>
-                <th>총점</th>
-              </tr>
-            </thead>
-            <tbody>
-              {results.map(result => (
-                <tr key={result.stuId}>
-                  <td>{result.nickName}</td>
-                  <td>
-                    <div className={styles['option-result']}>
-                      {result.selectOption.map((option, index) => (
-                        <span key={index}>
-                          Q{index + 1}: {getOptionDisplay(option)}
-                        </span>
-                      ))}
-                    </div>
-                  </td>
-                  <td>
-                    <div className={styles['option-result']}>
-                      {result.result.map((res, index) => (
-                        <span key={index}>
-                          Q{index + 1}: {getResultDisplay(res)}
-                        </span>
-                      ))}
-                    </div>
-                  </td>
-                  <td>{result.totalScore}</td>
-                </tr>
+    <div className="quiz-result">
+      <h1 className="title">퀴즈 결과</h1>
+
+      <div className="chart">
+        {results.map((info, index) => (
+          <div key={info.stuId} className="bar-container">
+            <span className="score">{info.totalScore}</span>
+            <div
+              className={`bar ${animate ? 'animate' : ''}`}
+              style={{
+                '--final-height': `${(info.totalScore / maxScore) * 100}%`,
+              }}
+            ></div>
+            <span className="name">{info.nickName}</span>
+          </div>
+        ))}
+      </div>
+
+      <h2 className="subtitle">상세 결과</h2>
+      <div className="result-cards">
+        {results.map(info => (
+          <div key={info.stuId} className="result-card">
+            <h3>{info.nickName}</h3>
+            <p className="total-score">총점: {info.totalScore}</p>
+            <div className="result-details">
+              {info.result.map((result, idx) => (
+                <div key={idx} className="question-result">
+                  <span className="question-number">Q{idx + 1}</span>
+                  <span
+                    className={`user-answer ${result ? 'correct' : 'incorrect'}`}
+                  >
+                    {info.selectOption[idx]}
+                  </span>
+                  <span className="correct-answer">
+                    정답: {result ? info.selectOption[idx] : '?'}
+                  </span>
+                </div>
               ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-      <Button onClick={() => navigate('/dashboard')} color="primary">
-        홈
-      </Button>
+            </div>
+          </div>
+        ))}
+      </div>
+      <Button onClick={() => navigate('/dashboard')}>홈으로</Button>
     </div>
   );
 };

@@ -359,7 +359,6 @@ const GameContainer = () => {
             <Game
               quiz={quiz}
               quizResult={quizResult}
-              timer={timer}
               quizCnt={quizCnt}
               quizIndex={quizIndex}
               clientCoords={clientCoords}
