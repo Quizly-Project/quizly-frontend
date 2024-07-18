@@ -18,7 +18,7 @@ const TopThreeParticipants = ({
   const medals = ['silver', 'gold', 'bronze'];
   const rankOrder = [1, 0, 2]; // 2등, 1등, 3등 순서
 
-  console.log('topthree', sortedParticipants);
+  // console.log('topthree', sortedParticipants);
   useEffect(() => {
     if (!isStarted) {
       setIsExiting(false);

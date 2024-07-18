@@ -164,29 +164,23 @@ export default function Game({
     }
   });
 
-  console.log(isCorrectAnswerer, quizAnswerer);
-
   return (
     <>
-      {/* debugging tools */}
       <Perf />
 
-      {/* camera controls */}
       {isTeacher ? (
         <OrbitControls
           ref={orbitControls}
           enableRotate={true}
           enableZoom={true}
           enablePan={true}
-          minDistance={5} // 최소 거리 (줌 인 제한)
-          maxDistance={80} // 최대 거리 (줌 아웃 제한)
+          minDistance={5}
+          maxDistance={80}
         />
       ) : (
         <CameraControls ref={cameraControls} />
       )}
 
-      {/* environment */}
-      {/* 문제 나올 때는 밝게, spotlight 켜질 때는 어둡게 */}
       {isStarted ? (
         <>
           <Sky /> <Lights intensity={1.5} ambientIntensity={0.5} />
@@ -195,7 +189,7 @@ export default function Game({
         <>
           <Sky
             distance={4000}
-            sunPosition={[0, -50, -500]} // 석양
+            sunPosition={[0, -50, -500]}
             turbidity={10}
             rayleigh={2}
             mieCoefficient={0.005}
@@ -207,15 +201,11 @@ export default function Game({
         </>
       )}
 
-      {/* 칠판, Yes/No 표지판의 spotlight */}
       <BasicSpotLights />
 
-      {/* O spotlight & confetti */}
-      {!isStarted && quizResult && spotlight === '1' && <OEffects />}
-      {/* X spotlight & confetti */}
-      {!isStarted && quizResult && spotlight === '2' && <XEffects />}
+      {!isStarted && type === 1 && spotlight === '1' && <OEffects />}
+      {!isStarted && type === 1 && spotlight === '2' && <XEffects />}
 
-      {/* 골든벨 정답자 spotlight */}
       {!isStarted && type === 2 && quizAnswerer && (
         <>
           {isCorrectAnswerer && clientCoords[nickname] && (
@@ -277,9 +267,7 @@ export default function Game({
         </>
       )}
 
-      {/* <Physics debug> */}
       <Physics>
-        {/* fixed elements */}
         <IslandMaterials rotation-y={Math.PI} />
         <Wall />
 
@@ -287,7 +275,6 @@ export default function Game({
           <Blackboard position-y={70} position-z={-200} text={quiz} />
         )}
 
-        {/* me */}
         {isConnected && !isTeacher && isJoined && (
           <CharacterController
             path={model}
@@ -301,17 +288,14 @@ export default function Game({
           />
         )}
 
-        {/* others */}
         {isConnected &&
           isJoined &&
           Object.keys(clientCoords).map(key => {
             if (key !== nickname) {
-              // 다른 클라이언트의 정답 여부
               let isCorrect = false;
               if (quizAnswerer.includes(key)) {
                 isCorrect = true;
               }
-              // console.log(key, isCorrect);
               const { modelMapping, texture } = clientModels[key] || {};
               return modelMapping && texture ? (
                 <OtherCharacterController
