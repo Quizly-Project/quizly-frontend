@@ -10,11 +10,11 @@ const FinalTopThreeParticipants = ({
   participants,
   setShowTopThree,
 }) => {
-  console.log('FinalTopThreeParticipants 렌더링', {
-    quizResult,
-    isStarted,
-    participants,
-  });
+  // console.log('FinalTopThreeParticipants 렌더링', {
+  //   quizResult,
+  //   isStarted,
+  //   participants,
+  // });
 
   const { currRank } = quizResult;
   const [isVisible, setIsVisible] = useState(true);
@@ -33,13 +33,13 @@ const FinalTopThreeParticipants = ({
   const revealOrder = [2, 1, 0];
 
   const startRevealProcess = () => {
-    console.log('startRevealProcess 시작');
+    // console.log('startRevealProcess 시작');
     const revealInterval = 2000;
 
     revealOrder.forEach((order, index) => {
       const timer = setTimeout(
         () => {
-          console.log(`카드 공개: ${order}`);
+          // console.log(`카드 공개: ${order}`);
           setRevealedCards(prev => {
             const newRevealedCards = [...prev, order];
             if (newRevealedCards.length === 3) {
@@ -63,7 +63,7 @@ const FinalTopThreeParticipants = ({
   };
 
   useEffect(() => {
-    console.log('useEffect 실행');
+    // console.log('useEffect 실행');
 
     // 드럼롤 오디오 재생 시작
     if (drumrollAudioRef.current) {

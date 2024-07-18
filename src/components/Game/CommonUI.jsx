@@ -73,7 +73,8 @@ const CommonUI = ({
       {!isFinished &&
         showTopThree &&
         quizResult &&
-        quizIndex === quizCnt - 1 && (
+        quizIndex > 0 &&
+        quizIndex <= quizCnt - 1 && (
           <TopThreeParticipants
             quizResult={quizResult}
             isStarted={isStarted}

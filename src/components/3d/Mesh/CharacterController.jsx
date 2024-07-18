@@ -12,7 +12,7 @@ import Character from './Character';
 import useInputFocusedStore from '../../../store/inputFocusedStore';
 import spawnLocations from '../../../utils/spawnLocations';
 
-const MOVEMENT_SPEED = 100;
+const MOVEMENT_SPEED = 200;
 const JUMP_FORCE = 5;
 const MAX_LINVEL = 5;
 const JUMP_LIMIT = 11.8;
