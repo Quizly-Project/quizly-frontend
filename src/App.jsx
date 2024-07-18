@@ -15,6 +15,8 @@ import useAuthStore from './store/authStore';
 import GameContainer from './components/Game/GameContainer/GameContainer.jsx';
 import Test from './pages/Test.jsx';
 import ChatComponent from './components/common/ChatComponent/ChatComponent.jsx';
+import VoiceChat from './components/Game/LiveKit/VideoAudio.js';
+import QuizResult from './pages/QuizResult.jsx';
 
 const PrivateRoute = ({ children }) => {
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
@@ -57,6 +59,7 @@ function App() {
         <Route path="/game/:code/:type" element={<GameContainer />} />
         <Route path="test" element={<Test />} />
         <Route path="/chat" element={<ChatComponent />} />
+        <Route path="/QuizResult" element={<QuizResult />} />
       </Routes>
     </Router>
   );

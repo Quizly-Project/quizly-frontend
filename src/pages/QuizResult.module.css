@@ -1,0 +1,88 @@
+.container {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 30px;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 1200px;
+  margin: 40px auto;
+  font-family: 'Roboto', sans-serif;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 32px;
+  text-align: center;
+  margin-bottom: 30px;
+  color: #2c3e50;
+  font-weight: 300;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 30px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+thead {
+  background-color: #3498db;
+  color: white;
+}
+
+th,
+td {
+  padding: 18px;
+  border: none;
+  text-align: left;
+}
+
+th {
+  font-size: 18px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+tbody tr:hover {
+  background-color: #e9ecef;
+  transition: background-color 0.3s ease;
+}
+
+td {
+  font-size: 16px;
+  color: #34495e;
+}
+
+.loading {
+  text-align: center;
+  font-size: 20px;
+  color: #7f8c8d;
+  margin: 30px 0;
+}
+
+.option-result {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 15px;
+}
+
+.option-result span {
+  padding: 8px 15px;
+  background-color: #ecf0f1;
+  border-radius: 20px;
+  font-size: 14px;
+  color: #2c3e50;
+  transition: all 0.3s ease;
+}
+
+.option-result span:hover {
+  background-color: #3498db;
+  color: white;
+}

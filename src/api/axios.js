@@ -71,4 +71,15 @@ export const getQuizzes = async () => {
   }
 };
 
+export const getQuizResult = async roomCode => {
+  try {
+    const response = await api.get(`/quizResult/${roomCode}`);
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error('퀴즈 결과 조회 중 오류 발생:', error);
+    throw error;
+  }
+};
+
 export default api;
