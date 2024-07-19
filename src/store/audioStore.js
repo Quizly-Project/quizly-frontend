@@ -7,8 +7,6 @@ const initialAudioState = {
   fastTick: null,
   isBgMusicPlaying: false,
   isGameStarted: false,
-  bgMusic: null,
-  isBgMusicPlaying: false,
   whistle: null,
   drumroll: null,
   firstPlace: null,
