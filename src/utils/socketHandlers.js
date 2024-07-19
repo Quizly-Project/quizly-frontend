@@ -98,7 +98,7 @@ export const createSocketHandlers = (
 
   // 2. 30fps
   const handleTheyMove = data => {
-    // console.log('they move', data);
+    console.log('they move', data);
     console.log(data);
     setClientCoords(prevCoords => {
       const newCoords = { ...prevCoords };
@@ -107,6 +107,30 @@ export const createSocketHandlers = (
       });
       return newCoords;
     });
+
+    // 충돌 정보 처리
+  if (data.collisions && data.collisions.length > 0) {
+    console.log('충돌 감지됨:', data.collisions);
+    data.collisions.forEach(collision => {
+      console.log(`${collision.id1}와 ${collision.id2} 사이에 충돌 발생. 시간: ${new Date(collision.time).toLocaleTimeString()}`);
+    });
+
+    // 여기에 충돌 시 수행할 추가 로직을 구현할 수 있습니다.
+    // 예: 충돌한 객체의 색상 변경, 효과음 재생 등
+  }
+
+  // 추가 정보 (예: 각 캐릭터의 반경) 처리
+  if (data.positions) {
+    Object.keys(data.positions).forEach(key => {
+      const character = data.positions[key];
+      if (character.radius) {
+        console.log(`${character.nickName}의 충돌 반경: ${character.radius}`);
+      }
+      if (character.lastCollisionTime) {
+        console.log(`${character.nickName}의 마지막 충돌 시간: ${new Date(character.lastCollisionTime).toLocaleTimeString()}`);
+      }
+    });
+  }
   };
 
   // 다른 클라이언트가 연결 해제
