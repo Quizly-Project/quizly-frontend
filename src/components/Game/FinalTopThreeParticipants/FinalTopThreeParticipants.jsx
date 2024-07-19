@@ -8,7 +8,7 @@ const FinalTopThreeParticipants = ({
   quizResult,
   isStarted,
   participants,
-  setShowTopThree,
+  hideTopThree,
 }) => {
   // console.log('FinalTopThreeParticipants 렌더링', {
   //   quizResult,

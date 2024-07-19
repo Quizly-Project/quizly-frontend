@@ -4,7 +4,7 @@ import { Physics } from '@react-three/rapier';
 import { Perf } from 'r3f-perf';
 import { useThree, useFrame } from '@react-three/fiber';
 import { gsap } from 'gsap';
-
+import { Vector3 } from 'three';
 // Environment
 import IslandMaterials from '../components/3d/Environment/IslandMaterial.jsx';
 import Lights from '../components/3d/Environment/Lights.jsx';
@@ -14,6 +14,8 @@ import BasicSpotLights from '../components/3d/Environment/BasicSpotLights.jsx';
 import OEffects from '../components/3d/Environment/OEffects.jsx';
 import XEffects from '../components/3d/Environment/XEffects.jsx';
 import SpotLights from '../components/3d/Environment/SpotLights.jsx';
+import QuizResultCameraAnimation from '../components/Game/QuizResultCameraAnimation.jsx';
+import CoordinateHelpers from '../components/3d/CoordinateHelpers.jsx';
 import ExplosionConfetti from '../components/3d/Environment/ExplosionConfetti.jsx';
 import Bridge from '../components/3d/Environment/Bridge.jsx';
 import Land from '../components/3d/Environment/Land.jsx';
@@ -54,11 +56,26 @@ export default function Game({
   const orbitControls = useRef();
   const [initialTeacherViewSet, setInitialTeacherViewSet] = useState(false);
 
-  const { type, isStarted } = useQuizRoomStore(state => state.quizRoom);
+  const {
+    type,
+    isFinished, // 퀴즈 세션 완전히 종료
+    isStarted, // 퀴즈 세션 시작
+    isQuestionActive, // 문제 출제 퀴즈 진행 중
+    isAnswerDisplayed, // 정답 공개
+    isResultDisplayed, // 결과 공개
+  } = useQuizRoomStore(state => state.quizRoom);
+  const {
+    displayTopThree, // 상위 3명 표시
+  } = useQuizRoomStore();
 
   const CAMERA_UP = 10;
   const CAMERA_TILT = 20;
   const DURATION = 5;
+
+  const answerPosition = new Vector3(0, 50, -30);
+  const leftIsland = new Vector3(-60, 40, 60);
+  const rightIsland = new Vector3(60, 40, 60);
+  const originalPosition = new Vector3(0, CAMERA_TILT, CAMERA_TILT);
 
   const setTeacherView = useCallback(
     (currentSelectedStudent, currentClientCoords) => {
@@ -106,6 +123,133 @@ export default function Game({
     },
     [camera]
   );
+
+  const setResultView = useCallback(() => {
+    if (orbitControls.current) {
+      const delayBetweenMoves = 1; // 각 이동 사이의 지연 시간 (초)
+      let incorrectAnswerPosition;
+      let correctAnswerPosition;
+      if (spotlight === '1') {
+        incorrectAnswerPosition = rightIsland;
+        correctAnswerPosition = leftIsland;
+      } else {
+        incorrectAnswerPosition = leftIsland;
+        correctAnswerPosition = rightIsland;
+      }
+
+      const onAnswerPositionReached = () => {
+        console.log('정답 위치에 도달했습니다.');
+        // 여기에 원하는 로직을 추가하세요
+      };
+
+      const onIncorrectPositionReached = () => {
+        console.log('오답 위치에 도달했습니다.');
+        // 여기에 원하는 로직을 추가하세요
+      };
+
+      const onCorrectPositionReached = () => {
+        console.log('정답자 위치에 도달했습니다.');
+        // 여기에 원하는 로직을 추가하세요
+      };
+
+      const onOriginalPositionReached = () => {
+        console.log('원래 위치로 돌아왔습니다.');
+        // 여기에 원하는 로직을 추가하세요
+        displayTopThree();
+      };
+
+      gsap
+        .timeline()
+        .to(orbitControls.current.target, {
+          duration: 2,
+          x: answerPosition.x,
+          y: answerPosition.y,
+          z: answerPosition.z - 90,
+          onUpdate: () => orbitControls.current.update(),
+        })
+        .to(
+          camera.position,
+          {
+            duration: 2,
+            x: answerPosition.x,
+            y: answerPosition.y,
+            z: answerPosition.z,
+            onUpdate: () => orbitControls.current.update(),
+          },
+          '<'
+        )
+        .call(onAnswerPositionReached)
+        .to(
+          orbitControls.current.target,
+          {
+            duration: 2,
+            x: incorrectAnswerPosition.x,
+            y: incorrectAnswerPosition.y - 20,
+            z: incorrectAnswerPosition.z - 30,
+            onUpdate: () => orbitControls.current.update(),
+          },
+          `+=${delayBetweenMoves}`
+        )
+        .to(
+          camera.position,
+          {
+            duration: 2,
+            x: incorrectAnswerPosition.x,
+            y: incorrectAnswerPosition.y,
+            z: incorrectAnswerPosition.z,
+            onUpdate: () => orbitControls.current.update(),
+          },
+          '<'
+        )
+        .call(onIncorrectPositionReached)
+        .to(
+          orbitControls.current.target,
+          {
+            duration: 2,
+            x: correctAnswerPosition.x,
+            y: correctAnswerPosition.y - 20,
+            z: correctAnswerPosition.z - 30,
+            onUpdate: () => orbitControls.current.update(),
+          },
+          `+=${delayBetweenMoves}`
+        )
+        .to(
+          camera.position,
+          {
+            duration: 2,
+            x: correctAnswerPosition.x,
+            y: correctAnswerPosition.y,
+            z: correctAnswerPosition.z,
+            onUpdate: () => orbitControls.current.update(),
+          },
+          '<'
+        )
+        .call(onCorrectPositionReached)
+        .to(
+          orbitControls.current.target,
+          {
+            duration: 2,
+            x: 0,
+            y: CAMERA_TILT,
+            z: -CAMERA_UP,
+            onUpdate: () => orbitControls.current.update(),
+          },
+          `+=${delayBetweenMoves}`
+        )
+        .to(
+          camera.position,
+          {
+            duration: 2,
+            x: 0,
+            y: CAMERA_TILT,
+            z: CAMERA_TILT,
+            onUpdate: () => orbitControls.current.update(),
+          },
+          '<'
+        )
+        .call(onOriginalPositionReached);
+    }
+  }, [camera, spotlight]);
 
   const updateStudentCamera = useCallback(() => {
     if (!isTeacher && cameraControls.current && clientCoords[nickname]) {
@@ -166,10 +310,17 @@ export default function Game({
     }
   });
 
+  useEffect(() => {
+    if (isStarted && !isQuestionActive && isAnswerDisplayed) {
+      console.log('결과', isAnswerDisplayed);
+      setResultView();
+    }
+  }, [isStarted, isQuestionActive, isAnswerDisplayed]);
+
   return (
     <>
       <Perf />
-
+      <CoordinateHelpers size={1000} divisions={10} />
       {isTeacher ? (
         <OrbitControls
           ref={orbitControls}
@@ -179,10 +330,20 @@ export default function Game({
           minDistance={5}
           // maxDistance={80}
         />
+      ) : isStarted && isAnswerDisplayed ? (
+        <OrbitControls
+          ref={orbitControls}
+          enableRotate={true}
+          enableZoom={true}
+          enablePan={true}
+          minDistance={5}
+          maxDistance={80}
+        />
       ) : (
         <CameraControls ref={cameraControls} />
       )}
-      {isStarted ? (
+
+      {isQuestionActive ? (
         <>
           <Sky />
           <Lights intensity={1.5} ambientIntensity={0.5} />
@@ -203,7 +364,7 @@ export default function Game({
         </>
       )}
       <BasicSpotLights />
-
+        <IslandMaterials rotation-y={Math.PI} />
       {!isStarted && type === 1 && spotlight === '1' && <OEffects />}
       {!isStarted && type === 1 && spotlight === '2' && <XEffects />}
 
@@ -288,7 +449,7 @@ export default function Game({
             updateClientCoords={updateClientCoords}
             rank={rank}
             isCorrectAnswerer={isCorrectAnswerer}
-            isStarted={isStarted}
+            isStarted={isQuestionActive}
           />
         )}
         {isConnected &&
@@ -307,7 +468,7 @@ export default function Game({
                   scale={2}
                   rank={rank}
                   isCorrectAnswerer={isCorrect}
-                  isStarted={isStarted}
+                  isStarted={isQuestionActive}
                 />
               ) : null;
             }
