@@ -364,7 +364,6 @@ export default function Game({
         </>
       )}
       <BasicSpotLights />
-        <IslandMaterials rotation-y={Math.PI} />
       {!isStarted && type === 1 && spotlight === '1' && <OEffects />}
       {!isStarted && type === 1 && spotlight === '2' && <XEffects />}
 
