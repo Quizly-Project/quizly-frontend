@@ -9,6 +9,7 @@ import QuizQuestionCompletion from './QuizQuestionCompletion/QuizQuestionComplet
 import useQuizRoomStore from '../../store/quizRoomStore';
 import RoundEndMessage from './RoundEndMessage/RoundEndMessage';
 import FinalTopThreeParticipants from './FinalTopThreeParticipants/FinalTopThreeParticipants';
+import { is } from '@react-three/fiber/dist/declarations/src/core/utils';
 
 const CommonUI = ({
   quizResult,
@@ -26,16 +27,27 @@ const CommonUI = ({
   isTeacher,
 }) => {
   const [showCompletion, setShowCompletion] = useState(false);
-  const [showTopThree, setShowTopThree] = useState(false);
-  const { isStarted, isFinished } = useQuizRoomStore(state => state.quizRoom);
+
+  const {
+    isStarted,
+    isQuestionActive,
+    isFinished,
+    showTopThree,
+    hideTopThree,
+  } = useQuizRoomStore(state => state.quizRoom);
   const handleOnComplete = () => {
     setShowCompletion(false);
-    setShowTopThree(true);
   };
 
   useEffect(() => {
-    if (!isStarted && quizResult) setShowCompletion(true);
-  }, [isStarted, quizResult]);
+    console.log('isStarted', isStarted);
+    console.log('isQuestionActive', isQuestionActive);
+    console.log('isFinished', isFinished);
+    console.log('quizIndex', quizIndex);
+    console.log('quizCnt', quizCnt);
+    console.log('quizResult', quizResult);
+    if (isStarted && !isQuestionActive) setShowCompletion(true);
+  }, [isQuestionActive, isStarted, isFinished]);
 
   return (
     <div className="common-ui">
@@ -79,7 +91,7 @@ const CommonUI = ({
             quizResult={quizResult}
             isStarted={isStarted}
             participants={participants}
-            setShowTopThree={setShowTopThree}
+            hideTopThree={hideTopThree}
           />
         )}
 
@@ -91,7 +103,7 @@ const CommonUI = ({
             quizResult={quizResult}
             isStarted={isStarted}
             participants={participants}
-            setShowTopThree={setShowTopThree}
+            hideTopThree={hideTopThree}
           />
         </>
       )}

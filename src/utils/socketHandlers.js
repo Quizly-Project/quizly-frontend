@@ -25,7 +25,14 @@ export const createSocketHandlers = (
   updateParticipantWriteStatus,
   updateParticipantWriteAnswer,
   resetAllParticipantsWriteStatus,
-  resetAllParticipantsWriteAnswer
+  resetAllParticipantsWriteAnswer,
+  activateQuestion,
+  deactivateQuestion,
+  displayAnswer,
+  hideAnswer,
+  displayResult,
+  hideResult,
+  hideTopThree
 ) => {
   /* ------- Socket events ------- */
   // 기존 접속중인 클라이언트의 위치 저장
@@ -126,9 +133,13 @@ export const createSocketHandlers = (
   const handleQuiz = data => {
     console.log('퀴즈 시작', data);
     const { currentQuizIndex, quiz } = data;
+    hideAnswer();
     setQuiz(quiz);
     console.log('퀴즈quiz', quiz);
-    startQuiz(); // 이미 정의된 startQuiz 액션 사용
+    hideTopThree();
+    startQuiz();
+    activateQuestion();
+
     setIsCorrectAnswerer(false);
     setQuizIndex(currentQuizIndex + 1);
     setAnswer('');
@@ -145,6 +156,8 @@ export const createSocketHandlers = (
   const handleTimeOut = data => {
     console.log('타이머 종료', data);
     const options = ['무응답', 'O', 'X', '4'];
+
+    deactivateQuestion();
 
     setSpotlight(data.correctAnswer);
     setRank(
@@ -166,12 +179,7 @@ export const createSocketHandlers = (
       setIsCorrectAnswerer(correctAnswerList.includes(nickname));
     }
 
-    if (data.quizEndVal) {
-      endQuiz(); // 스토어에 정의된 endQuiz 액션 사용
-    } else {
-      updateQuizRoom({ isStarted: false });
-    }
-
+    if (data.quizEndVal) endQuiz(); // 스토어에 정의된 endQuiz 액션 사용
     console.log('quizEndVal', data.quizEndVal);
   };
 

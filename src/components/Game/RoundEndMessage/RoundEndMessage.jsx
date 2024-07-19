@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTransition, animated, config } from 'react-spring';
+import useQuizRoomStore from '../../../store/quizRoomStore';
 import styles from './RoundEndMessage.module.css';
 
 const RoundEndMessage = ({ message, onComplete, show }) => {
   const [visible, setVisible] = useState(false);
   const whistleRef = useRef(null);
-
+  const { displayAnswer } = useQuizRoomStore();
   useEffect(() => {
     whistleRef.current = new Audio('/src/assets/whistle.wav');
     whistleRef.current.preload = 'auto';
@@ -27,6 +28,7 @@ const RoundEndMessage = ({ message, onComplete, show }) => {
 
       const timer = setTimeout(() => {
         setVisible(false);
+        displayAnswer();
       }, 2000);
 
       return () => {

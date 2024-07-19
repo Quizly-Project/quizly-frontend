@@ -5,7 +5,7 @@ const TopThreeParticipants = ({
   quizResult,
   isStarted,
   participants,
-  setShowTopThree,
+  hideTopThree,
 }) => {
   const { currRank } = quizResult;
   const [isVisible, setIsVisible] = useState(false);
@@ -20,7 +20,10 @@ const TopThreeParticipants = ({
 
   // console.log('topthree', sortedParticipants);
   useEffect(() => {
-    if (!isStarted) {
+    console.log('TopThreeParticipants', isStarted);
+    console.log('TopThreeParticipants isVisible', isVisible);
+    console.log('TopThreeParticipants isExiting', isExiting);
+    if (isStarted) {
       setIsExiting(false);
       setIsVisible(true);
     } else {
@@ -28,7 +31,7 @@ const TopThreeParticipants = ({
         setIsExiting(true);
         const timer = setTimeout(() => {
           setIsVisible(false);
-          setShowTopThree(false);
+          hideTopThree();
         }, 500);
         return () => clearTimeout(timer);
       }

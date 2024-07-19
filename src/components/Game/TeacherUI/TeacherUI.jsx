@@ -16,7 +16,7 @@ const TeacherUI = ({
 }) => {
   const [isDashboardOpen, setIsDashboardOpen] = useState(false);
   const navigate = useNavigate();
-  const { isStarted, isFinished, roomCode } = useQuizRoomStore(
+  const { isQuestionActive, isFinished, roomCode } = useQuizRoomStore(
     state => state.quizRoom
   );
 
@@ -49,7 +49,7 @@ const TeacherUI = ({
       >
         {isDashboardOpen ? '►' : '◄'}
       </button>
-      {!isStarted &&
+      {!isQuestionActive &&
         (isFinished ? (
           <div className={styles.startButtonContainer}>
             <QuizStartButton

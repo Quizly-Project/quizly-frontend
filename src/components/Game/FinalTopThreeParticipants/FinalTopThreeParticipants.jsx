@@ -9,7 +9,7 @@ const FinalTopThreeParticipants = ({
   quizResult,
   isStarted,
   participants,
-  setShowTopThree,
+  hideTopThree,
 }) => {
   const { currRank } = quizResult;
   const [isVisible, setIsVisible] = useState(true);

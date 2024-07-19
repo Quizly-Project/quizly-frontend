@@ -39,6 +39,13 @@ const GameContainer = () => {
     resetAllParticipantsWriteStatus,
     updateParticipantWriteAnswer,
     resetAllParticipantsWriteAnswer,
+    activateQuestion,
+    deactivateQuestion,
+    displayAnswer,
+    hideAnswer,
+    displayResult,
+    hideResult,
+    hideTopThree,
   } = useQuizRoomStore();
   const { isInputChatFocused, isInputGoldenbellFocused } =
     useInputFocusedStore();
@@ -183,7 +190,14 @@ const GameContainer = () => {
         updateParticipantWriteStatus,
         updateParticipantWriteAnswer,
         resetAllParticipantsWriteStatus,
-        resetAllParticipantsWriteAnswer
+        resetAllParticipantsWriteAnswer,
+        activateQuestion,
+        deactivateQuestion,
+        displayAnswer,
+        hideAnswer,
+        displayResult,
+        hideResult,
+        hideTopThree
       ),
     [nickName, isTeacher, quizCnt, startTimer]
   );
