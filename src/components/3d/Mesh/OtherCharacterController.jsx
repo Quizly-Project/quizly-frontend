@@ -57,7 +57,7 @@ const OtherCharacterController = React.memo(
         enabledRotations={[false, false, false]}
         gravityScale={0.6}
       >
-        <CapsuleCollider args={[0.2, 2.2]} position={[0, 1.25, 0]} />
+        {/* <CapsuleCollider args={[0.2, 2.2]} position={[0, 1.25, 0]} /> */}
         <group ref={character}>
           {action && (
             <Character
