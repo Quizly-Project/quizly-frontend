@@ -27,6 +27,7 @@ import useQuizRoomStore from '../store/quizRoomStore.js';
 
 // style
 import '../styles/game.css';
+import StaticMaterials from '../components/3d/Environment/StaticMaterials.jsx';
 
 export default function Game({
   nickname,
@@ -199,7 +200,7 @@ export default function Game({
             inclination={0.6}
             azimuth={0.25}
           />
-          <Lights intensity={0.5} ambientIntensity={0.5} />
+          <Lights intensity={1.0} ambientIntensity={0.5} />
         </>
       )}
       <BasicSpotLights />
@@ -274,6 +275,7 @@ export default function Game({
         <Land rotation-y={Math.PI} />
         <Land rotation-y={Math.PI} scale-x={-1} />
         <Bridge />
+        <StaticMaterials rotation-y={Math.PI} />
 
         <Wall />
         {isConnected && quiz && (
