@@ -2,20 +2,23 @@ import { create } from 'zustand';
 
 // 초기 상태 정의
 const initialQuizRoom = {
-  type: '',
-  roomCode: '',
-  isFinish: false,
-  nickName: '',
-  isFinished: false,
-  isStarted: false,
-  participants: {},
+  type: '', // 퀴즈 타입
+  roomCode: '', // 퀴즈방 코드
+  nickName: '', // 퀴즈 참여한 내 닉네임
+  isFinished: false, // 퀴즈 세션 종료 여부
+  isStarted: false, // 퀴즈 세션 시작 여부
+  isQuestionActive: false, // 문제 출제 여부
+  isAnswerDisplayed: false, // 정답 공개 여부
+  isResultDisplayed: false, // 결과 공개 여부
+  showTopThree: false, // 상위 3명 표시 여부
+  participants: {}, // 참가자
 };
 
 const useQuizRoomStore = create((set, get) => ({
   // 상태
   quizRoom: initialQuizRoom,
 
-  // 액션
+  // 기존 액션
   setQuizRoom: quizRoom => set({ quizRoom }),
 
   updateQuizRoom: partial =>
@@ -27,14 +30,56 @@ const useQuizRoomStore = create((set, get) => ({
 
   startQuiz: () =>
     set(state => ({
-      quizRoom: { ...state.quizRoom, isStarted: true },
+      quizRoom: { ...state.quizRoom, isStarted: true, isFinished: false },
     })),
 
   endQuiz: () =>
     set(state => ({
-      quizRoom: { ...state.quizRoom, isFinished: true, isStarted: false },
+      quizRoom: {
+        ...state.quizRoom,
+        isFinished: true,
+        isStarted: false,
+        isQuestionActive: false,
+      },
     })),
 
+  /* 현재 문제를 활성화합니다. */
+  activateQuestion: () =>
+    set(state => ({
+      quizRoom: { ...state.quizRoom, isQuestionActive: true },
+    })),
+
+  /* 현재 문제를 비활성화합니다. */
+  deactivateQuestion: () =>
+    set(state => ({
+      quizRoom: { ...state.quizRoom, isQuestionActive: false },
+    })),
+
+  /* 정답을 표시합니다. */
+  displayAnswer: () =>
+    set(state => ({
+      quizRoom: { ...state.quizRoom, isAnswerDisplayed: true },
+    })),
+
+  /* 정답 표시를 숨깁니다. */
+  hideAnswer: () =>
+    set(state => ({
+      quizRoom: { ...state.quizRoom, isAnswerDisplayed: false },
+    })),
+
+  /* 결과를 표시합니다. */
+  displayResult: () =>
+    set(state => ({
+      quizRoom: { ...state.quizRoom, isResultDisplayed: true },
+    })),
+
+  /* 결과 표시를 숨깁니다. */
+  hideResult: () =>
+    set(state => ({
+      quizRoom: { ...state.quizRoom, isResultDisplayed: false },
+    })),
+
+  // 기존 참가자 관련 액션들
   addParticipant: nickName =>
     set(state => ({
       quizRoom: {
@@ -71,7 +116,7 @@ const useQuizRoomStore = create((set, get) => ({
         },
       },
     })),
-  /*{ nickName : { writeStatus: string(none | isWriting | done) } }*/
+
   updateParticipantWriteStatus: (nickName, writeStatus) =>
     set(state => ({
       quizRoom: {
@@ -86,20 +131,20 @@ const useQuizRoomStore = create((set, get) => ({
       },
     })),
 
-  resetAllParticipantsWriteStatus: (initialStatus = 'none') =>
-    set(state => ({
-      quizRoom: {
-        ...state.quizRoom,
-        participants: Object.fromEntries(
-          Object.entries(state.quizRoom.participants).map(
-            ([nickName, participant]) => [
-              nickName,
-              { ...participant, writeStatus: initialStatus },
-            ]
-          )
-        ),
-      },
-    })),
+  resetAllParticipantsWriteStatus: () => {
+    set(state => {
+      const updatedParticipants = state.participants
+        ? { ...state.participants }
+        : {};
+      if (Object.keys(updatedParticipants).length > 0) {
+        Object.entries(updatedParticipants).forEach(([key, value]) => {
+          updatedParticipants[key] = { ...value, hasWritten: false };
+        });
+      }
+      return { participants: updatedParticipants };
+    });
+  },
+
   updateParticipantWriteAnswer: (nickName, answer) =>
     set(state => ({
       quizRoom: {
@@ -128,6 +173,17 @@ const useQuizRoomStore = create((set, get) => ({
         ),
       },
     })),
+
+  displayTopThree: () =>
+    set(state => ({
+      quizRoom: { ...state.quizRoom, showTopThree: true },
+    })),
+
+  hideTopThree: () =>
+    set(state => ({
+      quizRoom: { ...state.quizRoom, showTopThree: false },
+    })),
+
   // 선택자
   isQuizActive: () => {
     const { isStarted, isFinished } = get().quizRoom;

@@ -155,14 +155,6 @@ const MultipleChoiceForm = () => {
             error={errors.quizzes?.[index]?.time}
             options={timeOptions}
           />
-          <InputField
-            label="해설"
-            {...register(`quizzes.${index}.explanation`, {
-              required: '퀴즈 해설을 입력해주세요',
-            })}
-            errors={errors.description}
-            type="textarea"
-          />
           <Button type="button" color="secondary" onClick={() => remove(index)}>
             - 퀴즈 삭제
           </Button>
