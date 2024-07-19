@@ -14,6 +14,9 @@ import BasicSpotLights from '../components/3d/Environment/BasicSpotLights.jsx';
 import OEffects from '../components/3d/Environment/OEffects.jsx';
 import XEffects from '../components/3d/Environment/XEffects.jsx';
 import SpotLights from '../components/3d/Environment/SpotLights.jsx';
+import ExplosionConfetti from '../components/3d/Environment/ExplosionConfetti.jsx';
+import Bridge from '../components/3d/Environment/Bridge.jsx';
+import Land from '../components/3d/Environment/Land.jsx';
 
 // Character
 import CharacterController from '../components/3d/Mesh/CharacterController.jsx';
@@ -24,8 +27,6 @@ import useQuizRoomStore from '../store/quizRoomStore.js';
 
 // style
 import '../styles/game.css';
-import ExplosionConfetti from '../components/3d/Environment/ExplosionConfetti.jsx';
-import BoomIsland from '../components/3d/Environment/BoomIsland.jsx';
 
 export default function Game({
   nickname,
@@ -168,6 +169,7 @@ export default function Game({
   return (
     <>
       <Perf />
+
       {isTeacher ? (
         <OrbitControls
           ref={orbitControls}
@@ -267,9 +269,11 @@ export default function Game({
       )}
 
       <Physics debug>
-        <IslandMaterials rotation-y={Math.PI} />
-        {/* <BoomIsland rotation-y={Math.PI} /> */}
-        {/* <BoomIsland rotation-y={Math.PI} scale-x={-1} /> */}
+        {/* <IslandMaterials rotation-y={Math.PI} /> */}
+
+        <Land rotation-y={Math.PI} />
+        <Land rotation-y={Math.PI} scale-x={-1} />
+        <Bridge />
 
         <Wall />
         {isConnected && quiz && (
