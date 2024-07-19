@@ -14,6 +14,9 @@ import BasicSpotLights from '../components/3d/Environment/BasicSpotLights.jsx';
 import OEffects from '../components/3d/Environment/OEffects.jsx';
 import XEffects from '../components/3d/Environment/XEffects.jsx';
 import SpotLights from '../components/3d/Environment/SpotLights.jsx';
+import ExplosionConfetti from '../components/3d/Environment/ExplosionConfetti.jsx';
+import Bridge from '../components/3d/Environment/Bridge.jsx';
+import Land from '../components/3d/Environment/Land.jsx';
 
 // Character
 import CharacterController from '../components/3d/Mesh/CharacterController.jsx';
@@ -24,7 +27,6 @@ import useQuizRoomStore from '../store/quizRoomStore.js';
 
 // style
 import '../styles/game.css';
-import ExplosionConfetti from '../components/3d/Environment/ExplosionConfetti.jsx';
 
 export default function Game({
   nickname,
@@ -167,6 +169,7 @@ export default function Game({
   return (
     <>
       <Perf />
+
       {isTeacher ? (
         <OrbitControls
           ref={orbitControls}
@@ -174,7 +177,7 @@ export default function Game({
           enableZoom={true}
           enablePan={true}
           minDistance={5}
-          maxDistance={80}
+          // maxDistance={80}
         />
       ) : (
         <CameraControls ref={cameraControls} />
@@ -200,10 +203,78 @@ export default function Game({
         </>
       )}
       <BasicSpotLights />
-      {!isStarted && quizResult && spotlight === '1' && <OEffects />}
-      {!isStarted && quizResult && spotlight === '2' && <XEffects />}
-      <Physics>
-        <IslandMaterials rotation-y={Math.PI} />
+
+      {!isStarted && type === 1 && spotlight === '1' && <OEffects />}
+      {!isStarted && type === 1 && spotlight === '2' && <XEffects />}
+
+      {!isStarted && type === 2 && quizAnswerer && (
+        <>
+          {isCorrectAnswerer && clientCoords[nickname] && (
+            <>
+              <ExplosionConfetti
+                position-x={0}
+                rate={2}
+                fallingHeight={30}
+                amount={200}
+                areaWidth={100}
+                isExploding
+              />
+              <SpotLights
+                position={[
+                  clientCoords[nickname].x,
+                  clientCoords[nickname].y + 10,
+                  clientCoords[nickname].z,
+                ]}
+                targetPosition={[
+                  clientCoords[nickname].x,
+                  clientCoords[nickname].y,
+                  clientCoords[nickname].z,
+                ]}
+                intensity={300}
+              />
+            </>
+          )}
+          {quizAnswerer.map(answerer => {
+            if (answerer !== nickname && clientCoords[answerer]) {
+              return (
+                <>
+                  <ExplosionConfetti
+                    position-x={0}
+                    rate={2}
+                    fallingHeight={30}
+                    amount={200}
+                    areaWidth={100}
+                    isExploding
+                  />
+                  <SpotLights
+                    key={answerer}
+                    position={[
+                      clientCoords[answerer].x,
+                      clientCoords[answerer].y + 10,
+                      clientCoords[answerer].z,
+                    ]}
+                    targetPosition={[
+                      clientCoords[answerer].x,
+                      clientCoords[answerer].y,
+                      clientCoords[answerer].z,
+                    ]}
+                    intensity={1000}
+                  />
+                </>
+              );
+            }
+            return null;
+          })}
+        </>
+      )}
+
+      <Physics debug>
+        {/* <IslandMaterials rotation-y={Math.PI} /> */}
+
+        <Land rotation-y={Math.PI} />
+        <Land rotation-y={Math.PI} scale-x={-1} />
+        <Bridge />
+
         <Wall />
         {isConnected && quiz && (
           <Blackboard position-y={70} position-z={-200} text={quiz} />
