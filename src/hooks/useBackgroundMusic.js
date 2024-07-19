@@ -1,23 +1,26 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import useQuizRoomStore from '../store/quizRoomStore';
+import useAudioStore from '../store/audioStore';
 
 const useBackgroundMusic = isTeacher => {
-  const [isBgMusicPlaying, setIsBgMusicPlaying] = useState(false);
-  const bgMusicRef = useRef(new Audio('/src/assets/YoHo Beat-Duck.mp3'));
+  const {
+    initializeBgMusic,
+    playBgMusic,
+    pauseBgMusic,
+    toggleBgMusic,
+    updateBgMusicVolume,
+  } = useAudioStore();
+  const isBgMusicPlaying = useAudioStore(state => state.audio.isBgMusicPlaying);
+
+  const { isStarted } = useQuizRoomStore(state => state.quizRoom);
 
   useEffect(() => {
     if (!isTeacher) return;
-    // ... 배경 음악 관련 로직
-    const bgMusic = bgMusicRef.current;
-    bgMusic.loop = true;
-    bgMusic.volume = 0.3;
+
+    initializeBgMusic();
+
     const playMusic = () => {
-      bgMusic.play().catch(error => {
-        console.error('음악 재생 실패:', error);
-        // 자동 재생 실패 시 사용자에게 알림
-        // alert('배경 음악을 재생하려면 화면을 클릭해주세요.');
-      });
-      setIsBgMusicPlaying(true);
-      // 이벤트 리스너 제거
+      playBgMusic();
       document.removeEventListener('click', playMusic);
     };
 
@@ -28,21 +31,20 @@ const useBackgroundMusic = isTeacher => {
     document.addEventListener('click', playMusic);
 
     return () => {
-      bgMusic.pause();
-      bgMusic.currentTime = 0;
+      pauseBgMusic();
       document.removeEventListener('click', playMusic);
     };
-  }, [isTeacher]);
+  }, [isTeacher, initializeBgMusic, playBgMusic, pauseBgMusic]);
+
+  useEffect(() => {
+    if (isTeacher) {
+      updateBgMusicVolume(isStarted ? 0.05 : 0.3);
+    }
+  }, [isStarted, isTeacher, updateBgMusicVolume]);
 
   const toggleBackgroundMusic = useCallback(() => {
-    const bgMusic = bgMusicRef.current;
-    if (isBgMusicPlaying) {
-      bgMusic.pause();
-    } else {
-      bgMusic.play().catch(console.error);
-    }
-    setIsBgMusicPlaying(!isBgMusicPlaying);
-  }, [isBgMusicPlaying]);
+    toggleBgMusic();
+  }, [toggleBgMusic]);
 
   return { isBgMusicPlaying, toggleBackgroundMusic };
 };

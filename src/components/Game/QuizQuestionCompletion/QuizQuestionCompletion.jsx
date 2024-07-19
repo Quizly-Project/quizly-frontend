@@ -1,36 +1,26 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './QuizQuestionCompletion.module.css';
+import useAudioStore from '../../../store/audioStore';
 
 const QuizQuestionCompletion = ({ message, onComplete, show }) => {
   const [visible, setVisible] = useState(false);
   const [animationState, setAnimationState] = useState('initial');
-  const whistleRef = useRef(null);
+  const { initializeWhistle, playWhistle, stopWhistle } = useAudioStore();
 
   useEffect(() => {
-    // 컴포넌트 마운트 시 오디오 객체 생성
-    whistleRef.current = new Audio('/src/assets/whistle.wav');
-    whistleRef.current.preload = 'auto'; // 오디오 미리 로드
+    initializeWhistle();
 
-    // 컴포넌트 언마운트 시 오디오 객체 정리
     return () => {
-      if (whistleRef.current) {
-        whistleRef.current.pause();
-        whistleRef.current = null;
-      }
+      stopWhistle();
     };
-  }, []);
+  }, [initializeWhistle, stopWhistle]);
 
   useEffect(() => {
     if (show) {
-      // 오디오 재생 및 상태 업데이트를 동시에 시작
       const playAndAnimate = async () => {
-        try {
-          setVisible(true);
-          setAnimationState('slideIn');
-          await whistleRef.current.play();
-        } catch (error) {
-          console.error('Failed to play audio:', error);
-        }
+        setVisible(true);
+        setAnimationState('slideIn');
+        await playWhistle();
       };
 
       playAndAnimate();
@@ -45,13 +35,10 @@ const QuizQuestionCompletion = ({ message, onComplete, show }) => {
 
       return () => {
         clearTimeout(timer);
-        if (whistleRef.current) {
-          whistleRef.current.pause();
-          whistleRef.current.currentTime = 0;
-        }
+        stopWhistle();
       };
     }
-  }, [show, onComplete]);
+  }, [show, onComplete, playWhistle, stopWhistle]);
 
   if (!visible) return null;
 

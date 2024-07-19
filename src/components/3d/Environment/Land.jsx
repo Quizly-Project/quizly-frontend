@@ -13,8 +13,6 @@ export default function Land(props) {
   const { nodes, materials, animations } = useGLTF('/Environment/Land.glb');
   const { actions, mixer } = useAnimations(animations, group);
 
-  console.log(actions);
-
   useEffect(() => {
     if (!actions['land']) return;
 
@@ -30,7 +28,7 @@ export default function Land(props) {
     // 액션 종료 리스너
     const onFinished = e => {
       if (e.action === action) {
-        console.log('Animation finished');
+        // console.log('Animation finished');
         // 애니메이션을 첫 프레임으로 리셋하고 정지
         action.reset();
         action.stop();

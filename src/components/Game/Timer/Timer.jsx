@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
+import useAudioStore from '../../../store/audioStore';
 import styles from './Timer.module.css';
 
 const getGradient = percent => {
@@ -8,6 +9,19 @@ const getGradient = percent => {
 
 const Timer = React.memo(({ timer }) => {
   const { percent, remainingTime } = timer;
+  const { initializeAudios, playTimerSound, stopAllSounds } = useAudioStore();
+
+  useEffect(() => {
+    initializeAudios();
+
+    return () => {
+      stopAllSounds();
+    };
+  }, [initializeAudios, stopAllSounds]);
+
+  useEffect(() => {
+    playTimerSound(remainingTime);
+  }, [remainingTime, playTimerSound]);
 
   const timerStyle = useMemo(
     () => ({
