@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Text3D } from '@react-three/drei';
-import { MeshStandardMaterial } from 'three';
+import { MeshStandardMaterial, MeshPhongMaterial } from 'three';
+import useAudioStore from '../../../store/audioStore';
 
 export default function Blackboard(props) {
   // material
-  const chalkMaterial = new MeshStandardMaterial({
-    color: '#FFFFF0',
-    roughness: 0.8,
+  const chalkMaterial = new MeshPhongMaterial({
+    color: '#FFF5C0',
+    emissive: '#FFF5C0',
+    emissiveIntensity: 1.0,
   });
 
   // const fullText =
@@ -15,22 +17,36 @@ export default function Blackboard(props) {
   const [displayedText, setDisplayedText] = useState('');
 
   // 한 글자씩 표시되는 효과
+  const { initializeWritingSound, playWritingSound, stopWritingSound } =
+    useAudioStore();
+
   useEffect(() => {
-    console.log(fullText);
+    initializeWritingSound();
+  }, [initializeWritingSound]);
+
+  useEffect(() => {
     if (!fullText) return;
+
     let index = 0;
+    playWritingSound();
+
     const interval = setInterval(() => {
       setDisplayedText(fullText.slice(0, index));
       index++;
       if (index > fullText.length) {
         clearInterval(interval);
+        stopWritingSound();
       }
-    }, 70); // 시간 간격
-    return () => clearInterval(interval);
-  }, [fullText]);
+    }, 70);
+
+    return () => {
+      clearInterval(interval);
+      stopWritingSound();
+    };
+  }, [fullText, playWritingSound, stopWritingSound]);
 
   // 줄바꿈 적용
-  const maxLineLength = 20;
+  const maxLineLength = 17;
   const splitText = (text, maxLength) => {
     const words = text.split(' ');
     const lines = [];
@@ -58,12 +74,12 @@ export default function Blackboard(props) {
         lines.map((line, index) => (
           <Text3D
             key={index}
-            scale={5}
+            scale={8}
             font="/fonts/UhBee_Regular.json"
-            position={[-60, 0 - index * 15, 110]}
+            position={[-80, 10 - index * 22, 93]}
           >
             {line}
-            <meshStandardMaterial attach="material" {...chalkMaterial} />
+            <meshPhongMaterial attach="material" {...chalkMaterial} />
           </Text3D>
         ))}
     </group>

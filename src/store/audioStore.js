@@ -12,6 +12,7 @@ const initialAudioState = {
   whistle: null,
   drumroll: null,
   firstPlace: null,
+  writing: null,
 };
 
 const useAudioStore = create((set, get) => ({
@@ -194,6 +195,28 @@ const useAudioStore = create((set, get) => ({
     if (firstPlace) {
       firstPlace.pause();
       firstPlace.currentTime = 0;
+    }
+  },
+
+  // 칠판에 글씨 쓰기
+  initializeWritingSound: () => {
+    const writing = new Audio('/Sounds/write.mp3');
+    writing.loop = true;
+    set(state => ({ audio: { ...state.audio, writing } }));
+  },
+
+  playWritingSound: () => {
+    const { writing } = get().audio;
+    if (writing) {
+      writing.play().catch(e => console.error('Writing 오디오 재생 실패:', e));
+    }
+  },
+
+  stopWritingSound: () => {
+    const { writing } = get().audio;
+    if (writing) {
+      writing.pause();
+      writing.currentTime = 0;
     }
   },
 }));

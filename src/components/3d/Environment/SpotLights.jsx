@@ -24,7 +24,7 @@ const SpotLights = ({ position, targetPosition, intensity }) => {
       intensity={intensity}
       scale={300}
       castShadow
-      penumbra={0.5}
+      penumbra={0}
       volumetric
     />
   );

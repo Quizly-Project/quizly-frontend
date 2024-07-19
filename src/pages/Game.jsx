@@ -183,26 +183,8 @@ export default function Game({
       ) : (
         <CameraControls ref={cameraControls} />
       )}
-      {isStarted ? (
-        <>
-          <Sky />
-          <Lights intensity={1.5} ambientIntensity={0.5} />
-        </>
-      ) : (
-        <>
-          <Sky
-            distance={4000}
-            sunPosition={[0, -50, -500]}
-            turbidity={10}
-            rayleigh={2}
-            mieCoefficient={0.005}
-            mieDirectionalG={0.7}
-            inclination={0.6}
-            azimuth={0.25}
-          />
-          <Lights intensity={1.0} ambientIntensity={0.5} />
-        </>
-      )}
+      <Sky />
+      <Lights intensity={0.5} ambientIntensity={0.5} />
       <BasicSpotLights />
 
       {!isStarted && type === 1 && spotlight === '1' && <OEffects />}
@@ -268,6 +250,7 @@ export default function Game({
           })}
         </>
       )}
+      <StaticMaterials rotation-y={Math.PI} />
 
       <Physics debug>
         {/* <IslandMaterials rotation-y={Math.PI} /> */}
@@ -275,7 +258,6 @@ export default function Game({
         <Land rotation-y={Math.PI} />
         <Land rotation-y={Math.PI} scale-x={-1} />
         <Bridge />
-        <StaticMaterials rotation-y={Math.PI} />
 
         <Wall />
         {isConnected && quiz && (
