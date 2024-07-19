@@ -29,6 +29,7 @@ import useQuizRoomStore from '../store/quizRoomStore.js';
 
 // style
 import '../styles/game.css';
+import StaticMaterials from '../components/3d/Environment/StaticMaterials.jsx';
 
 export default function Game({
   nickname,
@@ -350,19 +351,11 @@ export default function Game({
         </>
       ) : (
         <>
-          <Sky
-            distance={4000}
-            sunPosition={[0, -50, -500]}
-            turbidity={10}
-            rayleigh={2}
-            mieCoefficient={0.005}
-            mieDirectionalG={0.7}
-            inclination={0.6}
-            azimuth={0.25}
-          />
+          <Sky />
           <Lights intensity={0.5} ambientIntensity={0.5} />
         </>
       )}
+
       <BasicSpotLights />
       {!isStarted && type === 1 && spotlight === '1' && <OEffects />}
       {!isStarted && type === 1 && spotlight === '2' && <XEffects />}
@@ -427,6 +420,7 @@ export default function Game({
           })}
         </>
       )}
+      <StaticMaterials rotation-y={Math.PI} />
 
       <Physics debug>
         {/* <IslandMaterials rotation-y={Math.PI} /> */}
