@@ -10,14 +10,14 @@ const OEffects = () => {
         targetPosition={[-60, 8.7, 0]}
         intensity={10000}
       />
-      {/* <ExplosionConfetti
+      <ExplosionConfetti
         position-x={-60}
         rate={2}
         fallingHeight={30}
         amount={50}
         isExploding
-      /> */}
-      <LineConfetti
+      />
+      {/* <LineConfetti
         isExploding={true}
         amount={50}
         radius={100}
@@ -31,7 +31,7 @@ const OEffects = () => {
           '#e0feff',
         ]}
         dash={0.9}
-      />
+      /> */}
     </>
   );
 };
