@@ -10,6 +10,7 @@ import { Perf } from 'r3f-perf';
 import { useThree, useFrame } from '@react-three/fiber';
 import { gsap } from 'gsap';
 import { Vector3 } from 'three';
+
 // Environment
 import IslandMaterials from '../components/3d/Environment/IslandMaterial.jsx';
 import Lights from '../components/3d/Environment/Lights.jsx';
@@ -26,6 +27,7 @@ import Bridge from '../components/3d/Environment/Bridge.jsx';
 import Land from '../components/3d/Environment/Land.jsx';
 import BrokenLand from '../components/3d/Environment/BrokenLand.jsx';
 import StaticMaterials from '../components/3d/Environment/StaticMaterials.jsx';
+import LineConfetti from '../components/3d/Environment/LineConfetti.jsx';
 
 // Character
 import CharacterController from '../components/3d/Mesh/CharacterController.jsx';
@@ -354,7 +356,6 @@ export default function Game({
     }
   }, [isStarted, isQuestionActive, isAnswerDisplayed]);
 
-  console.log(type);
   return (
     <>
       <Perf />
@@ -400,20 +401,35 @@ export default function Game({
       )} */}
 
       <BasicSpotLights />
-      {!isStarted && type === 1 && spotlight === '1' && <OEffects />}
-      {!isStarted && type === 1 && spotlight === '2' && <XEffects />}
+      {!isResultDisplayed && type === 1 && spotlight === '1' && <OEffects />}
+      {!isResultDisplayed && type === 1 && spotlight === '2' && <XEffects />}
 
-      {!isStarted && type === 2 && quizAnswerer && (
+      {!isResultDisplayed && type === 2 && quizAnswerer && (
         <>
           {isCorrectAnswerer && clientCoords[nickname] && (
             <>
-              <ExplosionConfetti
+              {/* <ExplosionConfetti
                 position-x={0}
                 rate={2}
                 fallingHeight={30}
                 amount={200}
                 areaWidth={100}
                 isExploding
+              /> */}
+              <LineConfetti
+                isExploding={true}
+                amount={50}
+                radius={100}
+                colors={[
+                  '#0000ff',
+                  '#ff0000',
+                  '#ffff00',
+                  '#A2CCB6',
+                  '#FCEEB5',
+                  '#EE786E',
+                  '#e0feff',
+                ]}
+                dash={0.9}
               />
               <SpotLights
                 position={[
@@ -434,13 +450,28 @@ export default function Game({
             if (answerer !== nickname && clientCoords[answerer]) {
               return (
                 <>
-                  <ExplosionConfetti
+                  {/* <ExplosionConfetti
                     position-x={0}
                     rate={2}
                     fallingHeight={30}
                     amount={200}
                     areaWidth={100}
                     isExploding
+                  /> */}
+                  <LineConfetti
+                    isExploding={true}
+                    amount={50}
+                    radius={100}
+                    colors={[
+                      '#0000ff',
+                      '#ff0000',
+                      '#ffff00',
+                      '#A2CCB6',
+                      '#FCEEB5',
+                      '#EE786E',
+                      '#e0feff',
+                    ]}
+                    dash={0.9}
                   />
                   <SpotLights
                     key={answerer}
