@@ -1,30 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Text3D } from '@react-three/drei';
-import { MeshStandardMaterial, MeshPhongMaterial } from 'three';
+import * as THREE from 'three';
 import useAudioStore from '../../../store/audioStore';
 import useQuizRoomStore from '../../../store/quizRoomStore';
 
 export default function Blackboard(props) {
   const { isAnswerDisplayed, type } = useQuizRoomStore(state => state.quizRoom);
   const { startTimer } = useQuizRoomStore();
-  // material
-  const chalkMaterial = new MeshPhongMaterial({
-    color: '#FFF5C0',
-    emissive: '#FFF5C0',
-    emissiveIntensity: 1.0,
-  });
 
-  // const fullText =
-  //   'Q. 태풍은 적도 부근에서 형성되어 북반구에서는 시계 반대 방향으로 회전합니다.';
+  const chalkMaterial = useMemo(
+    () => ({
+      color: '#FFF5C0',
+      emissive: '#FFF5C0',
+      emissiveIntensity: 1.0,
+    }),
+    []
+  );
+
   const fullText = props.text.question;
   const [displayedText, setDisplayedText] = useState('');
-  const [dispalyedAnswer, setDisplayedAnswer] = useState('');
+  const [displayedAnswer, setDisplayedAnswer] = useState('');
+
+  const { initializeWritingSound, playWritingSound, stopWritingSound } =
+    useAudioStore();
+
   useEffect(() => {
     console.log('props.text', props.text);
   }, [props.text]);
-  // 한 글자씩 표시되는 효과
-  const { initializeWritingSound, playWritingSound, stopWritingSound } =
-    useAudioStore();
 
   useEffect(() => {
     initializeWritingSound();
@@ -48,9 +50,14 @@ export default function Blackboard(props) {
       clearInterval(interval);
       stopWritingSound();
     };
-  }, [fullText, playWritingSound, stopWritingSound]);
+  }, [
+    fullText,
+    playWritingSound,
+    stopWritingSound,
+    isAnswerDisplayed,
+    startTimer,
+  ]);
 
-  // 줄바꿈 적용
   const maxLineLength = 17;
   const splitText = (text, maxLength) => {
     const words = text.split(' ');
@@ -78,27 +85,26 @@ export default function Blackboard(props) {
     if (text === '2') return 'X';
     return text;
   };
+
   useEffect(() => {
     console.log('isAnswerDisplayed', isAnswerDisplayed);
     if (isAnswerDisplayed) {
       setDisplayedAnswer(props.text.correctAnswer);
     }
-  }, [isAnswerDisplayed]);
+  }, [isAnswerDisplayed, props.text.correctAnswer]);
 
-  return isAnswerDisplayed ? (
+  return (
     <group {...props} dispose={null}>
-      <Text3D
-        scale={30}
-        font="/fonts/UhBee_Regular.json"
-        position={[-20, -30, 110]}
-      >
-        {type === 1 ? OX(dispalyedAnswer) : dispalyedAnswer}
-        <meshStandardMaterial attach="material" {...chalkMaterial} />
-      </Text3D>
-    </group>
-  ) : (
-    <group {...props} dispose={null}>
-      {lines &&
+      {isAnswerDisplayed ? (
+        <Text3D
+          scale={30}
+          font="/fonts/UhBee_Regular.json"
+          position={[-20, -30, 110]}
+        >
+          {type === 1 ? OX(displayedAnswer) : displayedAnswer}
+          <meshPhongMaterial attach="material" {...chalkMaterial} />
+        </Text3D>
+      ) : (
         lines.map((line, index) => (
           <Text3D
             key={index}
@@ -109,7 +115,8 @@ export default function Blackboard(props) {
             {line}
             <meshPhongMaterial attach="material" {...chalkMaterial} />
           </Text3D>
-        ))}
+        ))
+      )}
     </group>
   );
 }

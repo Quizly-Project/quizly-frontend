@@ -28,6 +28,7 @@ import Land from '../components/3d/Environment/Land.jsx';
 import BrokenLand from '../components/3d/Environment/BrokenLand.jsx';
 import StaticMaterials from '../components/3d/Environment/StaticMaterials.jsx';
 import LineConfetti from '../components/3d/Environment/LineConfetti.jsx';
+import BrokenBridge from '../components/3d/Environment/BrokenBridge.jsx';
 
 // Character
 import CharacterController from '../components/3d/Mesh/CharacterController.jsx';
@@ -418,15 +419,15 @@ export default function Game({
         <>
           {isCorrectAnswerer && clientCoords[nickname] && (
             <>
-              {/* <ExplosionConfetti
+              <ExplosionConfetti
                 position-x={0}
                 rate={2}
                 fallingHeight={30}
                 amount={200}
                 areaWidth={100}
                 isExploding
-              /> */}
-              <LineConfetti
+              />
+              {/* <LineConfetti
                 isExploding={true}
                 amount={50}
                 radius={100}
@@ -440,7 +441,7 @@ export default function Game({
                   '#e0feff',
                 ]}
                 dash={0.9}
-              />
+              /> */}
               <SpotLights
                 position={[
                   clientCoords[nickname].x,
@@ -460,15 +461,15 @@ export default function Game({
             if (answerer !== nickname && clientCoords[answerer]) {
               return (
                 <>
-                  {/* <ExplosionConfetti
+                  <ExplosionConfetti
                     position-x={0}
                     rate={2}
                     fallingHeight={30}
                     amount={200}
                     areaWidth={100}
                     isExploding
-                  /> */}
-                  <LineConfetti
+                  />
+                  {/* <LineConfetti
                     isExploding={true}
                     amount={50}
                     radius={100}
@@ -482,7 +483,7 @@ export default function Game({
                       '#e0feff',
                     ]}
                     dash={0.9}
-                  />
+                  /> */}
                   <SpotLights
                     key={answerer}
                     position={[
