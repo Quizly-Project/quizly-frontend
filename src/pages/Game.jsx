@@ -1,10 +1,16 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Sky, OrbitControls, CameraControls } from '@react-three/drei';
+import {
+  Sky,
+  OrbitControls,
+  CameraControls,
+  Environment,
+} from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
 import { Perf } from 'r3f-perf';
 import { useThree, useFrame } from '@react-three/fiber';
 import { gsap } from 'gsap';
 import { Vector3 } from 'three';
+
 // Environment
 import IslandMaterials from '../components/3d/Environment/IslandMaterial.jsx';
 import Lights from '../components/3d/Environment/Lights.jsx';
@@ -20,6 +26,8 @@ import ExplosionConfetti from '../components/3d/Environment/ExplosionConfetti.js
 import Bridge from '../components/3d/Environment/Bridge.jsx';
 import Land from '../components/3d/Environment/Land.jsx';
 import BrokenLand from '../components/3d/Environment/BrokenLand.jsx';
+import StaticMaterials from '../components/3d/Environment/StaticMaterials.jsx';
+import LineConfetti from '../components/3d/Environment/LineConfetti.jsx';
 
 // Character
 import CharacterController from '../components/3d/Mesh/CharacterController.jsx';
@@ -30,9 +38,7 @@ import useQuizRoomStore from '../store/quizRoomStore.js';
 
 // style
 import '../styles/game.css';
-import StaticMaterials from '../components/3d/Environment/StaticMaterials.jsx';
-import { set } from 'react-hook-form';
-import BrokenBridge from '../components/3d/Environment/BrokenBridge.jsx';
+import Beachside from '../components/3d/Environment/Beachside.jsx';
 
 export default function Game({
   nickname,
@@ -359,6 +365,12 @@ export default function Game({
   return (
     <>
       <Perf />
+      <Environment
+        background
+        files={'/Environment/puresky.hdr'}
+        intensity={0.1}
+      />
+
       <CoordinateHelpers size={1000} divisions={10} />
       {isTeacher ? (
         <OrbitControls
@@ -382,7 +394,7 @@ export default function Game({
         <CameraControls ref={cameraControls} />
       )}
 
-      {isQuestionActive ? (
+      {/* {isQuestionActive ? (
         <>
           <Sky />
           <Lights intensity={1.5} ambientIntensity={0.5} />
@@ -392,7 +404,7 @@ export default function Game({
           <Sky />
           <Lights intensity={0.5} ambientIntensity={0.5} />
         </>
-      )}
+      )} */}
 
       <BasicSpotLights />
       {isStarted && !isQuestionActive && type === 1 && spotlight === '1' && (
@@ -406,13 +418,28 @@ export default function Game({
         <>
           {isCorrectAnswerer && clientCoords[nickname] && (
             <>
-              <ExplosionConfetti
+              {/* <ExplosionConfetti
                 position-x={0}
                 rate={2}
                 fallingHeight={30}
                 amount={200}
                 areaWidth={100}
                 isExploding
+              /> */}
+              <LineConfetti
+                isExploding={true}
+                amount={50}
+                radius={100}
+                colors={[
+                  '#0000ff',
+                  '#ff0000',
+                  '#ffff00',
+                  '#A2CCB6',
+                  '#FCEEB5',
+                  '#EE786E',
+                  '#e0feff',
+                ]}
+                dash={0.9}
               />
               <SpotLights
                 position={[
@@ -433,13 +460,28 @@ export default function Game({
             if (answerer !== nickname && clientCoords[answerer]) {
               return (
                 <>
-                  <ExplosionConfetti
+                  {/* <ExplosionConfetti
                     position-x={0}
                     rate={2}
                     fallingHeight={30}
                     amount={200}
                     areaWidth={100}
                     isExploding
+                  /> */}
+                  <LineConfetti
+                    isExploding={true}
+                    amount={50}
+                    radius={100}
+                    colors={[
+                      '#0000ff',
+                      '#ff0000',
+                      '#ffff00',
+                      '#A2CCB6',
+                      '#FCEEB5',
+                      '#EE786E',
+                      '#e0feff',
+                    ]}
+                    dash={0.9}
                   />
                   <SpotLights
                     key={answerer}
@@ -465,20 +507,31 @@ export default function Game({
       <StaticMaterials rotation-y={Math.PI} />
 
       <Physics debug>
-        {/* <IslandMaterials rotation-y={Math.PI} /> */}
+        {type === 2 && (
+          <Beachside
+            rotation-y={-Math.PI / 2}
+            position-y={-10}
+            position-z={-20}
+          />
+        )}
 
-        {leftIslandBreak ? (
-          <BrokenLand rotation-y={Math.PI} />
-        ) : (
-          <Land rotation-y={Math.PI} />
+        {type === 1 && (
+          <>
+            {leftIslandBreak ? (
+              <BrokenLand rotation-y={Math.PI} />
+            ) : (
+              <Land rotation-y={Math.PI} />
+            )}
+            {rightIslandBreak ? (
+              <BrokenLand rotation-y={Math.PI} scale-x={-1} />
+            ) : (
+              <Land rotation-y={Math.PI} scale-x={-1} />
+            )}
+            {bridgeBreak ? <BrokenBridge /> : <Bridge position-y={0.5} />}
+            <Wall />
+          </>
         )}
-        {rightIslandBreak ? (
-          <BrokenLand rotation-y={Math.PI} scale-x={-1} />
-        ) : (
-          <Land rotation-y={Math.PI} scale-x={-1} />
-        )}
-        {bridgeBreak ? <BrokenBridge /> : <Bridge />}
-        <Wall />
+
         {isConnected && quiz && (
           <Blackboard position-y={70} position-z={-200} text={quiz} />
         )}

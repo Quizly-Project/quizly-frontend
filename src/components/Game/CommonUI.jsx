@@ -9,7 +9,6 @@ import QuizQuestionCompletion from './QuizQuestionCompletion/QuizQuestionComplet
 import useQuizRoomStore from '../../store/quizRoomStore';
 import RoundEndMessage from './RoundEndMessage/RoundEndMessage';
 import FinalTopThreeParticipants from './FinalTopThreeParticipants/FinalTopThreeParticipants';
-import { is } from '@react-three/fiber/dist/declarations/src/core/utils';
 
 const CommonUI = ({
   quizResult,
