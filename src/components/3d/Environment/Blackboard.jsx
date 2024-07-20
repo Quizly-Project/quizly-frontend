@@ -6,6 +6,7 @@ import useQuizRoomStore from '../../../store/quizRoomStore';
 
 export default function Blackboard(props) {
   const { isAnswerDisplayed, type } = useQuizRoomStore(state => state.quizRoom);
+  const { startTimer } = useQuizRoomStore();
   // material
   const chalkMaterial = new MeshPhongMaterial({
     color: '#FFF5C0',
@@ -33,15 +34,15 @@ export default function Blackboard(props) {
     if (!fullText || isAnswerDisplayed) return;
     let index = 0;
     playWritingSound();
-
     const interval = setInterval(() => {
       setDisplayedText(fullText.slice(0, index));
       index++;
       if (index > fullText.length) {
         clearInterval(interval);
         stopWritingSound();
+        startTimer();
       }
-    }, 70);
+    }, 1500 / fullText.length);
 
     return () => {
       clearInterval(interval);

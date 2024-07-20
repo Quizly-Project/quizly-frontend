@@ -30,6 +30,7 @@ import useQuizRoomStore from '../store/quizRoomStore.js';
 // style
 import '../styles/game.css';
 import StaticMaterials from '../components/3d/Environment/StaticMaterials.jsx';
+import { set } from 'react-hook-form';
 
 export default function Game({
   nickname,
@@ -56,6 +57,9 @@ export default function Game({
   const cameraControls = useRef();
   const orbitControls = useRef();
   const [initialTeacherViewSet, setInitialTeacherViewSet] = useState(false);
+  const [leftIslandBreak, setLeftIslandBreak] = useState(false);
+  const [rightIslandBreak, setRightIslandBreak] = useState(false);
+  const [bridgeBreak, setBridgeBreak] = useState(false);
 
   const {
     type,
@@ -64,9 +68,12 @@ export default function Game({
     isQuestionActive, // 문제 출제 퀴즈 진행 중
     isAnswerDisplayed, // 정답 공개
     isResultDisplayed, // 결과 공개
+    isIslandBreak, // 섬 파괴
   } = useQuizRoomStore(state => state.quizRoom);
   const {
     displayTopThree, // 상위 3명 표시
+    startIsBreak, // 섬 파괴 시작
+    stopIsBreak, // 섬 파괴 중지
   } = useQuizRoomStore();
 
   const CAMERA_UP = 10;
@@ -74,8 +81,14 @@ export default function Game({
   const DURATION = 5;
 
   const answerPosition = new Vector3(0, 50, -30);
-  const leftIsland = new Vector3(-60, 40, 60);
-  const rightIsland = new Vector3(60, 40, 60);
+  const incorrectLeftIsland = new Vector3(-130, 40, 0);
+  const incorrectRightIsland = new Vector3(130, 40, 0);
+  const incorrectLeftIslandLookAt = new Vector3(-60, 20, 0);
+  const incorrectRightIslandLooAt = new Vector3(60, 20, 0);
+  const correctLeftIsland = new Vector3(-60, CAMERA_TILT, 50);
+  const correctRightIsland = new Vector3(60, CAMERA_TILT, 50);
+  const correctLeftIslandLookAt = new Vector3(-60, CAMERA_TILT, CAMERA_UP);
+  const correctRightIslandLooAt = new Vector3(60, CAMERA_TILT, CAMERA_UP);
   const originalPosition = new Vector3(0, CAMERA_TILT, CAMERA_TILT);
 
   const setTeacherView = useCallback(
@@ -130,12 +143,18 @@ export default function Game({
       const delayBetweenMoves = 1; // 각 이동 사이의 지연 시간 (초)
       let incorrectAnswerPosition;
       let correctAnswerPosition;
+      let incorrectAnswerLookAt;
+      let correctAnswerLookAt;
       if (spotlight === '1') {
-        incorrectAnswerPosition = rightIsland;
-        correctAnswerPosition = leftIsland;
+        incorrectAnswerPosition = incorrectRightIsland;
+        correctAnswerPosition = correctLeftIsland;
+        incorrectAnswerLookAt = incorrectRightIslandLooAt;
+        correctAnswerLookAt = correctLeftIslandLookAt;
       } else {
-        incorrectAnswerPosition = leftIsland;
-        correctAnswerPosition = rightIsland;
+        incorrectAnswerPosition = incorrectLeftIsland;
+        correctAnswerPosition = correctRightIsland;
+        incorrectAnswerLookAt = incorrectLeftIslandLookAt;
+        correctAnswerLookAt = correctRightIslandLooAt;
       }
 
       const onAnswerPositionReached = () => {
@@ -145,7 +164,15 @@ export default function Game({
 
       const onIncorrectPositionReached = () => {
         console.log('오답 위치에 도달했습니다.');
-        // 여기에 원하는 로직을 추가하세요
+        if (spotlight === '1') {
+          setRightIslandBreak(true);
+        } else {
+          setLeftIslandBreak(true);
+        }
+        setTimeout(() => {
+          setBridgeBreak(true);
+        }, 500);
+        startIsBreak();
       };
 
       const onCorrectPositionReached = () => {
@@ -155,8 +182,11 @@ export default function Game({
 
       const onOriginalPositionReached = () => {
         console.log('원래 위치로 돌아왔습니다.');
-        // 여기에 원하는 로직을 추가하세요
         displayTopThree();
+        setBridgeBreak(false);
+        setLeftIslandBreak(false);
+        setRightIslandBreak(false);
+        stopIsBreak();
       };
 
       gsap
@@ -184,9 +214,9 @@ export default function Game({
           orbitControls.current.target,
           {
             duration: 2,
-            x: incorrectAnswerPosition.x,
-            y: incorrectAnswerPosition.y - 20,
-            z: incorrectAnswerPosition.z - 30,
+            x: incorrectAnswerLookAt.x,
+            y: incorrectAnswerLookAt.y,
+            z: incorrectAnswerLookAt.z,
             onUpdate: () => orbitControls.current.update(),
           },
           `+=${delayBetweenMoves}`
@@ -207,9 +237,9 @@ export default function Game({
           orbitControls.current.target,
           {
             duration: 2,
-            x: correctAnswerPosition.x,
-            y: correctAnswerPosition.y - 20,
-            z: correctAnswerPosition.z - 30,
+            x: correctAnswerLookAt.x,
+            y: correctAnswerLookAt.y,
+            z: correctAnswerLookAt.z,
             onUpdate: () => orbitControls.current.update(),
           },
           `+=${delayBetweenMoves}`
@@ -425,9 +455,9 @@ export default function Game({
       <Physics debug>
         {/* <IslandMaterials rotation-y={Math.PI} /> */}
 
-        <Land rotation-y={Math.PI} />
-        <Land rotation-y={Math.PI} scale-x={-1} />
-        <Bridge />
+        <Land rotation-y={Math.PI} break={leftIslandBreak} />
+        <Land rotation-y={Math.PI} scale-x={-1} break={rightIslandBreak} />
+        <Bridge break={bridgeBreak} />
 
         <Wall />
         {isConnected && quiz && (

@@ -3,7 +3,6 @@ export const createSocketHandlers = (
   setQuiz,
   nickname,
   setQuizResult,
-  startTimer,
   setParticipants,
   setQuizCnt,
   quizCnt,
@@ -32,7 +31,8 @@ export const createSocketHandlers = (
   hideAnswer,
   displayResult,
   hideResult,
-  hideTopThree
+  hideTopThree,
+  setQuizDuration
 ) => {
   /* ------- Socket events ------- */
   // 기존 접속중인 클라이언트의 위치 저장
@@ -96,25 +96,25 @@ export const createSocketHandlers = (
   // data: {nickName, {x, y, z}}
 
   // 1. render all
-  const handleTheyMove = data => {
-    // console.log('they move', data);
-    setClientCoords(prevCoords => {
-      return { ...prevCoords, [data.nickName]: data.position };
-    });
-  };
-
-  // 2. 30fps
   // const handleTheyMove = data => {
   //   // console.log('they move', data);
-  //   console.log(data);
   //   setClientCoords(prevCoords => {
-  //     const newCoords = { ...prevCoords };
-  //     Object.keys(data).forEach(key => {
-  //       newCoords[data[key].nickName] = data[key].position;
-  //     });
-  //     return newCoords;
+  //     return { ...prevCoords, [data.nickName]: data.position };
   //   });
   // };
+
+  // 2. 30fps
+  const handleTheyMove = data => {
+    // console.log('they move', data);
+    console.log(data);
+    setClientCoords(prevCoords => {
+      const newCoords = { ...prevCoords };
+      Object.keys(data).forEach(key => {
+        newCoords[data[key].nickName] = data[key].position;
+      });
+      return newCoords;
+    });
+  };
 
   // 다른 클라이언트가 연결 해제
   // data: {nickName}
@@ -150,7 +150,7 @@ export const createSocketHandlers = (
 
   const handleTimerStart = duration => {
     console.log('타이머 시작', duration);
-    startTimer(duration);
+    setQuizDuration(duration);
   };
 
   const handleTimeOut = data => {

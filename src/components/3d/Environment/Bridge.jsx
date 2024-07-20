@@ -15,6 +15,7 @@ export default function Bridge(props) {
 
   useEffect(() => {
     if (!actions['bridge']) return;
+    if (!props.break) return;
 
     const action = actions['bridge'];
 
@@ -43,7 +44,7 @@ export default function Bridge(props) {
         mixer.removeEventListener('finished', onFinished);
       }
     };
-  }, [actions, mixer]);
+  }, [actions, mixer, props.break]);
 
   // 일정한 프레임 유지
   useFrame((state, delta) => {
