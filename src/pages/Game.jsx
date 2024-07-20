@@ -36,6 +36,7 @@ import useQuizRoomStore from '../store/quizRoomStore.js';
 
 // style
 import '../styles/game.css';
+import Beachside from '../components/3d/Environment/Beachside.jsx';
 
 export default function Game({
   nickname,
@@ -353,6 +354,7 @@ export default function Game({
     }
   }, [isStarted, isQuestionActive, isAnswerDisplayed]);
 
+  console.log(type);
   return (
     <>
       <Perf />
@@ -464,20 +466,31 @@ export default function Game({
       <StaticMaterials rotation-y={Math.PI} />
 
       <Physics debug>
-        {/* <IslandMaterials rotation-y={Math.PI} /> */}
+        {type === 2 && (
+          <Beachside
+            rotation-y={-Math.PI / 2}
+            position-y={-10}
+            position-z={-20}
+          />
+        )}
 
-        {leftIslandBreak ? (
-          <BrokenLand rotation-y={Math.PI} />
-        ) : (
-          <Land rotation-y={Math.PI} />
+        {type === 1 && (
+          <>
+            {leftIslandBreak ? (
+              <BrokenLand rotation-y={Math.PI} />
+            ) : (
+              <Land rotation-y={Math.PI} />
+            )}
+            {rightIslandBreak ? (
+              <BrokenLand rotation-y={Math.PI} scale-x={-1} />
+            ) : (
+              <Land rotation-y={Math.PI} scale-x={-1} />
+            )}
+            {bridgeBreak ? <BrokenBridge /> : <Bridge position-y={0.5} />}
+            <Wall />
+          </>
         )}
-        {rightIslandBreak ? (
-          <BrokenLand rotation-y={Math.PI} scale-x={-1} />
-        ) : (
-          <Land rotation-y={Math.PI} scale-x={-1} />
-        )}
-        {bridgeBreak ? <BrokenBridge /> : <Bridge />}
-        <Wall />
+
         {isConnected && quiz && (
           <Blackboard position-y={70} position-z={-200} text={quiz} />
         )}
