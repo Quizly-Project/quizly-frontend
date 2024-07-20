@@ -32,7 +32,8 @@ export const createSocketHandlers = (
   displayResult,
   hideResult,
   hideTopThree,
-  setQuizDuration
+  setQuizDuration,
+  displayEndEventVisible
 ) => {
   /* ------- Socket events ------- */
   // 기존 접속중인 클라이언트의 위치 저장
@@ -158,6 +159,7 @@ export const createSocketHandlers = (
     const options = ['무응답', 'O', 'X', '4'];
 
     deactivateQuestion();
+    displayEndEventVisible();
 
     setSpotlight(data.correctAnswer);
     setRank(

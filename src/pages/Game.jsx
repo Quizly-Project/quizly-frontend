@@ -62,6 +62,7 @@ export default function Game({
   const [leftIslandBreak, setLeftIslandBreak] = useState(false);
   const [rightIslandBreak, setRightIslandBreak] = useState(false);
   const [bridgeBreak, setBridgeBreak] = useState(false);
+  const { displayAnswer } = useQuizRoomStore();
 
   const {
     type,
@@ -71,11 +72,14 @@ export default function Game({
     isAnswerDisplayed, // 정답 공개
     isResultDisplayed, // 결과 공개
     isBreak, // 섬 파괴
+    isEndEventVisible, // 퀴즈 종료 이벤트 표시
+    isCameraOn, // 카메라 활성화
   } = useQuizRoomStore(state => state.quizRoom);
   const {
     displayTopThree, // 상위 3명 표시
     startIsBreak, // 섬 파괴 시작
     stopIsBreak, // 섬 파괴 중지
+    turnOffCamera, // 카메라 끄기
   } = useQuizRoomStore();
 
   const CAMERA_UP = 10;
@@ -162,6 +166,7 @@ export default function Game({
       const onAnswerPositionReached = () => {
         console.log('정답 위치에 도달했습니다.');
         // 여기에 원하는 로직을 추가하세요
+        displayAnswer();
       };
 
       const onIncorrectPositionReached = () => {
@@ -189,6 +194,7 @@ export default function Game({
         setLeftIslandBreak(false);
         setRightIslandBreak(false);
         stopIsBreak();
+        turnOffCamera();
       };
 
       gsap
@@ -344,11 +350,11 @@ export default function Game({
   });
 
   useEffect(() => {
-    if (isStarted && !isQuestionActive && isAnswerDisplayed) {
+    if (isStarted && !isQuestionActive && isCameraOn) {
       console.log('결과', isAnswerDisplayed);
       setResultView();
     }
-  }, [isStarted, isQuestionActive, isAnswerDisplayed]);
+  }, [isStarted, isQuestionActive, isCameraOn]);
 
   return (
     <>
@@ -363,7 +369,7 @@ export default function Game({
           minDistance={5}
           // maxDistance={80}
         />
-      ) : isStarted && isAnswerDisplayed ? (
+      ) : isStarted && !isQuestionActive && isCameraOn ? (
         <OrbitControls
           ref={orbitControls}
           enableRotate={true}
@@ -389,10 +395,14 @@ export default function Game({
       )}
 
       <BasicSpotLights />
-      {!isStarted && type === 1 && spotlight === '1' && <OEffects />}
-      {!isStarted && type === 1 && spotlight === '2' && <XEffects />}
+      {isStarted && !isQuestionActive && type === 1 && spotlight === '1' && (
+        <OEffects />
+      )}
+      {isStarted && !isQuestionActive && type === 1 && spotlight === '2' && (
+        <XEffects />
+      )}
 
-      {!isStarted && type === 2 && quizAnswerer && (
+      {isStarted && !isQuestionActive && type === 2 && quizAnswerer && (
         <>
           {isCorrectAnswerer && clientCoords[nickname] && (
             <>
