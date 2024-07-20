@@ -1,5 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Sky, OrbitControls, CameraControls } from '@react-three/drei';
+import {
+  Sky,
+  OrbitControls,
+  CameraControls,
+  Environment,
+} from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
 import { Perf } from 'r3f-perf';
 import { useThree, useFrame } from '@react-three/fiber';
@@ -20,6 +25,7 @@ import ExplosionConfetti from '../components/3d/Environment/ExplosionConfetti.js
 import Bridge from '../components/3d/Environment/Bridge.jsx';
 import Land from '../components/3d/Environment/Land.jsx';
 import BrokenLand from '../components/3d/Environment/BrokenLand.jsx';
+import StaticMaterials from '../components/3d/Environment/StaticMaterials.jsx';
 
 // Character
 import CharacterController from '../components/3d/Mesh/CharacterController.jsx';
@@ -30,9 +36,6 @@ import useQuizRoomStore from '../store/quizRoomStore.js';
 
 // style
 import '../styles/game.css';
-import StaticMaterials from '../components/3d/Environment/StaticMaterials.jsx';
-import { set } from 'react-hook-form';
-import BrokenBridge from '../components/3d/Environment/BrokenBridge.jsx';
 
 export default function Game({
   nickname,
@@ -353,6 +356,12 @@ export default function Game({
   return (
     <>
       <Perf />
+      <Environment
+        background
+        files={'/Environment/puresky.hdr'}
+        intensity={0.1}
+      />
+
       <CoordinateHelpers size={1000} divisions={10} />
       {isTeacher ? (
         <OrbitControls
@@ -376,7 +385,7 @@ export default function Game({
         <CameraControls ref={cameraControls} />
       )}
 
-      {isQuestionActive ? (
+      {/* {isQuestionActive ? (
         <>
           <Sky />
           <Lights intensity={1.5} ambientIntensity={0.5} />
@@ -386,7 +395,7 @@ export default function Game({
           <Sky />
           <Lights intensity={0.5} ambientIntensity={0.5} />
         </>
-      )}
+      )} */}
 
       <BasicSpotLights />
       {!isStarted && type === 1 && spotlight === '1' && <OEffects />}

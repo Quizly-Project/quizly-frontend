@@ -18,7 +18,7 @@ const BasicSpotLights = () => {
       <SpotLights
         position={[0, 50, -10]}
         targetPosition={[0, 8.7, -50]}
-        intensity={10000}
+        intensity={30000}
       />
     </>
   );
