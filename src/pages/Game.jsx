@@ -482,6 +482,7 @@ export default function Game({
             rank={rank}
             isCorrectAnswerer={isCorrectAnswerer}
             isStarted={isQuestionActive}
+            clientCoords={clientCoords}
           />
         )}
         {isConnected &&
