@@ -105,12 +105,12 @@ export const createSocketHandlers = (
 
   // 2. 30fps
   const handleTheyMove = data => {
-    // console.log('they move', data);
-    // console.log(data);
     setClientCoords(prevCoords => {
       const newCoords = { ...prevCoords };
-      Object.keys(data).forEach(key => {
-        newCoords[data[key].nickName] = data[key].position;
+      Object.entries(data).forEach(([key, value]) => {
+        if (value && value.nickName && value.position) {
+          newCoords[value.nickName] = value.position;
+        }
       });
       return newCoords;
     });

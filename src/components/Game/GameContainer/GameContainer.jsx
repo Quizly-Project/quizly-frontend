@@ -205,7 +205,7 @@ const GameContainer = () => {
         hideTopThree,
         setQuizDuration
       ),
-    [nickName, isTeacher, quizCnt, startTimer]
+    [nickName, isTeacher, quizCnt]
   );
 
   const handleNickNameBtn = input => {

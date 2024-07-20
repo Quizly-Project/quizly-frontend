@@ -58,10 +58,6 @@ const CharacterController = ({
     socket.emit('iMove', { nickName: nickname, position: myPos }); // 보내줄 데이터 {nickName, {x, y, z}}
   }, [myPos]);
 
-  useEffect(() => {
-    console.log('clientCoords', clientCoords);
-  }, [clientCoords]);
-
   // 임계점 이상일 때만 렌더링한다.
   const detectMovement = useCallback((oldPos, newPos, threshold = 0.3) => {
     return (
@@ -155,11 +151,11 @@ const CharacterController = ({
     }
   });
 
-  const handleCollision = () => {
-    console.log('collision', clientCoords, nickname);
-    console.log('cc', clientCoords[nickname]);
-    const { x, y, z } = clientCoords[nickname];
-    rigidbody.current.setTranslation({ x, y, z });
+  const handleCollision = data => {
+    console.log('충돌', data);
+    const { x, y, z } = data;
+    console.log('x', x, 'y', y, 'z', z);
+    rigidbody.current.setTranslation({ x: x * 1, y: y * 1, z: z * 1 });
   };
 
   useEffect(() => {
