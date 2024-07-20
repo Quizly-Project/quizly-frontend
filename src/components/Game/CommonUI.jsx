@@ -27,14 +27,15 @@ const CommonUI = ({
   isTeacher,
 }) => {
   const [showCompletion, setShowCompletion] = useState(false);
-
   const {
     isStarted,
     isQuestionActive,
     isFinished,
     showTopThree,
     hideTopThree,
+    isEndEventVisible,
   } = useQuizRoomStore(state => state.quizRoom);
+
   const handleOnComplete = () => {
     setShowCompletion(false);
   };
@@ -46,8 +47,9 @@ const CommonUI = ({
     console.log('quizIndex', quizIndex);
     console.log('quizCnt', quizCnt);
     console.log('quizResult', quizResult);
-    if (isStarted && !isQuestionActive) setShowCompletion(true);
-  }, [isQuestionActive, isStarted, isFinished]);
+    if ((isStarted || isFinished) && !isQuestionActive && isEndEventVisible)
+      setShowCompletion(true);
+  }, [isStarted, isFinished, isQuestionActive, isEndEventVisible]);
 
   return (
     <div className="common-ui">

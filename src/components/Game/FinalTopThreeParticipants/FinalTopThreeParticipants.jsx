@@ -35,6 +35,7 @@ const FinalTopThreeParticipants = ({
   const revealOrder = [2, 1, 0];
 
   const startRevealProcess = () => {
+    console.log('startRevealProcess');
     const revealInterval = 2000;
 
     revealOrder.forEach((order, index) => {
