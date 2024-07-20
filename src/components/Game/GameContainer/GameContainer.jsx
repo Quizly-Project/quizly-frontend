@@ -46,7 +46,13 @@ const GameContainer = () => {
     displayResult,
     hideResult,
     hideTopThree,
+    setQuizDuration,
   } = useQuizRoomStore();
+
+  const { isTimerStarted, duration } = useQuizRoomStore(
+    state => state.quizRoom
+  );
+
   const { isInputChatFocused, isInputGoldenbellFocused } =
     useInputFocusedStore();
   const navigate = useNavigate();
@@ -168,7 +174,6 @@ const GameContainer = () => {
         setQuiz,
         nickName,
         setQuizResult,
-        startTimer,
         setParticipants,
         setQuizCnt,
         quizCnt,
@@ -197,7 +202,8 @@ const GameContainer = () => {
         hideAnswer,
         displayResult,
         hideResult,
-        hideTopThree
+        hideTopThree,
+        setQuizDuration
       ),
     [nickName, isTeacher, quizCnt, startTimer]
   );
@@ -219,6 +225,12 @@ const GameContainer = () => {
   useEffect(() => {
     if (isTeacher) setNickName('teacher');
   }, []);
+
+  useEffect(() => {
+    if (isTimerStarted) {
+      startTimer(duration);
+    }
+  }, [isTimerStarted, duration, startTimer]);
 
   /* ------- Socket listeners ------- */
   // 리스너를 마운트 될 때 한 번만 생성한다.

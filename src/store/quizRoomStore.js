@@ -11,6 +11,9 @@ const initialQuizRoom = {
   isAnswerDisplayed: false, // 정답 공개 여부
   isResultDisplayed: false, // 결과 공개 여부
   showTopThree: false, // 상위 3명 표시 여부
+  isTimerStarted: false, // 타이머 시작 여부
+  isBreak: false, // 아일랜드 브레이크 여부
+  duration: 0, // 퀴즈 시간
   participants: {}, // 참가자
 };
 
@@ -182,6 +185,36 @@ const useQuizRoomStore = create((set, get) => ({
   hideTopThree: () =>
     set(state => ({
       quizRoom: { ...state.quizRoom, showTopThree: false },
+    })),
+
+  setQuizDuration: duration =>
+    set(state => ({
+      quizRoom: { ...state.quizRoom, duration },
+    })),
+
+  startTimer: () =>
+    set(state => ({
+      quizRoom: { ...state.quizRoom, isTimerStarted: true },
+    })),
+
+  stopTimer: () =>
+    set(state => ({
+      quizRoom: { ...state.quizRoom, isTimerStarted: false },
+    })),
+
+  updateIsTimerStarted: isTimerStarted =>
+    set(state => ({
+      quizRoom: { ...state.quizRoom, isTimerStarted },
+    })),
+
+  startIsBreak: () =>
+    set(state => ({
+      quizRoom: { ...state.quizRoom, isBreak: true },
+    })),
+
+  stopIsBreak: () =>
+    set(state => ({
+      quizRoom: { ...state.quizRoom, isBreak: false },
     })),
 
   // 선택자

@@ -10,9 +10,10 @@ import { useFrame } from '@react-three/fiber';
 import { CapsuleCollider, RigidBody } from '@react-three/rapier';
 import Character from './Character';
 import useInputFocusedStore from '../../../store/inputFocusedStore';
+import useQuizRoomStore from '../../../store/quizRoomStore';
 import spawnLocations from '../../../utils/spawnLocations';
 
-const MOVEMENT_SPEED = 200;
+const MOVEMENT_SPEED = 500;
 const JUMP_FORCE = 5;
 const MAX_LINVEL = 5;
 const JUMP_LIMIT = 11.8;
@@ -27,6 +28,7 @@ const CharacterController = ({
   isCorrectAnswerer,
   isStarted,
 }) => {
+  const { isBreak } = useQuizRoomStore(state => state.quizRoom);
   const { isInputChatFocused, isInputGoldenbellFocused } =
     useInputFocusedStore();
   const rigidbody = useRef(); // 움직임 관리
@@ -154,7 +156,7 @@ const CharacterController = ({
         colliders={false}
         canSleep={false}
         enabledRotations={[false, false, false]}
-        gravityScale={0.6}
+        gravityScale={isBreak ? 20 : 1}
       >
         {/* collider 내 position: 모델으로부터의 상대적 위치 */}
         <CapsuleCollider args={[0.2, 2.2]} position={[0, 1.25, 0]} />

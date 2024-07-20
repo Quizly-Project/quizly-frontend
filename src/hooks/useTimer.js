@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import useQuizRoomStore from '../store/quizRoomStore';
 
 export const useTimer = () => {
   const [timer, setTimer] = useState({ percent: 100, remainingTime: 0 });
@@ -6,6 +7,8 @@ export const useTimer = () => {
   const intervalIdRef = useRef(null);
   const startTimeRef = useRef(0);
   const durationRef = useRef(0);
+
+  const { updateIsTimerStarted } = useQuizRoomStore();
 
   const startTimer = useCallback(duration => {
     console.log('Timer started with duration:', duration);
@@ -33,6 +36,7 @@ export const useTimer = () => {
         console.log('Timer reached 0');
         clearInterval(intervalIdRef.current);
         setTimer({ percent: 0, remainingTime: 0 });
+        updateIsTimerStarted(false);
       }
     }, 100); // 100ms마다 업데이트
   }, []);
@@ -51,6 +55,7 @@ export const useTimer = () => {
       clearInterval(intervalIdRef.current);
     }
     setTimer({ percent: 0, remainingTime: 0 });
+    updateIsTimerStarted(false);
   }, []);
 
   return { timer, startTimer, stopTimer };

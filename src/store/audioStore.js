@@ -3,8 +3,9 @@ import { create } from 'zustand';
 // 초기 상태 정의
 const initialAudioState = {
   bgMusic: null,
-  normalTick: null,
-  fastTick: null,
+  // normalTick: null,
+  // fastTick: null,
+  tick: null,
   isBgMusicPlaying: false,
   isGameStarted: false,
   whistle: null,
@@ -20,20 +21,22 @@ const useAudioStore = create((set, get) => ({
   // 액션
   initializeAudios: () => {
     const bgMusic = new Audio('/src/assets/YoHo Beat-Duck.mp3');
-    const normalTick = new Audio('/Sounds/timer.mp3');
-    const fastTick = new Audio('/Sounds/fastTimer.mp3');
+    // const normalTick = new Audio('/Sounds/timer.mp3');
+    // const fastTick = new Audio('/Sounds/fastTimer.mp3');
+    const tick = new Audio('/src/assets/tick.mp3');
 
     bgMusic.loop = true;
-    normalTick.loop = true;
-    fastTick.loop = true;
-
-    set({ audio: { ...get().audio, bgMusic, normalTick, fastTick } });
+    // normalTick.loop = true;
+    // fastTick.loop = true;
+    tick.loop = true;
+    set({ audio: { ...get().audio, bgMusic, tick } });
   },
 
   // 브금 관련
   initializeBgMusic: () => {
     const bgMusic = new Audio('/src/assets/YoHo Beat-Duck.mp3');
     bgMusic.loop = true;
+    bgMusic.playbackRate = 1.5;
     set(state => ({ audio: { ...state.audio, bgMusic } }));
   },
 
@@ -84,24 +87,22 @@ const useAudioStore = create((set, get) => ({
 
   // 타이머 관련
   playTimerSound: remainingTime => {
-    const { normalTick, fastTick } = get().audio;
-    if (remainingTime > 3) {
-      normalTick.play();
-      fastTick.pause();
+    const { tick } = get().audio;
+    if (remainingTime > 5) {
+      tick.play();
+    } else if (remainingTime <= 5 && remainingTime > 3) {
+      tick.playbackRate = 1.5;
     } else if (remainingTime <= 3 && remainingTime > 0) {
-      normalTick.pause();
-      fastTick.play();
+      tick.playbackRate = 2;
     } else {
-      normalTick.pause();
-      fastTick.pause();
+      tick.pause();
     }
   },
 
   stopAllSounds: () => {
-    const { bgMusic, normalTick, fastTick } = get().audio;
+    const { bgMusic, tick } = get().audio;
     bgMusic?.pause();
-    normalTick?.pause();
-    fastTick?.pause();
+    tick?.pause();
     set({ audio: { ...get().audio, isBgMusicPlaying: false } });
   },
 
@@ -199,6 +200,7 @@ const useAudioStore = create((set, get) => ({
   // 칠판에 글씨 쓰기
   initializeWritingSound: () => {
     const writing = new Audio('/Sounds/write.mp3');
+    writing.playbackRate = 1;
     writing.loop = true;
     set(state => ({ audio: { ...state.audio, writing } }));
   },
