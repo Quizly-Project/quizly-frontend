@@ -19,6 +19,7 @@ import CoordinateHelpers from '../components/3d/CoordinateHelpers.jsx';
 import ExplosionConfetti from '../components/3d/Environment/ExplosionConfetti.jsx';
 import Bridge from '../components/3d/Environment/Bridge.jsx';
 import Land from '../components/3d/Environment/Land.jsx';
+import BrokenLand from '../components/3d/Environment/BrokenLand.jsx';
 
 // Character
 import CharacterController from '../components/3d/Mesh/CharacterController.jsx';
@@ -31,6 +32,7 @@ import useQuizRoomStore from '../store/quizRoomStore.js';
 import '../styles/game.css';
 import StaticMaterials from '../components/3d/Environment/StaticMaterials.jsx';
 import { set } from 'react-hook-form';
+import BrokenBridge from '../components/3d/Environment/BrokenBridge.jsx';
 
 export default function Game({
   nickname,
@@ -68,7 +70,7 @@ export default function Game({
     isQuestionActive, // 문제 출제 퀴즈 진행 중
     isAnswerDisplayed, // 정답 공개
     isResultDisplayed, // 결과 공개
-    isIslandBreak, // 섬 파괴
+    isBreak, // 섬 파괴
   } = useQuizRoomStore(state => state.quizRoom);
   const {
     displayTopThree, // 상위 3명 표시
@@ -455,10 +457,17 @@ export default function Game({
       <Physics debug>
         {/* <IslandMaterials rotation-y={Math.PI} /> */}
 
-        <Land rotation-y={Math.PI} break={leftIslandBreak} />
-        <Land rotation-y={Math.PI} scale-x={-1} break={rightIslandBreak} />
-        <Bridge break={bridgeBreak} />
-
+        {leftIslandBreak ? (
+          <BrokenLand rotation-y={Math.PI} />
+        ) : (
+          <Land rotation-y={Math.PI} />
+        )}
+        {rightIslandBreak ? (
+          <BrokenLand rotation-y={Math.PI} scale-x={-1} />
+        ) : (
+          <Land rotation-y={Math.PI} scale-x={-1} />
+        )}
+        {bridgeBreak ? <BrokenBridge /> : <Bridge />}
         <Wall />
         {isConnected && quiz && (
           <Blackboard position-y={70} position-z={-200} text={quiz} />
