@@ -8,6 +8,8 @@ const initialQuizRoom = {
   isFinished: false, // 퀴즈 세션 종료 여부
   isStarted: false, // 퀴즈 세션 시작 여부
   isQuestionActive: false, // 문제 출제 여부
+  isEndEventVisible: false, // 퀴즈 종료 이벤트 표시 여부
+  isCameraOn: false, // 카메라 활성화 여부
   isAnswerDisplayed: false, // 정답 공개 여부
   isResultDisplayed: false, // 결과 공개 여부
   showTopThree: false, // 상위 3명 표시 여부
@@ -41,8 +43,6 @@ const useQuizRoomStore = create((set, get) => ({
       quizRoom: {
         ...state.quizRoom,
         isFinished: true,
-        isStarted: false,
-        isQuestionActive: false,
       },
     })),
 
@@ -215,6 +215,44 @@ const useQuizRoomStore = create((set, get) => ({
   stopIsBreak: () =>
     set(state => ({
       quizRoom: { ...state.quizRoom, isBreak: false },
+    })),
+
+  displayEndEventVisible: () =>
+    set(state => ({
+      quizRoom: { ...state.quizRoom, isEndEventVisible: true },
+    })),
+
+  hideEndEventVisible: () =>
+    set(state => ({
+      quizRoom: { ...state.quizRoom, isEndEventVisible: false },
+    })),
+
+  //카메라 활성화
+  turnOnCamera: () =>
+    set(state => ({
+      quizRoom: { ...state.quizRoom, isCameraOn: true },
+    })),
+
+  //카메라 비활성화
+  turnOffCamera: () =>
+    set(state => ({
+      quizRoom: { ...state.quizRoom, isCameraOn: false },
+    })),
+
+  // 활성화 초기화
+  resetActivation: () =>
+    set(state => ({
+      quizRoom: {
+        ...state.quizRoom,
+        isQuestionActive: false,
+        isEndEventVisible: false,
+        isCameraOn: false,
+        isAnswerDisplayed: false,
+        isResultDisplayed: false,
+        showTopThree: false,
+        isTimerStarted: false,
+        isBreak: false,
+      },
     })),
 
   // 선택자

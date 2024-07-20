@@ -47,6 +47,7 @@ const GameContainer = () => {
     hideResult,
     hideTopThree,
     setQuizDuration,
+    displayEndEventVisible,
   } = useQuizRoomStore();
 
   const { isTimerStarted, duration } = useQuizRoomStore(
@@ -203,9 +204,10 @@ const GameContainer = () => {
         displayResult,
         hideResult,
         hideTopThree,
-        setQuizDuration
+        setQuizDuration,
+        displayEndEventVisible
       ),
-    [nickName, isTeacher, quizCnt, startTimer]
+    [nickName, isTeacher, quizCnt]
   );
 
   const handleNickNameBtn = input => {

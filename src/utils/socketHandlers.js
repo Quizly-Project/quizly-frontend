@@ -32,7 +32,8 @@ export const createSocketHandlers = (
   displayResult,
   hideResult,
   hideTopThree,
-  setQuizDuration
+  setQuizDuration,
+  displayEndEventVisible
 ) => {
   /* ------- Socket events ------- */
   // 기존 접속중인 클라이언트의 위치 저장
@@ -105,12 +106,12 @@ export const createSocketHandlers = (
 
   // 2. 30fps
   const handleTheyMove = data => {
-    // console.log('they move', data);
-    console.log(data);
     setClientCoords(prevCoords => {
       const newCoords = { ...prevCoords };
-      Object.keys(data).forEach(key => {
-        newCoords[data[key].nickName] = data[key].position;
+      Object.entries(data).forEach(([key, value]) => {
+        if (value && value.nickName && value.position) {
+          newCoords[value.nickName] = value.position;
+        }
       });
       return newCoords;
     });
@@ -158,6 +159,7 @@ export const createSocketHandlers = (
     const options = ['무응답', 'O', 'X', '4'];
 
     deactivateQuestion();
+    displayEndEventVisible();
 
     setSpotlight(data.correctAnswer);
     setRank(

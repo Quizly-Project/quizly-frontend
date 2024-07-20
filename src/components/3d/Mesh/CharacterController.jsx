@@ -12,6 +12,7 @@ import Character from './Character';
 import useInputFocusedStore from '../../../store/inputFocusedStore';
 import useQuizRoomStore from '../../../store/quizRoomStore';
 import spawnLocations from '../../../utils/spawnLocations';
+import useSocketStore from '../../../store/socketStore';
 
 const MOVEMENT_SPEED = 500;
 const JUMP_FORCE = 5;
@@ -27,6 +28,7 @@ const CharacterController = ({
   rank,
   isCorrectAnswerer,
   isStarted,
+  clientCoords,
 }) => {
   const { isBreak } = useQuizRoomStore(state => state.quizRoom);
   const { isInputChatFocused, isInputGoldenbellFocused } =
@@ -52,7 +54,7 @@ const CharacterController = ({
 
   // 내 위치가 바뀌면 서버에 위치를 전송한다.
   useEffect(() => {
-    console.log(myPos);
+    // console.log(myPos);
     socket.emit('iMove', { nickName: nickname, position: myPos }); // 보내줄 데이터 {nickName, {x, y, z}}
   }, [myPos]);
 
@@ -148,6 +150,21 @@ const CharacterController = ({
       setIsJumped(false);
     }
   });
+
+  const handleCollision = data => {
+    console.log('충돌', data);
+    const { x, y, z } = data;
+    console.log('x', x, 'y', y, 'z', z);
+    rigidbody.current.setTranslation({ x: x * 1, y: y * 1, z: z * 1 });
+  };
+
+  useEffect(() => {
+    if (socket) socket.on('collision', handleCollision);
+
+    return () => {
+      socket.off('collision', handleCollision);
+    };
+  }, []);
 
   return (
     <>
