@@ -1,0 +1,13 @@
+.myQuizContainer {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.myQuizContainer > * {
+  margin-bottom: 20px;
+}
+
+.myQuizContainer > *:last-child {
+  margin-bottom: 0;
+}

@@ -5,6 +5,7 @@ import QuizList from '../QuizList/QuizList';
 import QuizDetailModal from '../QuizDetailModal/QuizDetailModal';
 import { getMyQuiz } from '../../../api/axios';
 import useAuthStore from '../../../store/authStore';
+import styles from './MyQuiz.module.css';
 
 const MyQuiz = () => {
   const user = useAuthStore(state => state.user);
@@ -41,18 +42,20 @@ const MyQuiz = () => {
 
   return (
     <>
-      <Text type="title" size="large" weight="bold">
-        내 퀴즈
-      </Text>
-      <SearchBar />
-      <QuizList quizzes={myQuizzes} onClick={handleQuizClick} />
-      {selectQuiz && (
-        <QuizDetailModal
-          quiz={selectQuiz}
-          onClose={handleCloseModal}
-          onCreateRoom={handleCreateRoom}
-        />
-      )}
+      <div className={styles.myQuizContainer}>
+        <Text type="title" size="large" weight="bold" color="black">
+          내 퀴즈
+        </Text>
+        <SearchBar />
+        <QuizList quizzes={myQuizzes} onClick={handleQuizClick} />
+        {selectQuiz && (
+          <QuizDetailModal
+            quiz={selectQuiz}
+            onClose={handleCloseModal}
+            onCreateRoom={handleCreateRoom}
+          />
+        )}
+      </div>
     </>
   );
 };
