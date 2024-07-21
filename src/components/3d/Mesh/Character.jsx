@@ -1,18 +1,19 @@
 import React, { useEffect, useRef, useMemo } from 'react';
 import { useGLTF, Html, useAnimations } from '@react-three/drei';
-
 import useQuizRoomStore from '../../../store/quizRoomStore';
+import CryingEmojiConfetti from '../Effects/CryingEmojiConfetti';
+import Emoji from '../Effects/Emoji';
 
 const Character = React.memo(
-  ({ path, matName, nickname, actionType, rank }) => {
+  ({ path, matName, nickname, actionType, rank, isCorrectAnswerer }) => {
     const group = useRef();
 
     const { nodes, materials, animations } = useGLTF(`/Character/${path}`);
     const { actions } = useAnimations(animations, group);
-    // console.log(actions);
 
     const { getParticipantsMap } = useQuizRoomStore();
-    const { type } = useQuizRoomStore(state => state.quizRoom);
+    const { type, isResultDisplayed, isStarted, isQuestionActive } =
+      useQuizRoomStore(state => state.quizRoom);
     const participants = getParticipantsMap();
     const writeStatus = useMemo(() => {
       if (participants[nickname]?.writeStatus === 'Done')
@@ -32,10 +33,8 @@ const Character = React.memo(
     useGLTF.preload(`/Character/${path}`);
 
     useEffect(() => {
-      // play action
       actions[actionType].reset().fadeIn(0.5).play();
 
-      // stop action
       return () => {
         if (actions[actionType]) {
           actions[actionType].fadeOut(0.5);
@@ -43,8 +42,11 @@ const Character = React.memo(
       };
     }, [actionType]);
 
+    // 정답자일 경우 더 큰 scale 값을 사용
+    const characterScale = isCorrectAnswerer ? 5 : 2.5;
+
     return (
-      <group ref={group} dispose={null} scale={2.5}>
+      <group ref={group} dispose={null} scale={characterScale}>
         <group name="Scene">
           <group name="Rig" castShadow>
             <skinnedMesh
@@ -91,6 +93,14 @@ const Character = React.memo(
                 </div>
               </Html>
             )}
+            {isStarted &&
+              !isQuestionActive &&
+              !isResultDisplayed &&
+              !isCorrectAnswerer &&
+              type === 2 &&
+              writeStatus !== 'isWriting' && (
+                <Emoji position={[0, 2, 0]} scale={1.5} />
+              )}
           </group>
         </group>
       </group>
