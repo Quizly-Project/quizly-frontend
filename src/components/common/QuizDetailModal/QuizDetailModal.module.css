@@ -47,7 +47,7 @@
 .divider {
   border: none;
   border-top: 1px solid #e0e0e0;
-  margin: 0px 0 6px 0; /* 상단 여백을 줄이고 하단 여백은 유지했습니다 */
+  margin: 0px 0 6px 0;
 }
 
 .quizList {
