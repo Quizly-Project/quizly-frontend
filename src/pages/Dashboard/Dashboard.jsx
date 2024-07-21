@@ -39,6 +39,7 @@ const Dashboard = () => {
   const handleQuizClick = quiz => {
     setQuizId(quiz.quizGroup);
     setSelectQuiz(quiz);
+    setBtnDisabled(false); // 새로운 퀴즈 선택 시 생성 버튼 활성화
     setQuizType(quiz.quizs[0].type);
   };
 
