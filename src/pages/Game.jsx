@@ -157,6 +157,8 @@ export default function Game({
   }, []);
 
   const setResultView = useCallback(() => {
+    if (type === 2) return; // OX에만 적용
+
     if (orbitControls.current) {
       const delayBetweenMoves = 1; // 각 이동 사이의 지연 시간 (초)
       let incorrectAnswerPosition;

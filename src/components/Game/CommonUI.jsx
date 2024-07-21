@@ -46,6 +46,7 @@ const CommonUI = ({
     console.log('quizIndex', quizIndex);
     console.log('quizCnt', quizCnt);
     console.log('quizResult', quizResult);
+    console.log();
     if ((isStarted || isFinished) && !isQuestionActive && isEndEventVisible)
       setShowCompletion(true);
   }, [isStarted, isFinished, isQuestionActive, isEndEventVisible]);

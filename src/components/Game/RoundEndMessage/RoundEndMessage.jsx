@@ -8,7 +8,7 @@ const RoundEndMessage = ({ message, onComplete, show }) => {
   const [visible, setVisible] = useState(false);
   const whistleRef = useRef(null);
   useEffect(() => {
-    whistleRef.current = new Audio('/src/assets/whistle.wav');
+    whistleRef.current = new Audio('/Sounds/whistle.mp3');
     whistleRef.current.preload = 'auto';
 
     return () => {
