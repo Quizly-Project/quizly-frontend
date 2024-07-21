@@ -92,25 +92,27 @@ const Dashboard = () => {
 
   return (
     <>
-      <Text type="title" size="large" weight="bold">
-        둘러보기
-      </Text>
-      <SearchBar />
-      <QuizList quizzes={quizItems} onClick={handleQuizClick} />
-      {selectQuiz && (
-        <QuizDetailModal
-          quiz={selectQuiz}
-          onClose={handleCloseModal}
-          onCreateRoom={handleCreateRoom}
-        />
-      )}
-      {roomCode && (
-        <RoomCodeModal
-          code={roomCode}
-          onClose={handlerRoomClose}
-          onMove={handlerMoveRoom}
-        />
-      )}
+      <div className={styles.dashboard}>
+        <Text type="title" color="black" size="large" weight="bold">
+          둘러보기
+        </Text>
+        <SearchBar />
+        <QuizList quizzes={quizItems} onClick={handleQuizClick} />
+        {selectQuiz && (
+          <QuizDetailModal
+            quiz={selectQuiz}
+            onClose={handleCloseModal}
+            onCreateRoom={handleCreateRoom}
+          />
+        )}
+        {roomCode && (
+          <RoomCodeModal
+            code={roomCode}
+            onClose={handlerRoomClose}
+            onMove={handlerMoveRoom}
+          />
+        )}
+      </div>
     </>
   );
 };

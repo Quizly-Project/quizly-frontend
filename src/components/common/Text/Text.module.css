@@ -36,6 +36,15 @@
 .color-success {
   color: #464c91;
 }
+.color-black {
+  color: #101010;
+}
+.color-grey {
+  color: #606060;
+}
+.color-whitegrey {
+  color: #d6d8d9;
+}
 
 .color-white {
   color: #fff;

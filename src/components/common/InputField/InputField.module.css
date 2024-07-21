@@ -20,6 +20,53 @@
   outline: none;
 }
 
+.purpleSearch {
+  width: 100%;
+  max-width: 300px;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  border: none;
+  border-width: 0;
+  border-style: none;
+  border-radius: 20px;
+  background-color: #dedfeb;
+  color: #333;
+  outline: none;
+  box-shadow: none;
+  transition: box-shadow 0.2s ease-in-out;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+.purpleSearch:focus {
+  border: none;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(70, 71, 117, 0.2);
+}
+
+.purpleSearchContainer {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+}
+
+/* 검색 아이콘 */
+.purpleSearchContainer::before {
+  content: '🔍';
+  position: absolute;
+  left: 15px;
+  top: 40%;
+  transform: translateY(-50%);
+  color: #717171;
+  font-size: 16px;
+}
+
+.purpleSearchContainer .purpleSearch {
+  padding-left: 40px;
+}
+
 .errorMessage {
   color: #d9534f;
   font-size: 14px;
