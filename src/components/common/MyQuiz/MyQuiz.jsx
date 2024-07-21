@@ -1,19 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Text from '../Text/Text';
 import SearchBar from '../SearchBar/SearchBar';
 import QuizList from '../QuizList/QuizList';
 import QuizDetailModal from '../QuizDetailModal/QuizDetailModal';
+import { getMyQuiz } from '../../../api/axios';
+import useAuthStore from '../../../store/authStore';
 
 const MyQuiz = () => {
+  const user = useAuthStore(state => state.user);
   const [selectQuiz, setSelectQuiz] = useState(null);
+  const [myQuizzes, setMyQuizzes] = useState([]);
 
-  const quizItems = [
-    { quizTitle: '내 퀴즈 1', quizDescription: '퀴즈에 관한 상세 설명' },
-    { quizTitle: '내 퀴즈 2', quizDescription: '퀴즈에 관한 상세 설명' },
-    { quizTitle: '내 퀴즈 3', quizDescription: '퀴즈에 관한 상세 설명' },
-    { quizTitle: '내 퀴즈 4', quizDescription: '퀴즈에 관한 상세 설명' },
-    { quizTitle: '내 퀴즈 5', quizDescription: '퀴즈에 관한 상세 설명' },
-  ];
+  // 내가 생성한 퀴즈 목록 불러오기
+  useEffect(() => {
+    const fetchResults = async () => {
+      try {
+        const response = await getMyQuiz(`${user}`);
+        console.log(response);
+        setMyQuizzes(response || []);
+      } catch (err) {
+        console.error('Failed to fetch my quiz', err);
+      }
+    };
+
+    fetchResults();
+  }, [user]);
 
   const handleQuizClick = quiz => {
     setSelectQuiz(quiz);
@@ -24,8 +35,8 @@ const MyQuiz = () => {
   };
 
   const handleCreateRoom = () => {
-    // 퀴즈 방 만들기
-    // console.log('퀴즈 방 만들기');
+    // 퀴즈 방 만들기 로직
+    console.log('퀴즈 방 만들기');
   };
 
   return (
@@ -34,7 +45,7 @@ const MyQuiz = () => {
         내 퀴즈
       </Text>
       <SearchBar />
-      <QuizList quizzes={quizItems} onClick={handleQuizClick} />
+      <QuizList quizzes={myQuizzes} onClick={handleQuizClick} />
       {selectQuiz && (
         <QuizDetailModal
           quiz={selectQuiz}
