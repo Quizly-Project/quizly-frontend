@@ -27,7 +27,6 @@ const SignIn = () => {
       const success = await login(data.username, data.password);
       if (success) {
         console.log('Login successful');
-        // useEffect will handle navigation
       } else {
         setError('username', {
           type: 'manual',
