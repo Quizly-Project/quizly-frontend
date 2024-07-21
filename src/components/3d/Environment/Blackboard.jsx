@@ -99,7 +99,7 @@ export default function Blackboard(props) {
         <Text3D
           scale={30}
           font="/fonts/UhBee_Regular.json"
-          position={[-20, -30, 110]}
+          position={[-20, -30, 93]}
         >
           {type === 1 ? OX(displayedAnswer) : displayedAnswer}
           <meshPhongMaterial attach="material" {...chalkMaterial} />

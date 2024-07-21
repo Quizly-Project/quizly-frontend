@@ -20,9 +20,9 @@ const TopThreeParticipants = ({
 
   // console.log('topthree', sortedParticipants);
   useEffect(() => {
-    console.log('TopThreeParticipants', isStarted);
-    console.log('TopThreeParticipants isVisible', isVisible);
-    console.log('TopThreeParticipants isExiting', isExiting);
+    // console.log('TopThreeParticipants', isStarted);
+    // console.log('TopThreeParticipants isVisible', isVisible);
+    // console.log('TopThreeParticipants isExiting', isExiting);
     if (isStarted) {
       setIsExiting(false);
       setIsVisible(true);

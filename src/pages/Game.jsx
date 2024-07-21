@@ -12,8 +12,6 @@ import { gsap } from 'gsap';
 import { Vector3 } from 'three';
 
 // Environment
-import IslandMaterials from '../components/3d/Environment/IslandMaterial.jsx';
-import Lights from '../components/3d/Environment/Lights.jsx';
 import Blackboard from '../components/3d/Environment/Blackboard.jsx';
 import Wall from '../components/3d/Environment/Wall.jsx';
 import BasicSpotLights from '../components/3d/Environment/BasicSpotLights.jsx';
@@ -29,6 +27,8 @@ import BrokenLand from '../components/3d/Environment/BrokenLand.jsx';
 import StaticMaterials from '../components/3d/Environment/StaticMaterials.jsx';
 import LineConfetti from '../components/3d/Environment/LineConfetti.jsx';
 import BrokenBridge from '../components/3d/Environment/BrokenBridge.jsx';
+import Beachside from '../components/3d/Environment/Beachside.jsx';
+import useAudioStore from '../store/audioStore.js';
 
 // Character
 import CharacterController from '../components/3d/Mesh/CharacterController.jsx';
@@ -39,7 +39,6 @@ import useQuizRoomStore from '../store/quizRoomStore.js';
 
 // style
 import '../styles/game.css';
-import Beachside from '../components/3d/Environment/Beachside.jsx';
 
 export default function Game({
   nickname,
@@ -151,6 +150,12 @@ export default function Game({
     [camera]
   );
 
+  const { initializeTwinkleSound, playTwinkleSound } = useAudioStore();
+
+  useEffect(() => {
+    initializeTwinkleSound();
+  }, []);
+
   const setResultView = useCallback(() => {
     if (orbitControls.current) {
       const delayBetweenMoves = 1; // 각 이동 사이의 지연 시간 (초)
@@ -173,6 +178,7 @@ export default function Game({
       const onAnswerPositionReached = () => {
         console.log('정답 위치에 도달했습니다.');
         // 여기에 원하는 로직을 추가하세요
+
         displayAnswer();
       };
 
@@ -192,6 +198,7 @@ export default function Game({
       const onCorrectPositionReached = () => {
         console.log('정답자 위치에 도달했습니다.');
         // 여기에 원하는 로직을 추가하세요
+        playTwinkleSound();
       };
 
       const onOriginalPositionReached = () => {
@@ -365,14 +372,14 @@ export default function Game({
 
   return (
     <>
-      <Perf />
+      {/* <Perf /> */}
       <Environment
         background
         files={'/Environment/puresky.hdr'}
         intensity={0.1}
       />
 
-      <CoordinateHelpers size={1000} divisions={10} />
+      {/* <CoordinateHelpers size={1000} divisions={10} /> */}
       {isTeacher ? (
         <OrbitControls
           ref={orbitControls}
@@ -507,7 +514,7 @@ export default function Game({
       )}
       <StaticMaterials rotation-y={Math.PI} />
 
-      <Physics debug>
+      <Physics>
         {type === 2 && (
           <Beachside
             rotation-y={-Math.PI / 2}
