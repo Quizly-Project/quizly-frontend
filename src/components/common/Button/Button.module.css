@@ -50,6 +50,12 @@
   cursor: not-allowed;
 }
 
+.purple {
+  margin-bottom: 0px;
+  background-color: #dedfeb;
+  color: #606060;
+}
+
 .align-center {
   display: flex;
   justify-content: center; /* 수평 중앙 정렬 */

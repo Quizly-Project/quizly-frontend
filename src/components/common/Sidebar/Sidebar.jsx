@@ -13,7 +13,7 @@ const Sidebar = ({ activeMenu, setActiveMenu }) => {
     { icon: '📦', text: '둘러보기' },
     { icon: '✏️', text: '퀴즈 만들기' },
     { icon: '🕒', text: '내 퀴즈' },
-    { icon: '⚙️', text: '설정' },
+    // { icon: '⚙️', text: '설정' },
     { icon: '🚪', text: '로그아웃', onClick: handleLogout },
   ];
 

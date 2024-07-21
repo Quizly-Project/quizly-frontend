@@ -6,7 +6,10 @@ const authAPI = {
   login: async (username, password) => {
     try {
       const response = await api.post('/login', { username, password });
-      return response.data;
+      console.log(response);
+      const nickname = response.headers.get('username');
+      const token = response.headers.get('access');
+      return { ...response.data, nickname, token };
     } catch (error) {
       console.error('Login failed:', error);
       throw error;
@@ -15,7 +18,8 @@ const authAPI = {
   signup: async data => {
     try {
       const response = await api.post('/join', data);
-      return response.data;
+      const token = response.headers.get('access');
+      return { ...response.data, token };
     } catch (error) {
       console.error('Signup failed:', error);
       throw error;
@@ -41,11 +45,13 @@ const useAuthStore = create(
       login: async (username, password) => {
         try {
           const data = await authAPI.login(username, password);
+          console.log(data);
           set({
-            user: data.username,
+            user: data.nickname,
             isAuthenticated: true,
             token: data.token,
           });
+          console.log(data.nickname);
           api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
           return true;
         } catch (error) {
@@ -82,6 +88,15 @@ const useAuthStore = create(
         }));
       },
       getToken: () => get().token,
+      setTokenFromRequestHeader: requestHeaders => {
+        const token = requestHeaders.get('access');
+        if (token) {
+          set({ token });
+          api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        } else {
+          console.error('Token not found in request headers');
+        }
+      },
     }),
     {
       name: 'auth-storage',

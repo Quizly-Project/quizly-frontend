@@ -11,12 +11,12 @@ const SelectCreateQuiz = () => {
   const quizTypes = [
     {
       type: '객관식',
-      image: '/images/multiple-choice.png',
+      image: '/Image/multiple-choice.png',
       urlPath: 'multiple-choice',
     },
     {
       type: '도전 골든벨',
-      image: '/images/short-answer.png',
+      image: '/Image/short-answer.png',
       urlPath: 'short-answer',
     },
   ];
@@ -36,7 +36,7 @@ const SelectCreateQuiz = () => {
 
   return (
     <div className={styles.createQuiz}>
-      <Text type="title" weight="bold" size="large">
+      <Text type="title" weight="bold" size="large" color="black">
         퀴즈 만들기
       </Text>
       <div className={styles.quizTypeContainer}>
@@ -48,7 +48,9 @@ const SelectCreateQuiz = () => {
             key={type}
             onClick={() => handleSelectQuiz(type)}
           >
-            <Text type="subtitle">{type}</Text>
+            <Text type="subtitle" color="grey">
+              {type}
+            </Text>
             <img
               src={image}
               alt={`${type} 퀴즈`}
@@ -57,7 +59,7 @@ const SelectCreateQuiz = () => {
           </div>
         ))}
       </div>
-      <Button align="right" onClick={handleCreateQuiz}>
+      <Button align="right" onClick={handleCreateQuiz} color="purple">
         만들기
       </Button>
     </div>

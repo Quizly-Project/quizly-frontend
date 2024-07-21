@@ -13,7 +13,7 @@
 
 .modalContent {
   background-color: white;
-  padding: 20px;
+  padding: 30px;
   border-radius: 8px;
   width: 90%;
   max-width: 500px;
@@ -21,6 +21,80 @@
 }
 
 .buttonContainer {
+  margin-top: 30px;
+}
+
+.modalHeader {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  padding: 10px;
+  line-height: 1;
+}
+
+.closeButton:hover {
+  color: #000;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 0px 0 6px 0;
+}
+
+.quizList {
+  margin-top: 20px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.quizItem {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  padding: 10px;
+  background: linear-gradient(to right, #f0f0f0, #ffffff);
+  border-radius: 8px;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.quizItem:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.quizNumber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background-color: #464c91;
+  color: white;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: bold;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.quizText {
+  flex-grow: 1;
+}
+
+.modalContent {
+  max-width: 600px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
 }

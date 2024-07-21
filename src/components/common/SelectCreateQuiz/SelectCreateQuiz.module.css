@@ -15,12 +15,19 @@
   padding: 20px;
   text-align: center;
   width: 45%;
+  height: 50%;
   cursor: pointer;
   transition: background-color 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .quizTypeCard:hover {
-  background-color: #e0e0e0;
+  background-color: #dedfeb;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .quizTypeCard.selected {

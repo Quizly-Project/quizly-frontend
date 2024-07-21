@@ -14,14 +14,30 @@ const RoomCodeModal = ({ code, onClose, onMove }) => {
   return (
     <div className={styles.modalOverlay} onClick={handleOverlayClick}>
       <div className={styles.modalContent}>
-        <Text type="title" weight="bold" size="large">
-          퀴즈방 생성 성공!
+        <button className={styles.closeButton} onClick={onClose}>
+          ✕
+        </button>
+        <Text
+          type="title"
+          weight="bold"
+          size="large"
+          align="center"
+          color="black"
+        >
+          퀴즈 방 생성 성공!
         </Text>
-        <Text size="medium">{code}</Text>
+        <hr className={styles.divider} />
+        <Text
+          size="medium"
+          align="center"
+          color="grey"
+          className={styles.codeText}
+        >
+          {code}
+        </Text>
         <div className={styles.buttonContainer}>
-          <Button onClick={onMove}>퀴즈방 이동</Button>
-          <Button color="secondary" onClick={onClose}>
-            방 닫기
+          <Button onClick={onMove} color="purple" align="right">
+            퀴즈방 이동
           </Button>
         </div>
       </div>
