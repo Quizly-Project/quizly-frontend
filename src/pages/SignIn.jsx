@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/common/Button/Button.jsx';
@@ -14,22 +14,35 @@ const SignIn = () => {
     setError,
   } = useForm();
   const navigate = useNavigate();
-  const login = useAuthStore(state => state.login);
+  const { login, isAuthenticated } = useAuthStore();
 
-  const onSubmit = data => {
-    // 여기서 실제로는 백엔드 API를 호출해야 하지만,
-    // 지금은 간단한 검증만 수행합니다.
-    if (login(data.username, data.password)) {
-      console.log('Login successful');
+  useEffect(() => {
+    if (isAuthenticated) {
       navigate('/dashboard');
-    } else {
-      setError('email', {
+    }
+  }, [isAuthenticated, navigate]);
+
+  const onSubmit = async data => {
+    try {
+      const success = await login(data.username, data.password);
+      if (success) {
+        console.log('Login successful');
+        // useEffect will handle navigation
+      } else {
+        setError('username', {
+          type: 'manual',
+          message: '유효하지 않은 사용자 이름 또는 비밀번호입니다.',
+        });
+        setError('password', {
+          type: 'manual',
+          message: '유효하지 않은 사용자 이름 또는 비밀번호입니다.',
+        });
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      setError('username', {
         type: 'manual',
-        message: 'Invalid email or password',
-      });
-      setError('password', {
-        type: 'manual',
-        message: 'Invalid email or password',
+        message: '로그인 중 오류가 발생했습니다.',
       });
     }
   };
@@ -41,19 +54,14 @@ const SignIn = () => {
       </Text>
       <form onSubmit={handleSubmit(onSubmit)}>
         <InputField
-          name="email"
-          type="id"
+          name="username"
+          type="text"
           className="center"
-          placeholder="이메일을 입력하세요."
+          placeholder="사용자 이름을 입력하세요."
           {...register('username', {
-            required: '이메일을 입력해주세요.',
-            // pattern: {
-            //   value: /^\S+@\S+$/i,
-            //   message: '올바른 이메일 주소를 입력해주세요.',
-            // },
+            required: '사용자 이름을 입력해주세요.',
           })}
-          error={errors.email}
-          required="Email is required"
+          error={errors.username}
           round={true}
         />
         <InputField
@@ -64,7 +72,7 @@ const SignIn = () => {
             required: '비밀번호를 입력해주세요.',
             minLength: {
               value: 4,
-              message: '비밀번호는 최소 8자 이상이어야 합니다.',
+              message: '비밀번호는 최소 4자 이상이어야 합니다.',
             },
           })}
           placeholder="비밀번호를 입력하세요."
