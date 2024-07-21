@@ -11,12 +11,12 @@ const SelectCreateQuiz = () => {
   const quizTypes = [
     {
       type: '객관식',
-      image: '/images/multiple-choice.png',
+      image: '/Image/multiple-choice.png',
       urlPath: 'multiple-choice',
     },
     {
       type: '도전 골든벨',
-      image: '/images/short-answer.png',
+      image: '/Image/short-answer.png',
       urlPath: 'short-answer',
     },
   ];
