@@ -104,8 +104,7 @@ const Character = React.memo(
                 <Emoji position={[-1, 1, 0]} scale={1.5} />
               )}
             <Html
-              position={[0, -1, 0]}
-              wrapperClass="label"
+              position={[0, -0.5, 0]}
               center
               distanceFactor={10}
               scale={400}
