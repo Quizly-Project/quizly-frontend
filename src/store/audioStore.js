@@ -3,15 +3,17 @@ import { create } from 'zustand';
 // 초기 상태 정의
 const initialAudioState = {
   bgMusic: null,
-  // normalTick: null,
-  // fastTick: null,
-  tick: null,
   isBgMusicPlaying: false,
   isGameStarted: false,
-  whistle: null,
-  drumroll: null,
-  firstPlace: null,
-  writing: null,
+  tick: null, // 타이머 소리
+  whistle: null, // 정지 소리
+  drumroll: null, // 두구두구 소리
+  firstPlace: null, // 1등 공개 소리
+  writing: null, // 칠판에 글씨 쓰는 소리
+  fall: null, // 땅 무너지는 소리
+  twinkle: null,
+  right: null,
+  wrong: null,
 };
 
 const useAudioStore = create((set, get) => ({
@@ -21,9 +23,10 @@ const useAudioStore = create((set, get) => ({
   // 액션
   initializeAudios: () => {
     const bgMusic = new Audio('/src/assets/YoHo Beat-Duck.mp3');
+
     // const normalTick = new Audio('/Sounds/timer.mp3');
     // const fastTick = new Audio('/Sounds/fastTimer.mp3');
-    const tick = new Audio('/src/assets/tick.mp3');
+    const tick = new Audio('/Sounds/tick.mp3');
 
     bgMusic.loop = true;
     // normalTick.loop = true;
@@ -88,6 +91,7 @@ const useAudioStore = create((set, get) => ({
   // 타이머 관련
   playTimerSound: remainingTime => {
     const { tick } = get().audio;
+
     if (remainingTime > 5) {
       tick.play();
     } else if (remainingTime <= 5 && remainingTime > 3) {
@@ -96,6 +100,7 @@ const useAudioStore = create((set, get) => ({
       tick.playbackRate = 2;
     } else {
       tick.pause();
+      tick.playbackRate = 1;
     }
   },
 
@@ -103,6 +108,8 @@ const useAudioStore = create((set, get) => ({
     const { bgMusic, tick } = get().audio;
     bgMusic?.pause();
     tick?.pause();
+    tick.currentTime = 0;
+    tick.playbackRate = 1;
     set({ audio: { ...get().audio, isBgMusicPlaying: false } });
   },
 
@@ -116,18 +123,11 @@ const useAudioStore = create((set, get) => ({
     }
   },
 
-  // 선택자
-  getAudio: type => get().audio[type],
-
-  isAudioPlaying: type => {
-    const audio = get().audio[type];
-    return audio ? !audio.paused : false;
-  },
-
   // 정지 소리
   initializeWhistle: () => {
-    const whistle = new Audio('/src/assets/whistle.wav');
-    whistle.preload = 'auto';
+    const whistle = new Audio('/Sounds/whistle.mp3');
+    // whistle.preload = 'auto';
+    whistle.currentTime = 0;
     set(state => ({ audio: { ...state.audio, whistle } }));
   },
 
@@ -150,18 +150,12 @@ const useAudioStore = create((set, get) => ({
     }
   },
 
-  // 드럼롤, 1등
+  // 두구두구 소리
   initializeDrumroll: () => {
-    const drumroll = new Audio('/Sounds/DrumRoll.mp3');
+    const drumroll = new Audio('/Sounds/drumroll.mp3');
     drumroll.preload = 'auto';
     drumroll.loop = true;
     set(state => ({ audio: { ...state.audio, drumroll } }));
-  },
-
-  initializeFirstPlace: () => {
-    const firstPlace = new Audio('/Sounds/FirstPlace.mp3');
-    firstPlace.preload = 'auto';
-    set(state => ({ audio: { ...state.audio, firstPlace } }));
   },
 
   playDrumroll: () => {
@@ -179,13 +173,21 @@ const useAudioStore = create((set, get) => ({
     }
   },
 
+  // 1등 공개 소리
+  initializeFirstPlace: () => {
+    const firstPlace = new Audio('/Sounds/applause.mp3');
+    firstPlace.preload = 'auto';
+    firstPlace.volume = 0.3;
+    set(state => ({ audio: { ...state.audio, firstPlace } }));
+  },
+
   playFirstPlace: () => {
     const { firstPlace } = get().audio;
     if (firstPlace) {
       firstPlace.currentTime = 0;
       firstPlace
         .play()
-        .catch(e => console.error('FirstPlace 오디오 재생 실패:', e));
+        .catch(e => console.error('applause 오디오 재생 실패:', e));
     }
   },
 
@@ -218,6 +220,115 @@ const useAudioStore = create((set, get) => ({
       writing.pause();
       writing.currentTime = 0;
     }
+  },
+
+  // 땅 무너지는 소리
+  initializeFallSound: () => {
+    const fall = new Audio('/Sounds/fall.mp3');
+    fall.preload = 'auto';
+    set(state => ({ audio: { ...state.audio, fall } }));
+  },
+
+  playFallSound: () => {
+    const { fall } = get().audio;
+    if (fall) {
+      fall.currentTime = 0; // 항상 처음부터 재생
+      fall.play().catch(e => console.error('Fall 오디오 재생 실패:', e));
+    }
+  },
+
+  stopFallSound: () => {
+    const { fall } = get().audio;
+    if (fall) {
+      fall.pause();
+      fall.currentTime = 0;
+    }
+  },
+
+  // 정답자 소리
+  initializeTwinkleSound: () => {
+    const twinkle = new Audio('/Sounds/twinkle.mp3');
+    twinkle.preload = 'auto';
+    set(state => ({ audio: { ...state.audio, twinkle } }));
+  },
+
+  playTwinkleSound: () => {
+    const { twinkle } = get().audio;
+    if (twinkle) {
+      twinkle.currentTime = 0;
+      twinkle.volume = 0.2;
+      twinkle.play().catch(e => console.error('twinkle 오디오 재생 실패:', e));
+    }
+  },
+
+  stopTwinkleSound: () => {
+    const { twinkle } = get().audio;
+    if (twinkle) {
+      twinkle.pause();
+      twinkle.currentTime = 0;
+    }
+  },
+
+  // 정답 소리 초기화
+  initializeRightSound: () => {
+    const right = new Audio('/Sounds/right.mp3');
+    right.preload = 'auto';
+    set(state => ({ audio: { ...state.audio, right } }));
+  },
+
+  // 오답 소리 초기화
+  initializeWrongSound: () => {
+    const wrong = new Audio('/Sounds/wrong.mp3');
+    wrong.preload = 'auto';
+    set(state => ({ audio: { ...state.audio, wrong } }));
+  },
+
+  // 정답 소리 재생
+  playRightSound: () => {
+    const { right } = get().audio;
+    if (right) {
+      right.currentTime = 0; // 항상 처음부터 재생
+      right
+        .play()
+        .catch(e => console.error('Right sound 오디오 재생 실패:', e));
+    }
+  },
+
+  // 오답 소리 재생
+  playWrongSound: () => {
+    const { wrong } = get().audio;
+    if (wrong) {
+      wrong.currentTime = 0; // 항상 처음부터 재생
+      wrong
+        .play()
+        .catch(e => console.error('Wrong sound 오디오 재생 실패:', e));
+    }
+  },
+
+  // 정답 소리 중지
+  stopRightSound: () => {
+    const { right } = get().audio;
+    if (right) {
+      right.pause();
+      right.currentTime = 0;
+    }
+  },
+
+  // 오답 소리 중지
+  stopWrongSound: () => {
+    const { wrong } = get().audio;
+    if (wrong) {
+      wrong.pause();
+      wrong.currentTime = 0;
+    }
+  },
+
+  // 선택자
+  getAudio: type => get().audio[type],
+
+  isAudioPlaying: type => {
+    const audio = get().audio[type];
+    return audio ? !audio.paused : false;
   },
 }));
 

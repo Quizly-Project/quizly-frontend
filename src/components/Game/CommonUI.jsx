@@ -46,6 +46,7 @@ const CommonUI = ({
     console.log('quizIndex', quizIndex);
     console.log('quizCnt', quizCnt);
     console.log('quizResult', quizResult);
+    console.log();
     if ((isStarted || isFinished) && !isQuestionActive && isEndEventVisible)
       setShowCompletion(true);
   }, [isStarted, isFinished, isQuestionActive, isEndEventVisible]);
@@ -97,7 +98,7 @@ const CommonUI = ({
         )}
 
       {/* 퀴즈 종료되면 탑3 랭킹 */}
-      {isFinished && showTopThree && (
+      {isFinished && showTopThree && quizResult && (
         <>
           {/* <QuizResultText quizResult="퀴즈 종료" /> */}
           <FinalTopThreeParticipants

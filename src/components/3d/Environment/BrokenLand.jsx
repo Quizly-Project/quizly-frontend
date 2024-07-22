@@ -7,21 +7,27 @@ import * as THREE from 'three';
 import { useGLTF, useAnimations } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { RigidBody } from '@react-three/rapier';
+import useAudioStore from '../../../store/audioStore';
 
 export default function BrokenLand(props) {
   const group = useRef();
   const { nodes, materials, animations } = useGLTF('/Environment/OLand.glb');
   const { actions, mixer } = useAnimations(animations, group);
+  const { initializeFallSound, playFallSound, stopFallSound } = useAudioStore();
 
   useEffect(() => {
     if (!actions['break']) return;
     const action = actions['break'];
+
+    // fall 사운드 초기화
+    initializeFallSound();
 
     // 한 번만 실행
     action.setLoop(THREE.LoopOnce, 1);
     action.clampWhenFinished = true;
 
     // 재생
+    playFallSound();
     action.reset().fadeIn(0.3).play();
 
     // 액션 종료 리스너
@@ -31,6 +37,7 @@ export default function BrokenLand(props) {
         // 애니메이션을 첫 프레임으로 리셋하고 정지
         action.reset();
         action.stop();
+        stopFallSound();
       }
     };
 
@@ -41,9 +48,10 @@ export default function BrokenLand(props) {
         action.fadeOut(0.5);
         mixer.removeEventListener('finished', onFinished);
       }
+      stopFallSound();
       group.current = null;
     };
-  }, [actions, mixer]);
+  }, [actions, mixer, initializeFallSound, playFallSound, stopFallSound]);
 
   // 일정한 프레임 유지
   useFrame((state, delta) => {

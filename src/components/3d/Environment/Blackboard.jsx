@@ -21,8 +21,17 @@ export default function Blackboard(props) {
   const [displayedText, setDisplayedText] = useState('');
   const [displayedAnswer, setDisplayedAnswer] = useState('');
 
-  const { initializeWritingSound, playWritingSound, stopWritingSound } =
-    useAudioStore();
+  const {
+    initializeWritingSound,
+    playWritingSound,
+    stopWritingSound,
+    initializeRightSound,
+    playRightSound,
+    stopRightSound,
+    initializeWrongSound,
+    playWrongSound,
+    stopWrongSound,
+  } = useAudioStore();
 
   useEffect(() => {
     console.log('props.text', props.text);
@@ -30,7 +39,8 @@ export default function Blackboard(props) {
 
   useEffect(() => {
     initializeWritingSound();
-  }, [initializeWritingSound]);
+    initializeRightSound(), initializeWrongSound();
+  }, [initializeWritingSound, initializeRightSound, initializeWrongSound]);
 
   useEffect(() => {
     if (!fullText || isAnswerDisplayed) return;
@@ -87,19 +97,41 @@ export default function Blackboard(props) {
   };
 
   useEffect(() => {
-    console.log('isAnswerDisplayed', isAnswerDisplayed);
+    // console.log('isAnswerDisplayed', isAnswerDisplayed);
+    let timer;
     if (isAnswerDisplayed) {
-      setDisplayedAnswer(props.text.correctAnswer);
-    }
-  }, [isAnswerDisplayed, props.text.correctAnswer]);
+      timer = setTimeout(() => {
+        setDisplayedAnswer(props.text.correctAnswer);
 
+        // 정답에 따라 다른 소리 재생
+        if (props.text.correctAnswer === '1') {
+          playRightSound();
+        } else if (props.text.correctAnswer === '2') {
+          playWrongSound();
+        }
+      }, 1000);
+    }
+
+    // Cleanup 함수
+    return () => {
+      if (timer) clearTimeout(timer);
+      setDisplayedAnswer('');
+      stopRightSound();
+      stopWrongSound();
+    };
+  }, [
+    isAnswerDisplayed,
+    props.text.correctAnswer,
+    playRightSound,
+    playWrongSound,
+  ]);
   return (
     <group {...props} dispose={null}>
       {isAnswerDisplayed ? (
         <Text3D
           scale={30}
           font="/fonts/UhBee_Regular.json"
-          position={[-20, -30, 110]}
+          position={[-20, -30, 93]}
         >
           {type === 1 ? OX(displayedAnswer) : displayedAnswer}
           <meshPhongMaterial attach="material" {...chalkMaterial} />

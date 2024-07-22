@@ -75,6 +75,7 @@ const OtherCharacterController = React.memo(
               scale={2}
               actionType={action}
               rank={rank}
+              isCorrectAnswerer={isCorrectAnswerer}
               selectedStudent={selectedStudent}
             />
           )}

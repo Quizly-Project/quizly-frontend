@@ -186,6 +186,7 @@ const CharacterController = ({
               scale={2}
               actionType={action}
               rank={rank}
+              isCorrectAnswerer={isCorrectAnswerer}
             />
           )}
         </group>

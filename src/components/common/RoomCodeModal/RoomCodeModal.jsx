@@ -28,7 +28,7 @@ const RoomCodeModal = ({ code, onClose, onMove }) => {
         </Text>
         <hr className={styles.divider} />
         <Text
-          size="medium"
+          size="large"
           align="center"
           color="grey"
           className={styles.codeText}

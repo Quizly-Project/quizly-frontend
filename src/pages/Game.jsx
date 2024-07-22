@@ -12,8 +12,6 @@ import { gsap } from 'gsap';
 import { Vector3 } from 'three';
 
 // Environment
-import IslandMaterials from '../components/3d/Environment/IslandMaterial.jsx';
-import Lights from '../components/3d/Environment/Lights.jsx';
 import Blackboard from '../components/3d/Environment/Blackboard.jsx';
 import Wall from '../components/3d/Environment/Wall.jsx';
 import BasicSpotLights from '../components/3d/Environment/BasicSpotLights.jsx';
@@ -29,6 +27,11 @@ import BrokenLand from '../components/3d/Environment/BrokenLand.jsx';
 import StaticMaterials from '../components/3d/Environment/StaticMaterials.jsx';
 import LineConfetti from '../components/3d/Environment/LineConfetti.jsx';
 import BrokenBridge from '../components/3d/Environment/BrokenBridge.jsx';
+import Beachside from '../components/3d/Environment/Beachside.jsx';
+import useAudioStore from '../store/audioStore.js';
+
+// Effects
+import QuizResultEffects from '../components/3d/Effects/QuizResultEffects.jsx';
 
 // Character
 import CharacterController from '../components/3d/Mesh/CharacterController.jsx';
@@ -39,7 +42,8 @@ import useQuizRoomStore from '../store/quizRoomStore.js';
 
 // style
 import '../styles/game.css';
-import Beachside from '../components/3d/Environment/Beachside.jsx';
+
+import { useResultCameraMovement } from '../hooks/useResultCameraMovement.js';
 
 export default function Game({
   nickname,
@@ -93,17 +97,6 @@ export default function Game({
   const CAMERA_TILT = 20;
   const DURATION = 5;
 
-  const answerPosition = new Vector3(0, 50, -30);
-  const incorrectLeftIsland = new Vector3(-130, 40, 0);
-  const incorrectRightIsland = new Vector3(130, 40, 0);
-  const incorrectLeftIslandLookAt = new Vector3(-60, 20, 0);
-  const incorrectRightIslandLooAt = new Vector3(60, 20, 0);
-  const correctLeftIsland = new Vector3(-60, CAMERA_TILT, 50);
-  const correctRightIsland = new Vector3(60, CAMERA_TILT, 50);
-  const correctLeftIslandLookAt = new Vector3(-60, CAMERA_TILT, CAMERA_UP);
-  const correctRightIslandLooAt = new Vector3(60, CAMERA_TILT, CAMERA_UP);
-  const originalPosition = new Vector3(0, CAMERA_TILT, CAMERA_TILT);
-
   const setTeacherView = useCallback(
     (currentSelectedStudent, currentClientCoords) => {
       if (orbitControls.current) {
@@ -151,151 +144,54 @@ export default function Game({
     [camera]
   );
 
-  const setResultView = useCallback(() => {
-    if (orbitControls.current) {
-      const delayBetweenMoves = 1; // 각 이동 사이의 지연 시간 (초)
-      let incorrectAnswerPosition;
-      let correctAnswerPosition;
-      let incorrectAnswerLookAt;
-      let correctAnswerLookAt;
-      if (spotlight === '1') {
-        incorrectAnswerPosition = incorrectRightIsland;
-        correctAnswerPosition = correctLeftIsland;
-        incorrectAnswerLookAt = incorrectRightIslandLooAt;
-        correctAnswerLookAt = correctLeftIslandLookAt;
-      } else {
-        incorrectAnswerPosition = incorrectLeftIsland;
-        correctAnswerPosition = correctRightIsland;
-        incorrectAnswerLookAt = incorrectLeftIslandLookAt;
-        correctAnswerLookAt = correctRightIslandLooAt;
-      }
+  // 정답자 효과음
+  const { initializeTwinkleSound, playTwinkleSound } = useAudioStore();
 
-      const onAnswerPositionReached = () => {
-        console.log('정답 위치에 도달했습니다.');
-        // 여기에 원하는 로직을 추가하세요
-        displayAnswer();
-      };
+  useEffect(() => {
+    initializeTwinkleSound();
+  }, []);
 
-      const onIncorrectPositionReached = () => {
-        console.log('오답 위치에 도달했습니다.');
-        if (spotlight === '1') {
-          setRightIslandBreak(true);
-        } else {
-          setLeftIslandBreak(true);
-        }
-        setTimeout(() => {
-          setBridgeBreak(true);
-        }, 500);
-        startIsBreak();
-      };
+  // 카메라 무빙
+  const { setResultView, setQuizStartView, setCenterView } =
+    useResultCameraMovement(
+      orbitControls,
+      camera,
+      type,
+      spotlight,
+      displayAnswer,
+      setRightIslandBreak,
+      setLeftIslandBreak,
+      setBridgeBreak,
+      startIsBreak,
+      playTwinkleSound,
+      displayTopThree,
+      stopIsBreak,
+      turnOffCamera
+    );
 
-      const onCorrectPositionReached = () => {
-        console.log('정답자 위치에 도달했습니다.');
-        // 여기에 원하는 로직을 추가하세요
-      };
-
-      const onOriginalPositionReached = () => {
-        console.log('원래 위치로 돌아왔습니다.');
-        displayTopThree();
-        setBridgeBreak(false);
-        setLeftIslandBreak(false);
-        setRightIslandBreak(false);
-        stopIsBreak();
-        turnOffCamera();
-      };
-
-      gsap
-        .timeline()
-        .to(orbitControls.current.target, {
-          duration: 2,
-          x: answerPosition.x,
-          y: answerPosition.y,
-          z: answerPosition.z - 90,
-          onUpdate: () => orbitControls.current.update(),
-        })
-        .to(
-          camera.position,
-          {
-            duration: 2,
-            x: answerPosition.x,
-            y: answerPosition.y,
-            z: answerPosition.z,
-            onUpdate: () => orbitControls.current.update(),
-          },
-          '<'
-        )
-        .call(onAnswerPositionReached)
-        .to(
-          orbitControls.current.target,
-          {
-            duration: 2,
-            x: incorrectAnswerLookAt.x,
-            y: incorrectAnswerLookAt.y,
-            z: incorrectAnswerLookAt.z,
-            onUpdate: () => orbitControls.current.update(),
-          },
-          `+=${delayBetweenMoves}`
-        )
-        .to(
-          camera.position,
-          {
-            duration: 2,
-            x: incorrectAnswerPosition.x,
-            y: incorrectAnswerPosition.y,
-            z: incorrectAnswerPosition.z,
-            onUpdate: () => orbitControls.current.update(),
-          },
-          '<'
-        )
-        .call(onIncorrectPositionReached)
-        .to(
-          orbitControls.current.target,
-          {
-            duration: 2,
-            x: correctAnswerLookAt.x,
-            y: correctAnswerLookAt.y,
-            z: correctAnswerLookAt.z,
-            onUpdate: () => orbitControls.current.update(),
-          },
-          `+=${delayBetweenMoves}`
-        )
-        .to(
-          camera.position,
-          {
-            duration: 2,
-            x: correctAnswerPosition.x,
-            y: correctAnswerPosition.y,
-            z: correctAnswerPosition.z,
-            onUpdate: () => orbitControls.current.update(),
-          },
-          '<'
-        )
-        .call(onCorrectPositionReached)
-        .to(
-          orbitControls.current.target,
-          {
-            duration: 2,
-            x: 0,
-            y: CAMERA_TILT,
-            z: -CAMERA_UP,
-            onUpdate: () => orbitControls.current.update(),
-          },
-          `+=${delayBetweenMoves}`
-        )
-        .to(
-          camera.position,
-          {
-            duration: 2,
-            x: 0,
-            y: CAMERA_TILT,
-            z: CAMERA_TILT,
-            onUpdate: () => orbitControls.current.update(),
-          },
-          '<'
-        )
-        .call(onOriginalPositionReached);
+  // 결과 카메라 무빙
+  useEffect(() => {
+    if (isStarted && !isQuestionActive && isCameraOn) {
+      console.log('1번 같이 떠야해');
+      console.log('결과', isAnswerDisplayed);
+      setResultView();
     }
-  }, [camera, spotlight]);
+  }, [isStarted, isQuestionActive, isCameraOn, setResultView]);
+
+  // 칠판으로 카메라 무빙
+  useEffect(() => {
+    if (isQuestionActive) {
+      console.log('2번 같이 떠야해');
+
+      setQuizStartView(() => {
+        const timer = setTimeout(() => {
+          setCenterView();
+        }, 2500); // 2.5초 후 중앙 뷰로 이동 (기존 500ms에서 증가)
+
+        return () => clearTimeout(timer);
+      });
+    }
+  }, [isQuestionActive, setQuizStartView, setCenterView]);
 
   const updateStudentCamera = useCallback(() => {
     if (!isTeacher && cameraControls.current && clientCoords[nickname]) {
@@ -356,13 +252,6 @@ export default function Game({
     }
   });
 
-  useEffect(() => {
-    if (isStarted && !isQuestionActive && isCameraOn) {
-      console.log('결과', isAnswerDisplayed);
-      setResultView();
-    }
-  }, [isStarted, isQuestionActive, isCameraOn]);
-
   return (
     <>
       {/* <Perf /> */}
@@ -415,96 +304,15 @@ export default function Game({
         <XEffects />
       )}
 
-      {isStarted && !isQuestionActive && type === 2 && quizAnswerer && (
-        <>
-          {isCorrectAnswerer && clientCoords[nickname] && (
-            <>
-              <ExplosionConfetti
-                position-x={0}
-                rate={2}
-                fallingHeight={30}
-                amount={200}
-                areaWidth={100}
-                isExploding
-              />
-              {/* <LineConfetti
-                isExploding={true}
-                amount={50}
-                radius={100}
-                colors={[
-                  '#0000ff',
-                  '#ff0000',
-                  '#ffff00',
-                  '#A2CCB6',
-                  '#FCEEB5',
-                  '#EE786E',
-                  '#e0feff',
-                ]}
-                dash={0.9}
-              /> */}
-              <SpotLights
-                position={[
-                  clientCoords[nickname].x,
-                  clientCoords[nickname].y + 10,
-                  clientCoords[nickname].z,
-                ]}
-                targetPosition={[
-                  clientCoords[nickname].x,
-                  clientCoords[nickname].y,
-                  clientCoords[nickname].z,
-                ]}
-                intensity={300}
-              />
-            </>
-          )}
-          {quizAnswerer.map(answerer => {
-            if (answerer !== nickname && clientCoords[answerer]) {
-              return (
-                <>
-                  <ExplosionConfetti
-                    position-x={0}
-                    rate={2}
-                    fallingHeight={30}
-                    amount={200}
-                    areaWidth={100}
-                    isExploding
-                  />
-                  {/* <LineConfetti
-                    isExploding={true}
-                    amount={50}
-                    radius={100}
-                    colors={[
-                      '#0000ff',
-                      '#ff0000',
-                      '#ffff00',
-                      '#A2CCB6',
-                      '#FCEEB5',
-                      '#EE786E',
-                      '#e0feff',
-                    ]}
-                    dash={0.9}
-                  /> */}
-                  <SpotLights
-                    key={answerer}
-                    position={[
-                      clientCoords[answerer].x,
-                      clientCoords[answerer].y + 10,
-                      clientCoords[answerer].z,
-                    ]}
-                    targetPosition={[
-                      clientCoords[answerer].x,
-                      clientCoords[answerer].y,
-                      clientCoords[answerer].z,
-                    ]}
-                    intensity={1000}
-                  />
-                </>
-              );
-            }
-            return null;
-          })}
-        </>
-      )}
+      <QuizResultEffects
+        isStarted={isStarted}
+        isQuestionActive={isQuestionActive}
+        type={type}
+        quizAnswerer={quizAnswerer}
+        isCorrectAnswerer={isCorrectAnswerer}
+        clientCoords={clientCoords}
+        nickname={nickname}
+      />
       <StaticMaterials rotation-y={Math.PI} />
 
       <Physics>

@@ -1,30 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTransition, animated, config } from 'react-spring';
 import useQuizRoomStore from '../../../store/quizRoomStore';
-import styles from './RoundEndMessage.module.css';
+import styles from './ReadyMessage.module.css';
 
-const RoundEndMessage = ({ message, onComplete, show }) => {
+const ReadyMessage = ({ show, onComplete }) => {
   const { turnOnCamera } = useQuizRoomStore();
   const [visible, setVisible] = useState(false);
-  const whistleRef = useRef(null);
-  useEffect(() => {
-    whistleRef.current = new Audio('/Sounds/whistle.mp3');
-    whistleRef.current.preload = 'auto';
-
-    return () => {
-      if (whistleRef.current) {
-        whistleRef.current.pause();
-        whistleRef.current = null;
-      }
-    };
-  }, []);
 
   useEffect(() => {
     if (show) {
       setVisible(true);
-      whistleRef.current
-        .play()
-        .catch(error => console.error('Failed to play audio:', error));
 
       const timer = setTimeout(() => {
         setVisible(false);
@@ -33,19 +18,15 @@ const RoundEndMessage = ({ message, onComplete, show }) => {
 
       return () => {
         clearTimeout(timer);
-        if (whistleRef.current) {
-          whistleRef.current.pause();
-          whistleRef.current.currentTime = 0;
-        }
       };
     }
-  }, [show]);
+  }, [show, turnOnCamera]);
 
   const transition = useTransition(visible, {
     from: { opacity: 0, transform: 'translateX(-100%) scale(0.8)' },
     enter: { opacity: 1, transform: 'translateX(0%) scale(1)' },
     leave: { opacity: 0, transform: 'translateX(100%) scale(0.8)' },
-    config: { tension: 400, friction: 30 }, // 더 빠르고 탄력 있는 애니메이션
+    config: { tension: 400, friction: 30 },
     onRest: () => {
       if (!visible) onComplete();
     },
@@ -71,7 +52,7 @@ const RoundEndMessage = ({ message, onComplete, show }) => {
                   width: shape.size,
                   height: shape.size,
                   opacity: style.opacity,
-                  transform: style.opacity.to(o => `scale(${o * 1.2})`), // 더 큰 스케일 변화
+                  transform: style.opacity.to(o => `scale(${o * 1.2})`),
                 }}
               />
             ))}
@@ -86,7 +67,7 @@ const RoundEndMessage = ({ message, onComplete, show }) => {
           >
             <div className={styles.bannerLeft}></div>
             <div className={styles.bannerMiddle}>
-              <h1 className={styles.message}>{message}</h1>
+              <h1 className={styles.message}>준비!</h1>
             </div>
             <div className={styles.bannerRight}></div>
           </animated.div>
@@ -95,4 +76,4 @@ const RoundEndMessage = ({ message, onComplete, show }) => {
   );
 };
 
-export default RoundEndMessage;
+export default ReadyMessage;
