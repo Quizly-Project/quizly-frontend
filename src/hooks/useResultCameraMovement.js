@@ -86,15 +86,38 @@ export const useResultCameraMovement = (
 
       const onIncorrectPositionReached = () => {
         console.log('오답 위치에 도달했습니다.');
+
+        // 섬 파괴 효과 시작
         if (spotlight === '1') {
           setRightIslandBreak(true);
         } else {
           setLeftIslandBreak(true);
         }
-        setTimeout(() => {
+
+        // 브릿지 파괴 효과 시작 (1초 후)
+        const bridgeBreakTimer = setTimeout(() => {
           setBridgeBreak(true);
-        }, 500);
+        }, 1000);
+
+        // isBreak 상태 시작
         startIsBreak();
+
+        // 1초 후 모든 파괴 효과 리셋
+        const resetTimer = setTimeout(() => {
+          if (spotlight === '1') {
+            setRightIslandBreak(false);
+          } else {
+            setLeftIslandBreak(false);
+          }
+          setBridgeBreak(false);
+          stopIsBreak();
+        }, 1000); // 브릿지가 1초 후에 파괴되므로, 총 2초 후에 리셋
+
+        // 컴포넌트 언마운트 시 타이머 클리어 (옵션)
+        return () => {
+          clearTimeout(bridgeBreakTimer);
+          clearTimeout(resetTimer);
+        };
       };
 
       const onCorrectPositionReached = () => {
@@ -133,6 +156,7 @@ export const useResultCameraMovement = (
           '<'
         )
         .call(onAnswerPositionReached)
+        .to({}, { duration: 2 }) // 3초 대기
         .to(
           orbitControls.current.target,
           {
@@ -219,29 +243,75 @@ export const useResultCameraMovement = (
     turnOffCamera,
   ]);
 
-  const setQuizStartView = useCallback(() => {
-    if (!orbitControls.current) return;
+  const setQuizStartView = useCallback(
+    onComplete => {
+      if (!orbitControls.current) {
+        if (onComplete) onComplete();
+        return;
+      }
 
-    // 칠판 위치로 카메라 이동
-    const blackboardPosition = new Vector3(0, 70, -200); // 칠판의 실제 위치
-    const cameraPosition = new Vector3(0, 70, 0); // 카메라를 칠판 앞쪽에 위치시킴
+      const blackboardPosition = new Vector3(0, 70, -200);
+      const cameraPosition = new Vector3(0, 70, 30);
 
-    gsap.to(orbitControls.current.target, {
-      duration: DURATION,
-      x: blackboardPosition.x,
-      y: blackboardPosition.y,
-      z: blackboardPosition.z,
-      onUpdate: () => orbitControls.current.update(),
-    });
+      gsap
+        .timeline()
+        .to(orbitControls.current.target, {
+          duration: DURATION,
+          x: blackboardPosition.x,
+          y: blackboardPosition.y,
+          z: blackboardPosition.z,
+          onUpdate: () => orbitControls.current.update(),
+        })
+        .to(camera.position, {
+          duration: DURATION,
+          x: cameraPosition.x,
+          y: cameraPosition.y,
+          z: cameraPosition.z,
+          onUpdate: () => orbitControls.current.update(),
+          onComplete: () => {
+            if (onComplete) {
+              setTimeout(onComplete, 2000); // 2초 딜레이 추가
+            }
+          },
+        });
+    },
+    [camera, orbitControls]
+  );
 
-    gsap.to(camera.position, {
-      duration: DURATION,
-      x: cameraPosition.x,
-      y: cameraPosition.y,
-      z: cameraPosition.z,
-      onUpdate: () => orbitControls.current.update(),
-    });
-  }, [camera, orbitControls]);
+  const setCenterView = useCallback(
+    onComplete => {
+      if (!orbitControls.current) {
+        if (onComplete) onComplete();
+        return;
+      }
 
-  return { setResultView, setQuizStartView };
+      const centerPosition = new Vector3(0, CAMERA_TILT, CAMERA_TILT * 2.5);
+      const centerLookAt = new Vector3(0, CAMERA_TILT * 1.2, 0);
+
+      gsap
+        .timeline()
+        .to(orbitControls.current.target, {
+          duration: DURATION,
+          x: centerLookAt.x,
+          y: centerLookAt.y,
+          z: centerLookAt.z,
+          onUpdate: () => orbitControls.current.update(),
+        })
+        .to(
+          camera.position,
+          {
+            duration: DURATION,
+            x: centerPosition.x,
+            y: centerPosition.y,
+            z: centerPosition.z,
+            onUpdate: () => orbitControls.current.update(),
+            onComplete: onComplete,
+          },
+          '<'
+        );
+    },
+    [camera, orbitControls]
+  );
+
+  return { setResultView, setQuizStartView, setCenterView };
 };

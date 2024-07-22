@@ -49,50 +49,60 @@ const QuizResult = () => {
   const maxScore = Math.max(...results.map(r => r.totalScore), 1);
 
   return (
-    <div className="quiz-result">
-      <h1 className="title">퀴즈 결과</h1>
+    <>
+      <div className="quiz-result">
+        <h1 className="title">퀴즈 결과</h1>
 
-      <div className="chart">
-        {results.map((info, index) => (
-          <div key={info.stuId} className="bar-container">
-            <span className="score">{info.totalScore}</span>
-            <div
-              className={`bar ${animate ? 'animate' : ''}`}
-              style={{
-                '--final-height': `${(info.totalScore / maxScore) * 100}%`,
-              }}
-            ></div>
-            <span className="name">{info.nickName}</span>
-          </div>
-        ))}
-      </div>
-
-      <h2 className="subtitle">상세 결과</h2>
-      <div className="result-cards">
-        {results.map(info => (
-          <div key={info.stuId} className="result-card">
-            <h3>{info.nickName}</h3>
-            <p className="total-score">총점: {info.totalScore}</p>
-            <div className="result-details">
-              {info.result.map((result, idx) => (
-                <div key={idx} className="question-result">
-                  <span className="question-number">Q{idx + 1}</span>
-                  <span
-                    className={`user-answer ${result ? 'correct' : 'incorrect'}`}
-                  >
-                    {info.selectOption[idx]}
-                  </span>
-                  <span className="correct-answer">
-                    정답: {result ? info.selectOption[idx] : '?'}
-                  </span>
-                </div>
-              ))}
+        <div className="chart">
+          {results.map((info, index) => (
+            <div key={info.stuId} className="bar-container">
+              <span className="score">{info.totalScore}</span>
+              <div
+                className={`bar ${animate ? 'animate' : ''}`}
+                style={{
+                  '--final-height': `${(info.totalScore / maxScore) * 100}%`,
+                }}
+              ></div>
+              <span className="name">{info.nickName}</span>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+
+        <h2 className="subtitle">상세 결과</h2>
+        <div className="result-cards">
+          {results.map(info => (
+            <div key={info.stuId} className="result-card">
+              <h3>{info.nickName}</h3>
+              <p className="total-score">총점: {info.totalScore}</p>
+              <div className="result-details">
+                {info.result.map((result, idx) => (
+                  <div key={idx} className="question-result">
+                    <span className="question-number">Q{idx + 1}</span>
+                    <span
+                      className={`user-answer ${result ? 'correct' : 'incorrect'}`}
+                    >
+                      {info.selectOption[idx]}
+                    </span>
+                    <span className="correct-answer">
+                      정답: {result ? info.selectOption[idx] : '?'}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-      <Button onClick={() => navigate('/dashboard')}>홈으로</Button>
-    </div>
+      <div className="button-container">
+        <Button
+          onClick={() => navigate('/dashboard')}
+          align="center"
+          color="primary"
+        >
+          홈으로
+        </Button>
+      </div>
+    </>
   );
 };
 

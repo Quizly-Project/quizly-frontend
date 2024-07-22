@@ -43,7 +43,7 @@ const Character = React.memo(
     }, [actionType]);
 
     // 정답자일 경우 더 큰 scale 값을 사용
-    const characterScale = isCorrectAnswerer ? 5 : 2.5;
+    const characterScale = isCorrectAnswerer ? 7 : 2.5;
 
     return (
       <group ref={group} dispose={null} scale={characterScale}>

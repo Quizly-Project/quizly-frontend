@@ -12,6 +12,8 @@ const initialAudioState = {
   writing: null, // 칠판에 글씨 쓰는 소리
   fall: null, // 땅 무너지는 소리
   twinkle: null,
+  right: null,
+  wrong: null,
 };
 
 const useAudioStore = create((set, get) => ({
@@ -264,6 +266,60 @@ const useAudioStore = create((set, get) => ({
     if (twinkle) {
       twinkle.pause();
       twinkle.currentTime = 0;
+    }
+  },
+
+  // 정답 소리 초기화
+  initializeRightSound: () => {
+    const right = new Audio('/Sounds/right.mp3');
+    right.preload = 'auto';
+    set(state => ({ audio: { ...state.audio, right } }));
+  },
+
+  // 오답 소리 초기화
+  initializeWrongSound: () => {
+    const wrong = new Audio('/Sounds/wrong.mp3');
+    wrong.preload = 'auto';
+    set(state => ({ audio: { ...state.audio, wrong } }));
+  },
+
+  // 정답 소리 재생
+  playRightSound: () => {
+    const { right } = get().audio;
+    if (right) {
+      right.currentTime = 0; // 항상 처음부터 재생
+      right
+        .play()
+        .catch(e => console.error('Right sound 오디오 재생 실패:', e));
+    }
+  },
+
+  // 오답 소리 재생
+  playWrongSound: () => {
+    const { wrong } = get().audio;
+    if (wrong) {
+      wrong.currentTime = 0; // 항상 처음부터 재생
+      wrong
+        .play()
+        .catch(e => console.error('Wrong sound 오디오 재생 실패:', e));
+    }
+  },
+
+  // 정답 소리 중지
+  stopRightSound: () => {
+    const { right } = get().audio;
+    if (right) {
+      right.pause();
+      right.currentTime = 0;
+    }
+  },
+
+  // 오답 소리 중지
+  stopWrongSound: () => {
+    const { wrong } = get().audio;
+    if (wrong) {
+      wrong.pause();
+      wrong.currentTime = 0;
     }
   },
 
