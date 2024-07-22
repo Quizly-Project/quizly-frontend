@@ -45,6 +45,7 @@ import '../styles/game.css';
 
 import { useResultCameraMovement } from '../hooks/useResultCameraMovement.js';
 import YesNo from '../components/3d/Environment/YesNo.jsx';
+import Floor from '../components/3d/Environment/Floor.jsx';
 
 export default function Game({
   nickname,
@@ -310,6 +311,7 @@ export default function Game({
       <StaticMaterials position-z={-20} rotation-y={Math.PI} />
 
       <Physics debug>
+        <Floor width={200} height={200} />
         {type === 2 && (
           <Beachside
             rotation-y={-Math.PI / 2}
