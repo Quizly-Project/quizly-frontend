@@ -7,8 +7,9 @@
 }
 
 .quizTitle {
-  font-size: 18px;
+  font-size: 25px;
   font-weight: bold;
+  color: #101010;
   margin-top: 5px;
   margin-bottom: 12px;
 }
@@ -21,5 +22,5 @@
 
 .quizDescription {
   color: #606060;
-  font-size: 14px;
+  font-size: 18px;
 }
