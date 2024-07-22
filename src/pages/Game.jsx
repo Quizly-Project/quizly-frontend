@@ -307,14 +307,14 @@ export default function Game({
         clientCoords={clientCoords}
         nickname={nickname}
       />
-      <StaticMaterials rotation-y={Math.PI} />
+      <StaticMaterials position-z={-20} rotation-y={Math.PI} />
 
       <Physics debug>
         {type === 2 && (
           <Beachside
             rotation-y={-Math.PI / 2}
             position-y={-10}
-            position-z={-20}
+            position-z={-60}
           />
         )}
 

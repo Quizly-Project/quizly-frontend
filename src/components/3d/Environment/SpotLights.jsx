@@ -3,7 +3,13 @@ import * as THREE from 'three';
 import { SpotLight } from '@react-three/drei';
 import { useThree, useFrame } from '@react-three/fiber';
 
-const AnimatedSpotLight = ({ position, targetPosition, intensity, color }) => {
+const AnimatedSpotLight = ({
+  position,
+  targetPosition,
+  intensity,
+  color,
+  angle,
+}) => {
   const { scene } = useThree();
   const spotLightRef = useRef();
   const timeRef = useRef(0);
@@ -40,7 +46,7 @@ const AnimatedSpotLight = ({ position, targetPosition, intensity, color }) => {
       position={position}
       target={target}
       distance={100}
-      angle={0.5} // 각도를 좁혀 더 집중된 빛을 만듭니다
+      angle={angle} // 각도를 좁혀 더 집중된 빛을 만듭니다
       intensity={intensity}
       penumbra={0.5} // penumbra를 증가시켜 빛의 경계를 부드럽게 만듭니다
       decay={1.5} // decay를 조정하여 빛의 감쇠를 자연스럽게 만듭니다
@@ -55,13 +61,14 @@ const AnimatedSpotLight = ({ position, targetPosition, intensity, color }) => {
   );
 };
 
-const SpotLights = ({ position, targetPosition, intensity, color }) => {
+const SpotLights = ({ position, targetPosition, intensity, color, angle }) => {
   return (
     <AnimatedSpotLight
       position={position}
       targetPosition={targetPosition}
       intensity={intensity}
       color={color}
+      angle={angle}
     />
   );
 };

@@ -8,6 +8,7 @@ const OEffects = () => {
       <SpotLights
         position={[-60, 50, 0]}
         targetPosition={[-60, 8.7, 0]}
+        angle={0.7}
         intensity={10000}
       />
       <ExplosionConfetti

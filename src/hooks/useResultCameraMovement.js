@@ -27,29 +27,34 @@ export const useResultCameraMovement = (
     if (type === 2) {
       const centerPosition = new Vector3(0, CAMERA_TILT * 3, CAMERA_TILT * 2);
       const centerLookAt = new Vector3(0, -CAMERA_TILT, 0);
-
+      const delayBetweenMoves = 1;
       gsap
         .timeline()
+        .to({}, { duration: 1 }) // 2초 대기
+        .to(
+          orbitControls.current.target,
+          {
+            duration: 2,
+            x: 0,
+            y: CAMERA_TILT,
+            z: -CAMERA_UP,
+            onUpdate: () => orbitControls.current.update(),
+          },
+          `+=${delayBetweenMoves}`
+        )
         .call(displayAnswer)
-        .to({}, { duration: 2 }) // 1초 대기
-        .to(orbitControls.current.target, {
-          duration: DURATION,
-          x: centerLookAt.x,
-          y: centerLookAt.y,
-          z: centerLookAt.z,
-          onUpdate: () => orbitControls.current.update(),
-        })
         .to(
           camera.position,
           {
-            duration: DURATION,
-            x: centerPosition.x,
-            y: centerPosition.y,
-            z: centerPosition.z,
+            duration: 2,
+            x: 0,
+            y: CAMERA_TILT,
+            z: CAMERA_TILT,
             onUpdate: () => orbitControls.current.update(),
           },
           '<'
-        );
+        )
+        .call(displayTopThree);
     } else {
       const delayBetweenMoves = 1;
       const answerPosition = new Vector3(0, 50, -30);

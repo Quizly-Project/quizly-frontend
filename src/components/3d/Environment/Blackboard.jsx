@@ -68,7 +68,7 @@ export default function Blackboard(props) {
     startTimer,
   ]);
 
-  const maxLineLength = 17;
+  const maxLineLength = 20;
   const splitText = (text, maxLength) => {
     const words = text.split(' ');
     const lines = [];
@@ -89,6 +89,7 @@ export default function Blackboard(props) {
   };
 
   const lines = splitText(displayedText, maxLineLength);
+  const answerLines = splitText(displayedAnswer, maxLineLength);
 
   const OX = text => {
     if (text === '1') return 'O';
@@ -103,11 +104,14 @@ export default function Blackboard(props) {
       timer = setTimeout(() => {
         setDisplayedAnswer(props.text.correctAnswer);
 
-        // 정답에 따라 다른 소리 재생
         if (props.text.correctAnswer === '1') {
+          // 정답: o
           playRightSound();
         } else if (props.text.correctAnswer === '2') {
+          // 정답: x
           playWrongSound();
+        } else {
+          playRightSound();
         }
       }, 1000);
     }
@@ -128,21 +132,35 @@ export default function Blackboard(props) {
   return (
     <group {...props} dispose={null}>
       {isAnswerDisplayed ? (
-        <Text3D
-          scale={30}
-          font="/fonts/UhBee_Regular.json"
-          position={[-20, -30, 93]}
-        >
-          {type === 1 ? OX(displayedAnswer) : displayedAnswer}
-          <meshPhongMaterial attach="material" {...chalkMaterial} />
-        </Text3D>
+        type === 1 ? (
+          <Text3D
+            scale={26}
+            font="/fonts/UhBee_Regular.json"
+            position={[-20, -30, 73]}
+          >
+            {OX(displayedAnswer)}
+            <meshPhongMaterial attach="material" {...chalkMaterial} />
+          </Text3D>
+        ) : (
+          answerLines.map((line, index) => (
+            <Text3D
+              key={index}
+              scale={7}
+              font="/fonts/UhBee_Regular.json"
+              position={[-80, 20 - index * 22, 73]}
+            >
+              {line}
+              <meshPhongMaterial attach="material" {...chalkMaterial} />
+            </Text3D>
+          ))
+        )
       ) : (
         lines.map((line, index) => (
           <Text3D
             key={index}
             scale={8}
             font="/fonts/UhBee_Regular.json"
-            position={[-80, 10 - index * 22, 93]}
+            position={[-90, 20 - index * 22, 73]}
           >
             {line}
             <meshPhongMaterial attach="material" {...chalkMaterial} />

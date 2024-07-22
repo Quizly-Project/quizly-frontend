@@ -15,11 +15,11 @@ const BasicSpotLights = () => {
         intensity={10000}
       /> */}
       {/* Yes/NO spotlight */}
-      <SpotLights
+      {/* <SpotLights
         position={[0, 50, -10]}
         targetPosition={[0, 8.7, -50]}
         intensity={3000}
-      />
+      /> */}
     </>
   );
 };
