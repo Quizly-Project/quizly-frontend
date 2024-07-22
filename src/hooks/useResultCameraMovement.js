@@ -27,29 +27,34 @@ export const useResultCameraMovement = (
     if (type === 2) {
       const centerPosition = new Vector3(0, CAMERA_TILT * 3, CAMERA_TILT * 2);
       const centerLookAt = new Vector3(0, -CAMERA_TILT, 0);
-
+      const delayBetweenMoves = 1;
       gsap
         .timeline()
+        .to({}, { duration: 1 }) // 2초 대기
+        .to(
+          orbitControls.current.target,
+          {
+            duration: 2,
+            x: 0,
+            y: CAMERA_TILT,
+            z: -CAMERA_UP,
+            onUpdate: () => orbitControls.current.update(),
+          },
+          `+=${delayBetweenMoves}`
+        )
         .call(displayAnswer)
-        .to({}, { duration: 2 }) // 1초 대기
-        .to(orbitControls.current.target, {
-          duration: DURATION,
-          x: centerLookAt.x,
-          y: centerLookAt.y,
-          z: centerLookAt.z,
-          onUpdate: () => orbitControls.current.update(),
-        })
         .to(
           camera.position,
           {
-            duration: DURATION,
-            x: centerPosition.x,
-            y: centerPosition.y,
-            z: centerPosition.z,
+            duration: 2,
+            x: 0,
+            y: CAMERA_TILT,
+            z: CAMERA_TILT,
             onUpdate: () => orbitControls.current.update(),
           },
           '<'
-        );
+        )
+        .call(displayTopThree);
     } else {
       const delayBetweenMoves = 1;
       const answerPosition = new Vector3(0, 50, -30);
@@ -97,7 +102,7 @@ export const useResultCameraMovement = (
         // 브릿지 파괴 효과 시작 (1초 후)
         const bridgeBreakTimer = setTimeout(() => {
           setBridgeBreak(true);
-        }, 1000);
+        }, 100);
 
         // isBreak 상태 시작
         startIsBreak();
@@ -156,7 +161,7 @@ export const useResultCameraMovement = (
           '<'
         )
         .call(onAnswerPositionReached)
-        .to({}, { duration: 2 }) // 3초 대기
+        .to({}, { duration: 0.1 }) // 대기
         .to(
           orbitControls.current.target,
           {
@@ -243,75 +248,57 @@ export const useResultCameraMovement = (
     turnOffCamera,
   ]);
 
-  const setQuizStartView = useCallback(
-    onComplete => {
-      if (!orbitControls.current) {
-        if (onComplete) onComplete();
-        return;
-      }
+  const setQuizStartView = useCallback(() => {
+    if (!orbitControls.current) return;
 
-      const blackboardPosition = new Vector3(0, 70, -200);
-      const cameraPosition = new Vector3(0, 70, 30);
+    const blackboardPosition = new Vector3(0, 50, -30);
+    const delayBetweenMoves = 0.3; // 칠판에서 줌아웃 딜레이 시간
 
-      gsap
-        .timeline()
-        .to(orbitControls.current.target, {
+    gsap
+      .timeline()
+      // 칠판 줌인
+      .to(orbitControls.current.target, {
+        duration: DURATION,
+        x: blackboardPosition.x,
+        y: blackboardPosition.y,
+        z: blackboardPosition.z - 90,
+        onUpdate: () => orbitControls.current.update(),
+      })
+      .to(
+        camera.position,
+        {
           duration: DURATION,
           x: blackboardPosition.x,
           y: blackboardPosition.y,
           z: blackboardPosition.z,
           onUpdate: () => orbitControls.current.update(),
-        })
-        .to(camera.position, {
-          duration: DURATION,
-          x: cameraPosition.x,
-          y: cameraPosition.y,
-          z: cameraPosition.z,
+        },
+        '<' // 앞 애니메이션과 동시에 실행
+      )
+      // 칠판 줌아웃
+      .to(
+        orbitControls.current.target,
+        {
+          duration: DURATION * 1.3,
+          x: 0,
+          y: CAMERA_TILT,
+          z: -CAMERA_UP,
           onUpdate: () => orbitControls.current.update(),
-          onComplete: () => {
-            if (onComplete) {
-              setTimeout(onComplete, 2000); // 2초 딜레이 추가
-            }
-          },
-        });
-    },
-    [camera, orbitControls]
-  );
-
-  const setCenterView = useCallback(
-    onComplete => {
-      if (!orbitControls.current) {
-        if (onComplete) onComplete();
-        return;
-      }
-
-      const centerPosition = new Vector3(0, CAMERA_TILT, CAMERA_TILT * 2.5);
-      const centerLookAt = new Vector3(0, CAMERA_TILT * 1.2, 0);
-
-      gsap
-        .timeline()
-        .to(orbitControls.current.target, {
-          duration: DURATION,
-          x: centerLookAt.x,
-          y: centerLookAt.y,
-          z: centerLookAt.z,
+        },
+        `+=${delayBetweenMoves}`
+      )
+      .to(
+        camera.position,
+        {
+          duration: DURATION * 1.3,
+          x: 0,
+          y: CAMERA_TILT,
+          z: CAMERA_TILT,
           onUpdate: () => orbitControls.current.update(),
-        })
-        .to(
-          camera.position,
-          {
-            duration: DURATION,
-            x: centerPosition.x,
-            y: centerPosition.y,
-            z: centerPosition.z,
-            onUpdate: () => orbitControls.current.update(),
-            onComplete: onComplete,
-          },
-          '<'
-        );
-    },
-    [camera, orbitControls]
-  );
+        },
+        '<'
+      );
+  }, [camera, orbitControls]);
 
-  return { setResultView, setQuizStartView, setCenterView };
+  return { setResultView, setQuizStartView };
 };

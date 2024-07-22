@@ -53,10 +53,10 @@ const CharacterController = ({
   }, [spawn]);
 
   // 내 위치가 바뀌면 서버에 위치를 전송한다.
-  useEffect(() => {
-    // console.log(myPos);
-    socket.emit('iMove', { nickName: nickname, position: myPos }); // 보내줄 데이터 {nickName, {x, y, z}}
-  }, [myPos]);
+  // useEffect(() => {
+  // console.log(myPos);
+  // socket.emit('iMove', { nickName: nickname, position: myPos }); // 보내줄 데이터 {nickName, {x, y, z}}
+  // }, [myPos]);
 
   // 임계점 이상일 때만 렌더링한다.
   const detectMovement = useCallback((oldPos, newPos, threshold = 0.3) => {
@@ -106,7 +106,32 @@ const CharacterController = ({
   );
 
   // 키보드 상하좌우로 움직인다.
-  useFrame(() => {
+  const timeAccumulator = useRef(0);
+  const updateInterval = 1 / 30; // 30fps에 해당하는 초 단위 간격
+  const updateCount = useRef(0);
+  const lastLogTime = useRef(0);
+  useFrame((state, delta) => {
+    // console.log(state, delta);
+    // 시간 누적
+    timeAccumulator.current += delta;
+
+    // 누적된 시간이 업데이트 간격을 초과할 때마다 작업 수행
+    while (timeAccumulator.current >= updateInterval) {
+      performUpdate();
+
+      // 업데이트 횟수 증가 (로깅용)
+      updateCount.current += 1;
+
+      timeAccumulator.current -= updateInterval;
+    }
+
+    // 1초마다 로그 출력
+    if (state.clock.elapsedTime - lastLogTime.current >= 1) {
+      // console.log(`Updates in the last second: ${updateCount.current}`);
+      updateCount.current = 0;
+      lastLogTime.current = state.clock.elapsedTime;
+    }
+
     if (isInputChatFocused || isInputGoldenbellFocused) {
       if (action !== 'Idle_A') setAction('Idle_A');
       return;
@@ -150,6 +175,12 @@ const CharacterController = ({
       setIsJumped(false);
     }
   });
+
+  // 1/30초마다 수행할 작업을 정의하는 함수
+  const performUpdate = () => {
+    const newPos = rigidbody.current.translation();
+    socket.emit('iMove', { nickName: nickname, position: newPos }); // 보내줄 데이터 {nickName, {x, y, z}}
+  };
 
   const handleCollision = data => {
     console.log('충돌', data);

@@ -6,7 +6,15 @@ import CryingEmojiConfetti from '../Effects/CryingEmojiConfetti';
 import Emoji from '../Effects/Emoji';
 
 const Character = React.memo(
-  ({ path, matName, nickname, actionType, rank, isCorrectAnswerer, selectedStudent }) => {
+  ({
+    path,
+    matName,
+    nickname,
+    actionType,
+    rank,
+    isCorrectAnswerer,
+    selectedStudent,
+  }) => {
     const group = useRef();
 
     const { nodes, materials, animations } = useGLTF(`/Character/${path}`);
@@ -45,7 +53,6 @@ const Character = React.memo(
 
     // 정답자일 경우 더 큰 scale 값을 사용
     const characterScale = isCorrectAnswerer ? 7 : 2.5;
-
 
     useEffect(() => {
       console.log('Character rendered', selectedStudent, nickname);
@@ -94,11 +101,10 @@ const Character = React.memo(
               !isCorrectAnswerer &&
               type === 2 &&
               writeStatus !== 'isWriting' && (
-                <Emoji position={[0, 2, 0]} scale={1.5} />
+                <Emoji position={[-1, 1, 0]} scale={1.5} />
               )}
             <Html
-              position={[0, -1, 0]}
-              wrapperClass="label"
+              position={[0, -0.5, 0]}
               center
               distanceFactor={10}
               scale={400}

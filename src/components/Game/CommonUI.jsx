@@ -46,7 +46,7 @@ const CommonUI = ({
     console.log('quizIndex', quizIndex);
     console.log('quizCnt', quizCnt);
     console.log('quizResult', quizResult);
-    console.log();
+    console.log('showTopThree', showTopThree);
     if ((isStarted || isFinished) && !isQuestionActive && isEndEventVisible)
       setShowCompletion(true);
   }, [isStarted, isFinished, isQuestionActive, isEndEventVisible]);
@@ -86,7 +86,6 @@ const CommonUI = ({
       {/* 마지막 문제 전까지의 리더보드 */}
       {!isFinished &&
         showTopThree &&
-        quizResult &&
         quizIndex > 0 &&
         quizIndex <= quizCnt - 1 && (
           <TopThreeParticipants
@@ -98,7 +97,7 @@ const CommonUI = ({
         )}
 
       {/* 퀴즈 종료되면 탑3 랭킹 */}
-      {isFinished && showTopThree && quizResult && (
+      {isFinished && showTopThree && (
         <>
           {/* <QuizResultText quizResult="퀴즈 종료" /> */}
           <FinalTopThreeParticipants

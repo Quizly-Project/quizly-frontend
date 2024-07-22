@@ -16,7 +16,7 @@ const QuizDetailModal = ({ quiz, onClose, onCreateRoom }) => {
     <div className={styles.modalOverlay} onClick={handleOverlayClick}>
       <div className={styles.modalContent}>
         <div className={styles.modalHeader}>
-          <Text type="title" weight="bold" size="large" color="black">
+          <Text type="title" weight="bold" size="xlarge" color="black">
             {quiz.quizTitle}
           </Text>
           <button className={styles.closeButton} onClick={onClose}>
@@ -24,18 +24,18 @@ const QuizDetailModal = ({ quiz, onClose, onCreateRoom }) => {
           </button>
         </div>
         <hr className={styles.divider} />
-        <Text size="small" color="grey">
+        <Text size="large" color="grey">
           {quiz.quizDescription}
         </Text>
 
         <div className={styles.quizList}>
-          <Text type="subtitle" weight="bold" size="small" color="grey">
+          <Text type="subtitle" weight="bold" size="large" color="grey">
             문제 목록
           </Text>
           {quiz.quizs.map((question, index) => (
             <div key={question.quizId} className={styles.quizItem}>
               <span className={styles.quizNumber}>{index + 1}</span>
-              <Text size="small" color="black" className={styles.quizText}>
+              <Text size="medium" color="black" className={styles.quizText}>
                 {question.question}
               </Text>
             </div>

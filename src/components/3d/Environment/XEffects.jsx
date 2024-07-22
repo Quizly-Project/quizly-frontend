@@ -9,6 +9,7 @@ const XEffects = () => {
         position={[60, 50, 0]}
         targetPosition={[60, 8.7, 0]}
         intensity={10000}
+        angle={0.7}
       />
       <ExplosionConfetti
         position-x={60}

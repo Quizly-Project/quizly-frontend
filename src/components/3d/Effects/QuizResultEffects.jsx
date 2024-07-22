@@ -52,6 +52,7 @@ const QuizResultEffects = ({
                   ]}
                   intensity={10000}
                   color="#FFD700" // 금색 스포트라이트
+                  angle={0.5}
                 />
               </>
             ) : (
@@ -83,6 +84,7 @@ const QuizResultEffects = ({
                   ]}
                   intensity={1000}
                   color="#000000" // 스틸블루 색상의 스포트라이트
+                  angle={0.5}
                 />
               </>
             )}

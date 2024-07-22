@@ -44,6 +44,8 @@ import useQuizRoomStore from '../store/quizRoomStore.js';
 import '../styles/game.css';
 
 import { useResultCameraMovement } from '../hooks/useResultCameraMovement.js';
+import YesNo from '../components/3d/Environment/YesNo.jsx';
+import Floor from '../components/3d/Environment/Floor.jsx';
 
 export default function Game({
   nickname,
@@ -152,46 +154,36 @@ export default function Game({
   }, []);
 
   // 카메라 무빙
-  const { setResultView, setQuizStartView, setCenterView } =
-    useResultCameraMovement(
-      orbitControls,
-      camera,
-      type,
-      spotlight,
-      displayAnswer,
-      setRightIslandBreak,
-      setLeftIslandBreak,
-      setBridgeBreak,
-      startIsBreak,
-      playTwinkleSound,
-      displayTopThree,
-      stopIsBreak,
-      turnOffCamera
-    );
+  const { setResultView, setQuizStartView } = useResultCameraMovement(
+    orbitControls,
+    camera,
+    type,
+    spotlight,
+    displayAnswer,
+    setRightIslandBreak,
+    setLeftIslandBreak,
+    setBridgeBreak,
+    startIsBreak,
+    playTwinkleSound,
+    displayTopThree,
+    stopIsBreak,
+    turnOffCamera
+  );
 
-  // 결과 카메라 무빙
+  // 시작 시 칠판으로 카메라 무빙
+  useEffect(() => {
+    if (isQuestionActive) {
+      setQuizStartView();
+    }
+  }, [isQuestionActive, setQuizStartView]);
+
+  // 종료 시 결과 카메라 무빙
   useEffect(() => {
     if (isStarted && !isQuestionActive && isCameraOn) {
-      console.log('1번 같이 떠야해');
       console.log('결과', isAnswerDisplayed);
       setResultView();
     }
   }, [isStarted, isQuestionActive, isCameraOn, setResultView]);
-
-  // 칠판으로 카메라 무빙
-  useEffect(() => {
-    if (isQuestionActive) {
-      console.log('2번 같이 떠야해');
-
-      setQuizStartView(() => {
-        const timer = setTimeout(() => {
-          setCenterView();
-        }, 2500); // 2.5초 후 중앙 뷰로 이동 (기존 500ms에서 증가)
-
-        return () => clearTimeout(timer);
-      });
-    }
-  }, [isQuestionActive, setQuizStartView, setCenterView]);
 
   const updateStudentCamera = useCallback(() => {
     if (!isTeacher && cameraControls.current && clientCoords[nickname]) {
@@ -252,9 +244,11 @@ export default function Game({
     }
   });
 
+  // console.log(leftIslandBreak, rightIslandBreak, bridgeBreak);
+
   return (
     <>
-      {/* <Perf /> */}
+      <Perf />
       <Environment
         background
         files={'/Environment/puresky.hdr'}
@@ -303,6 +297,7 @@ export default function Game({
       {isStarted && !isQuestionActive && type === 1 && spotlight === '2' && (
         <XEffects />
       )}
+      {type === 1 && <YesNo rotation-y={Math.PI} />}
 
       <QuizResultEffects
         isStarted={isStarted}
@@ -313,14 +308,15 @@ export default function Game({
         clientCoords={clientCoords}
         nickname={nickname}
       />
-      <StaticMaterials rotation-y={Math.PI} />
+      <StaticMaterials position-z={-20} rotation-y={Math.PI} />
 
-      <Physics>
+      <Physics debug>
+        <Floor width={200} height={200} />
         {type === 2 && (
           <Beachside
             rotation-y={-Math.PI / 2}
             position-y={-10}
-            position-z={-20}
+            position-z={-60}
           />
         )}
 
