@@ -5,7 +5,15 @@ import { RigidBody, CapsuleCollider } from '@react-three/rapier';
 import Character from './Character';
 
 const OtherCharacterController = React.memo(
-  ({ path, matName, nickname, pos, rank, isCorrectAnswerer }) => {
+  ({
+    path,
+    matName,
+    nickname,
+    pos,
+    rank,
+    isCorrectAnswerer,
+    selectedStudent,
+  }) => {
     // console.log('position', pos);
     const rigidbody = useRef();
     const character = useRef();
@@ -67,6 +75,7 @@ const OtherCharacterController = React.memo(
               scale={2}
               actionType={action}
               rank={rank}
+              selectedStudent={selectedStudent}
             />
           )}
         </group>
