@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useMemo } from 'react';
 import { useGLTF, Html, useAnimations } from '@react-three/drei';
+import Arrow3D from '../Environment/Arrow3D';
 import useQuizRoomStore from '../../../store/quizRoomStore';
 import CryingEmojiConfetti from '../Effects/CryingEmojiConfetti';
 import Emoji from '../Effects/Emoji';
 
 const Character = React.memo(
-  ({ path, matName, nickname, actionType, rank, isCorrectAnswerer }) => {
+  ({ path, matName, nickname, actionType, rank, isCorrectAnswerer, selectedStudent }) => {
     const group = useRef();
 
     const { nodes, materials, animations } = useGLTF(`/Character/${path}`);
@@ -45,6 +46,11 @@ const Character = React.memo(
     // 정답자일 경우 더 큰 scale 값을 사용
     const characterScale = isCorrectAnswerer ? 7 : 2.5;
 
+
+    useEffect(() => {
+      console.log('Character rendered', selectedStudent, nickname);
+    }, [selectedStudent, nickname]);
+
     return (
       <group ref={group} dispose={null} scale={characterScale}>
         <group name="Scene">
@@ -58,27 +64,16 @@ const Character = React.memo(
               frustumCulled={false}
             />
             <primitive object={nodes.root} />
-            {type === 1 && (
-              <Html
-                position={[0, 3, 0]}
-                wrapperClass="label"
-                center
-                distanceFactor={10}
-                scale={400}
-              >
-                {getRankEmoji}
-                {nickname}
-              </Html>
-            )}
+            {selectedStudent === nickname ? (
+              <Arrow3D
+                position={type === 1 ? [0, 3, 0] : [0, 5, 0]}
+                scale={1}
+                color="#ffd700"
+              />
+            ) : null}
             {type === 2 && (
-              <Html position={[0, 3.5, 0]} center distanceFactor={60}>
+              <Html position={[0, 2.5, 0]} center distanceFactor={60}>
                 <div className="status-bubble">
-                  <div className="name-tag">
-                    {getRankEmoji && (
-                      <span className="crown-icon">{getRankEmoji}</span>
-                    )}
-                    <span className="nickname">{nickname}</span>
-                  </div>
                   <div className="status-text">
                     {writeStatus === 'isWriting' ? (
                       <div className="typing-indicator">
@@ -101,6 +96,20 @@ const Character = React.memo(
               writeStatus !== 'isWriting' && (
                 <Emoji position={[0, 2, 0]} scale={1.5} />
               )}
+            <Html
+              position={[0, -1, 0]}
+              wrapperClass="label"
+              center
+              distanceFactor={10}
+              scale={400}
+            >
+              <div className="name-tag">
+                {getRankEmoji && (
+                  <span className="crown-icon">{getRankEmoji}</span>
+                )}
+                <span className="nickname">{nickname}</span>
+              </div>
+            </Html>
           </group>
         </group>
       </group>

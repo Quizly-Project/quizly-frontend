@@ -315,7 +315,7 @@ export default function Game({
       />
       <StaticMaterials rotation-y={Math.PI} />
 
-      <Physics debug>
+      <Physics>
         {type === 2 && (
           <Beachside
             rotation-y={-Math.PI / 2}
@@ -374,6 +374,7 @@ export default function Game({
                   rank={rank}
                   isCorrectAnswerer={isCorrect}
                   isStarted={isQuestionActive}
+                  selectedStudent={selectedStudent}
                 />
               ) : null;
             }
