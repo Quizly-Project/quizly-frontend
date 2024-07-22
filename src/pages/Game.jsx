@@ -44,6 +44,7 @@ import useQuizRoomStore from '../store/quizRoomStore.js';
 import '../styles/game.css';
 
 import { useResultCameraMovement } from '../hooks/useResultCameraMovement.js';
+import YesNo from '../components/3d/Environment/YesNo.jsx';
 
 export default function Game({
   nickname,
@@ -303,6 +304,7 @@ export default function Game({
       {isStarted && !isQuestionActive && type === 1 && spotlight === '2' && (
         <XEffects />
       )}
+      {type === 1 && <YesNo rotation-y={Math.PI} />}
 
       <QuizResultEffects
         isStarted={isStarted}
