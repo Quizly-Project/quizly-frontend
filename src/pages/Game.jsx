@@ -365,14 +365,14 @@ export default function Game({
 
   return (
     <>
-      <Perf />
+      {/* <Perf /> */}
       <Environment
         background
         files={'/Environment/puresky.hdr'}
         intensity={0.1}
       />
 
-      <CoordinateHelpers size={1000} divisions={10} />
+      {/* <CoordinateHelpers size={1000} divisions={10} /> */}
       {isTeacher ? (
         <OrbitControls
           ref={orbitControls}
@@ -507,7 +507,7 @@ export default function Game({
       )}
       <StaticMaterials rotation-y={Math.PI} />
 
-      <Physics debug>
+      <Physics>
         {type === 2 && (
           <Beachside
             rotation-y={-Math.PI / 2}
