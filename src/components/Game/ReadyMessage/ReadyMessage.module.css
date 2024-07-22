@@ -1,0 +1,74 @@
+.container {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  z-index: 1000;
+  background-color: #87ceeb;
+}
+
+.bannerContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100px;
+  width: 100%;
+}
+
+.bannerLeft,
+.bannerRight {
+  flex: 1;
+  height: 100%;
+  background-color: #464c91;
+}
+
+.bannerMiddle {
+  width: 60%;
+  height: 120%;
+  background-color: #4169e1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: skew(-10deg);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  margin: 0 -10px; /* 요소 간 간격을 없애기 위해 음수 마진 적용 */
+}
+
+.message {
+  font-size: 48px;
+  font-weight: bold;
+  color: #fff;
+  text-transform: uppercase;
+  transform: skew(10deg);
+  text-shadow:
+    2px 2px 0 #ff1493,
+    -2px -2px 0 #00ffff;
+}
+
+.shape {
+  position: absolute;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.5);
+  animation: colorChange 4s linear infinite;
+}
+
+@keyframes colorChange {
+  0%,
+  100% {
+    background-color: rgba(70, 76, 145, 0.5);
+  }
+  33% {
+    background-color: rgba(135, 206, 250, 0.5);
+  }
+  66% {
+    background-color: rgba(152, 251, 152, 0.5);
+  }
+}
+
+@media (max-width: 768px) {
+  .message {
+    font-size: 36px;
+  }
+}
