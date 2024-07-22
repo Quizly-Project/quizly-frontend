@@ -9,7 +9,6 @@ import GameUserInterface from '../GameUserInterface/GameUserInterface';
 import NickNameInput from '../NickNameInput/NickNameInput';
 import MyCameraOtherVoice from '../MyCameraOtherVoice/MyCameraOtherVoice';
 import LiveKit from '../LiveKit/LiveKit';
-import ReadyMessage from '../ReadyMessage/ReadyMessage';
 
 // utils
 import { createSocketHandlers } from '../../../utils/socketHandlers';
@@ -97,9 +96,6 @@ const GameContainer = () => {
 
   /* 정답을 맞혔는지 여부 */
   const [isCorrectAnswerer, setIsCorrectAnswerer] = useState(false);
-
-  /* 준비 메시지 */
-  const [showReadyMessage, setShowReadyMessage] = useState(false);
 
   /* 현재 1, 2, 3등과 점수 */
   const [rank, setRank] = useState([
@@ -223,14 +219,8 @@ const GameContainer = () => {
   /* ------- Socket events ------- */
   const handleClickQuizStart = () => {
     console.log('퀴즈 시작');
-    setShowReadyMessage(true);
     const roomCode = code;
     socket.emit('start', roomCode);
-  };
-
-  const handleReadyMessageComplete = () => {
-    setShowReadyMessage(false);
-    // 여기에 퀴즈 시작 후 추가 로직을 넣을 수 있습니다.
   };
 
   // 소켓 초기화 및 데이터 설정
@@ -447,10 +437,6 @@ const GameContainer = () => {
             })}
             onSelectStudent={handleSelectStudent}
             selectedStudent={selectedStudent}
-          />
-          <ReadyMessage
-            show={showReadyMessage}
-            onComplete={handleReadyMessageComplete}
           />
         </div>
       </div>
