@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useMemo } from 'react';
 import { useGLTF, Html, useAnimations } from '@react-three/drei';
 
+import Arrow3D from '../Environment/Arrow3D';
+
 import useQuizRoomStore from '../../../store/quizRoomStore';
 
 const Character = React.memo(
-  ({ path, matName, nickname, actionType, rank }) => {
+  ({ path, matName, nickname, actionType, rank, selectedStudent }) => {
     const group = useRef();
 
     const { nodes, materials, animations } = useGLTF(`/Character/${path}`);
@@ -43,6 +45,9 @@ const Character = React.memo(
       };
     }, [actionType]);
 
+    useEffect(() => {
+      console.log('Character rendered', selectedStudent, nickname);
+    }, [selectedStudent, nickname]);
     return (
       <group ref={group} dispose={null} scale={2.5}>
         <group name="Scene">
@@ -56,27 +61,16 @@ const Character = React.memo(
               frustumCulled={false}
             />
             <primitive object={nodes.root} />
-            {type === 1 && (
-              <Html
-                position={[0, 3, 0]}
-                wrapperClass="label"
-                center
-                distanceFactor={10}
-                scale={400}
-              >
-                {getRankEmoji}
-                {nickname}
-              </Html>
-            )}
+            {selectedStudent === nickname ? (
+              <Arrow3D
+                position={type === 1 ? [0, 3, 0] : [0, 5, 0]}
+                scale={1}
+                color="#ffd700"
+              />
+            ) : null}
             {type === 2 && (
-              <Html position={[0, 3.5, 0]} center distanceFactor={60}>
+              <Html position={[0, 2.5, 0]} center distanceFactor={60}>
                 <div className="status-bubble">
-                  <div className="name-tag">
-                    {getRankEmoji && (
-                      <span className="crown-icon">{getRankEmoji}</span>
-                    )}
-                    <span className="nickname">{nickname}</span>
-                  </div>
                   <div className="status-text">
                     {writeStatus === 'isWriting' ? (
                       <div className="typing-indicator">
@@ -91,6 +85,20 @@ const Character = React.memo(
                 </div>
               </Html>
             )}
+            <Html
+              position={[0, -1, 0]}
+              wrapperClass="label"
+              center
+              distanceFactor={10}
+              scale={400}
+            >
+              <div className="name-tag">
+                {getRankEmoji && (
+                  <span className="crown-icon">{getRankEmoji}</span>
+                )}
+                <span className="nickname">{nickname}</span>
+              </div>
+            </Html>
           </group>
         </group>
       </group>

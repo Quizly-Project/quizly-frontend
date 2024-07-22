@@ -566,6 +566,7 @@ export default function Game({
                   rank={rank}
                   isCorrectAnswerer={isCorrect}
                   isStarted={isQuestionActive}
+                  selectedStudent={selectedStudent}
                 />
               ) : null;
             }
