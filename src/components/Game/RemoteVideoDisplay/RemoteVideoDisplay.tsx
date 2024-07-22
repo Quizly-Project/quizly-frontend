@@ -12,7 +12,7 @@ const RemoteVideoDisplay: React.FC<{ participantId: string }> = ({
     state.remoteVideoTracks.get(participantId)
   );
 
-  console.log('remoteVideoTrack', participantId, remoteVideoTrack);
+  // console.log('remoteVideoTrack', participantId, remoteVideoTrack);
 
   if (!remoteVideoTrack) return null;
 

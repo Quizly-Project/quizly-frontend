@@ -254,7 +254,7 @@ export default function Game({
 
   return (
     <>
-      {/* <Perf /> */}
+      <Perf />
       <Environment
         background
         files={'/Environment/puresky.hdr'}
@@ -315,7 +315,7 @@ export default function Game({
       />
       <StaticMaterials rotation-y={Math.PI} />
 
-      <Physics>
+      <Physics debug>
         {type === 2 && (
           <Beachside
             rotation-y={-Math.PI / 2}
