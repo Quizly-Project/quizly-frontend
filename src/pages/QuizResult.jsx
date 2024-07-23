@@ -22,7 +22,7 @@ const QuizResult = () => {
           ...item,
           selectOption:
             typeof item.selectOption === 'string'
-              ? JSON.parse(item.selectOption)
+              ? item.selectOption
               : item.selectOption,
           result:
             typeof item.result === 'string'

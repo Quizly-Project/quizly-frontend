@@ -8,7 +8,7 @@ function Floor({ width, height }) {
       rotation={[-Math.PI / 2, 0, 0]}
       position={[0, -200, 0]}
     >
-      <meshBasicMaterial transparent opacity={0.2} color="red" />
+      <meshBasicMaterial transparent opacity={0} color="red" />
     </Plane>
   );
 }
