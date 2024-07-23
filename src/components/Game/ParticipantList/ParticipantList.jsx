@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { Track } from 'livekit-client';
 import styles from './ParticipantList.module.css';
+import { useLiveKitStore } from '../../../store/liveKitStore';
 
 const ParticipantList = ({
   participants,
@@ -7,6 +9,8 @@ const ParticipantList = ({
   onSelectStudent,
   selectedStudent,
 }) => {
+  const { currentSpeakers } = useLiveKitStore();
+
   return (
     <div className={styles.participantList}>
       <h3 className={styles.title}>참가자 목록</h3>
@@ -22,7 +26,7 @@ const ParticipantList = ({
         {participants.map(participant => (
           <li
             key={participant.nickName}
-            className={`${styles.participant} ${participant.nickName === selectedStudent ? styles.selected : ''} ${participant.isTeacher ? styles.teacher : ''}`}
+            className={`${styles.participant} ${participant.nickName === selectedStudent ? styles.selected : ''} ${participant.isTeacher ? styles.teacher : ''} ${currentSpeakers.includes(participant.nickName) ? styles.speaking : ''}`}
             onClick={() => isTeacher && onSelectStudent(participant.nickName)}
           >
             <span className={styles.nickname}>{participant.nickName}</span>

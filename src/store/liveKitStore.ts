@@ -23,6 +23,7 @@ interface liveKitStore {
   remoteTracks: TrackInfo[];
   isJoined: boolean;
   ranks: Participant[];
+  currentSpeakers: string[] | null;
   setRoom: (room: Room | null) => void;
   setLocalTrack: (track: LocalVideoTrack | null) => void;
   setRemoteTracks: (tracks: TrackInfo[]) => void;
@@ -35,6 +36,7 @@ interface liveKitStore {
   ) => void;
   setIsJoined: (isJoined: boolean) => void;
   setRanks: (ranks: Participant[]) => void;
+  setCurrentSpeakers: (participantIds: string[] | []) => void;
 }
 
 export const useLiveKitStore = create<liveKitStore>(set => ({
@@ -43,6 +45,8 @@ export const useLiveKitStore = create<liveKitStore>(set => ({
   remoteTracks: [],
   isJoined: false,
   ranks: [],
+  currentSpeakers: [],
+
   setRoom: room => set({ room }),
   setLocalTrack: track => set({ localTrack: track }),
   setRemoteTracks: tracks => set({ remoteTracks: tracks }),
@@ -67,4 +71,6 @@ export const useLiveKitStore = create<liveKitStore>(set => ({
     }),
   setIsJoined: isJoined => set({ isJoined }),
   setRanks: ranks => set({ ranks }),
+  setCurrentSpeakers: participantIds =>
+    set({ currentSpeakers: participantIds }),
 }));

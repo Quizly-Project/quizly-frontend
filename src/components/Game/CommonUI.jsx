@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { LiveKitRoom } from '@livekit/components-react';
 import QuizResultText from './QuizResultText';
 import ChatComponent from '../common/ChatComponent/ChatComponent';
 import ParticipantList from './ParticipantList/ParticipantList';
@@ -74,13 +75,14 @@ const CommonUI = ({
       }
 
       <QuizProgress currentQuiz={quizIndex} totalQuizzes={quizCnt} />
-
-      <ParticipantList
-        participants={participants}
-        isTeacher={isTeacher}
-        onSelectStudent={onSelectStudent}
-        selectedStudent={selectedStudent}
-      />
+      <LiveKitRoom>
+        <ParticipantList
+          participants={participants}
+          isTeacher={isTeacher}
+          onSelectStudent={onSelectStudent}
+          selectedStudent={selectedStudent}
+        />
+      </LiveKitRoom>
       <Timer timer={timer} />
 
       {/* 마지막 문제 전까지의 리더보드 */}
