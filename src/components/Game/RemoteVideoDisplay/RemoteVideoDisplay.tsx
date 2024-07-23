@@ -17,11 +17,13 @@ const RemoteVideoDisplay: React.FC<{ participantId: string }> = ({
   if (!remoteVideoTrack) return null;
 
   return (
-    <VideoComponent
-      track={remoteVideoTrack}
-      participantIdentity={participantId}
-      local={false}
-    />
+    <>
+      {/* <VideoComponent
+        track={remoteVideoTrack}
+        participantIdentity={participantId}
+        local={false}
+      /> */}
+    </>
   );
 };
 

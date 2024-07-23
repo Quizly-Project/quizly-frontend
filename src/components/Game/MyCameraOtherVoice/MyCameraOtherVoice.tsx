@@ -5,6 +5,7 @@ import AudioComponent from '../LiveKit/components/AudioComponent'; // Update imp
 import { useLiveKitStore } from '../../../store/liveKitStore';
 import useQuizRoomStore from '../../../store/quizRoomStore';
 import RemoteVideoDisplay from '../RemoteVideoDisplay/RemoteVideoDisplay';
+import AudioControl from '../LiveKit/components/AudioControl';
 
 interface LiveKitProps {
   quizResult: any;
@@ -21,11 +22,14 @@ const MyCameraOtherVoice: React.FC<LiveKitProps> = ({ selectedStudent }) => {
           <RemoteVideoDisplay participantId={selectedStudent} />
         ) : (
           localTrack && (
-            <VideoComponent
+          <div>  
+            {/* <VideoComponent
               track={localTrack}
               participantIdentity={nickName}
               local={true}
-            />
+            /> */}
+            <AudioControl participantIdentity={nickName} isLocal={true} />
+          </div>    
           )
         )}
 

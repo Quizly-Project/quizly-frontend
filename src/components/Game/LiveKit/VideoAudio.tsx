@@ -2,8 +2,10 @@
 import React from 'react';
 import VideoComponent from './components/VideoComponent';
 import AudioComponent from './components/AudioComponent';
+import AudioControl from './components/AudioControl'; // 새로 추가된 import
 import { useLiveKitStore } from '../../../store/liveKitStore';
 import useQuizRoomStore from '../../../store/quizRoomStore';
+import { AudioTrack, VideoTrack, Track } from 'livekit-client';
 
 interface LiveKitProps {
   quizResult: any;
@@ -21,27 +23,46 @@ const VideoAudio: React.FC<LiveKitProps> = () => {
       <div id="layout-container">
         {/* 나 (Local) */}
         {localTrack && (
-          <VideoComponent
-            track={localTrack}
-            participantIdentity={nickName}
-            local={true}
-          />
+          <div>
+            {/* <VideoComponent
+              track={localTrack}
+              participantIdentity={nickName}
+              local={true}
+            /> */}
+            <AudioControl participantIdentity={nickName} isLocal={true} />
+          </div>
         )}
         {/* 다른 사람들 (Remote) */}
-        {remoteTracks.map(remoteTrack =>
-          remoteTrack.trackPublication.kind === 'video' ? (
-            <VideoComponent
-              key={remoteTrack.trackPublication.trackSid}
-              track={remoteTrack.trackPublication.videoTrack!}
-              participantIdentity={remoteTrack.participantIdentity}
-            />
-          ) : (
-            <AudioComponent
-              key={remoteTrack.trackPublication.trackSid}
-              track={remoteTrack.trackPublication.audioTrack!}
-            />
-          )
-        )}
+        {remoteTracks.map(remoteTrack => {
+          const track = remoteTrack.trackPublication.track;
+          if (!track) return null;
+
+          if (track.source === Track.Source.Camera) {
+            return (
+              <div key={remoteTrack.trackPublication.trackSid}>
+                <VideoComponent
+                  track={track as VideoTrack}
+                  participantIdentity={remoteTrack.participantIdentity}
+                />
+                <AudioControl
+                  participantIdentity={remoteTrack.participantIdentity}
+                  isLocal={false}
+                />
+              </div>
+            );
+          } else if (track.source === Track.Source.Microphone) {
+            return (
+              <div key={remoteTrack.trackPublication.trackSid}>
+                <AudioComponent track={track as AudioTrack} />
+                <AudioControl
+                  participantIdentity={remoteTrack.participantIdentity}
+                  isLocal={false}
+                />
+              </div>
+            );
+          }
+          return null;
+        })}
       </div>
     </div>
   );
