@@ -1,6 +1,7 @@
 // OpenVidu.tsx
 import React, { useEffect, useRef } from 'react';
 import {
+  Participant,
   RemoteParticipant,
   RemoteTrack,
   RemoteTrackPublication,
@@ -54,6 +55,7 @@ const LiveKit = () => {
     removeRemoteTrack,
     setIsJoined,
     setRemoteVideoTrack,
+    setCurrentSpeakers,
   } = useLiveKitStore();
 
   // 클라이언트(본인)의 닉네임과 룸 코드를 store에서 꺼내온다.
@@ -111,6 +113,15 @@ const LiveKit = () => {
         }
       }
     );
+
+    newRoom.on(RoomEvent.ActiveSpeakersChanged, (speakers: Participant[]) => {
+      if (speakers.length > 0) {
+        setCurrentSpeakers(speakers.map(s => s.identity));
+      } else {
+        setCurrentSpeakers([]);
+      }
+      console.log('Active speakers:', speakers);
+    });
 
     try {
       console.log('livKit: roomCOde, nickName', roomCode, nickName);
