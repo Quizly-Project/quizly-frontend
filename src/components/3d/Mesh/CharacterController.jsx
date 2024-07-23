@@ -52,11 +52,20 @@ const CharacterController = ({
     setMyPos(spawn);
   }, [spawn]);
 
-  // 내 위치가 바뀌면 서버에 위치를 전송한다.
-  // useEffect(() => {
-  // console.log(myPos);
-  // socket.emit('iMove', { nickName: nickname, position: myPos }); // 보내줄 데이터 {nickName, {x, y, z}}
-  // }, [myPos]);
+  /* ------------------------------------------------------------ */
+  /* 기술적 챌린지: 30 프레임 */
+  // 기존: 내 위치가 바뀔 때마다 서버에 위치를 전송한다.
+  useEffect(() => {
+    console.log(myPos);
+    socket.emit('iMove', { nickName: nickname, position: myPos }); // 보내줄 데이터 {nickName, {x, y, z}}
+  }, [myPos]);
+
+  // 30프레임마다: 1/30초마다 수행할 작업을 정의하는 함수
+  const performUpdate = () => {
+    const newPos = rigidbody.current.translation();
+    // socket.emit('iMove', { nickName: nickname, position: newPos }); // 보내줄 데이터 {nickName, {x, y, z}}
+  };
+  /* ------------------------------------------------------------ */
 
   // 임계점 이상일 때만 렌더링한다.
   const detectMovement = useCallback((oldPos, newPos, threshold = 0.3) => {
@@ -111,7 +120,8 @@ const CharacterController = ({
   const updateCount = useRef(0);
   const lastLogTime = useRef(0);
   useFrame((state, delta) => {
-    // console.log(state, delta);
+    /* ------------------------------------------------------------ */
+    /* 기술적 챌린지: 30 프레임 */
     // 시간 누적
     timeAccumulator.current += delta;
 
@@ -131,6 +141,7 @@ const CharacterController = ({
       updateCount.current = 0;
       lastLogTime.current = state.clock.elapsedTime;
     }
+    /* ------------------------------------------------------------ */
 
     if (isInputChatFocused || isInputGoldenbellFocused) {
       if (action !== 'Idle_A') setAction('Idle_A');
@@ -175,12 +186,6 @@ const CharacterController = ({
       setIsJumped(false);
     }
   });
-
-  // 1/30초마다 수행할 작업을 정의하는 함수
-  const performUpdate = () => {
-    const newPos = rigidbody.current.translation();
-    socket.emit('iMove', { nickName: nickname, position: newPos }); // 보내줄 데이터 {nickName, {x, y, z}}
-  };
 
   const handleCollision = data => {
     console.log('충돌', data);

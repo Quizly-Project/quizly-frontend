@@ -113,7 +113,7 @@ const Character = React.memo(
                 {getRankEmoji && (
                   <span className="crown-icon">{getRankEmoji}</span>
                 )}
-                <span className="nickname">{nickname}</span>
+                {/* <span className="nickname">{nickname}</span> */}
               </div>
             </Html>
           </group>

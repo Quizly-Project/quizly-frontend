@@ -263,7 +263,7 @@ export default function Game({
           enableZoom={true}
           enablePan={true}
           minDistance={5}
-          maxDistance={100}
+          // maxDistance={100}
         />
       ) : isStarted && !isQuestionActive && isCameraOn ? (
         <OrbitControls
@@ -272,7 +272,7 @@ export default function Game({
           enableZoom={true}
           enablePan={true}
           minDistance={5}
-          maxDistance={80}
+          // maxDistance={80}
         />
       ) : (
         <CameraControls ref={cameraControls} />
@@ -310,7 +310,7 @@ export default function Game({
       />
       <StaticMaterials position-z={-20} rotation-y={Math.PI} />
 
-      <Physics>
+      <Physics debug>
         <Floor width={200} height={200} />
         {type === 2 && (
           <Beachside
