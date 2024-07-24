@@ -1,26 +1,43 @@
 .quizCard {
-  background-color: white;
+  position: relative;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
   padding: 20px;
+  margin: 10px;
+  background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  color: #101010;
+}
+
+.quizTypeTag {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #f0f0f0;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 0.8em;
+  font-weight: bold;
+}
+.quizTypeTag:hover {
+  background-color: #dedfeb;
 }
 
 .quizTitle {
-  font-size: 25px;
-  font-weight: bold;
-  color: #101010;
-  margin-top: 5px;
-  margin-bottom: 12px;
+  margin-top: 0;
+  margin-bottom: 10px;
 }
 
 .divider {
   border: none;
   border-top: 1px solid #e0e0e0;
-  margin: 12px 0;
+  margin: 10px 0;
 }
 
 .quizDescription {
-  color: #606060;
-  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.quizButton {
+  display: block;
+  margin-left: auto;
 }
