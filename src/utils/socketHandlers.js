@@ -116,7 +116,7 @@ export const createSocketHandlers = (
 
   // 1. render all
   const handleTheyMove = data => {
-    // console.log('they move', data);
+    console.log('they move', data);
     setClientCoords(prevCoords => {
       return { ...prevCoords, [data.nickName]: data.position };
     });
