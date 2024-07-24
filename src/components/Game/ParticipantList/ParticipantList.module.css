@@ -3,13 +3,27 @@
   top: 20px;
   left: 20px;
   border-radius: 10px;
-  padding: 15px;
-  width: 220px;
-  max-height: 80vh;
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  width: 12%;
+  max-height: calc(72px * 4 + 20px); /* 4명의 참가자 + 패딩 */
   overflow-y: auto;
-  background-color: white;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 1;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0.1);
+}
+.participantList::-webkit-scrollbar {
+  width: 6px;
+}
+
+.participantList::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.participantList::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .title {
@@ -31,33 +45,88 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 15px;
+  padding: 5px;
   margin-bottom: 8px;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  border: 1px solid #e9ecef;
+  height: 72px;
   transition: all 0.2s ease;
 }
 
 .participant:hover {
-  background-color: #e9ecef;
   transform: translateY(-2px);
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
 }
 
 .selected {
-  background-color: #e7f5ff;
+  background-color: rgba(231, 245, 255, 0.3);
   border-color: #74c0fc;
+  border-radius: 8px;
 }
 
 .teacher {
-  background-color: #fff9db;
+  background-color: rgba(255, 249, 219, 0.8);
   border-color: #ffd43b;
+}
+
+.participantInfo {
+  display: flex;
+  align-items: center;
+}
+
+.participantIcon {
+  width: 48px;
+  height: 48px;
+  margin-right: 12px;
+  background-image: url('/src/assets/icon_sprites.png');
+  background-repeat: no-repeat;
+  background-size: 144px 144px; /* 3x3 그리드, 각 아이콘이 48x48px */
+  border-radius: 50%;
+  position: relative;
+}
+
+/* 아이콘 클래스들 */
+.bg-Seagull {
+  background-position: 0 0;
+}
+.bg-Sardine {
+  background-position: -48px 0;
+}
+.bg-Octopus {
+  background-position: -96px 0;
+}
+.bg-Turtle {
+  background-position: 0 -48px;
+}
+.bg-Tuna {
+  background-position: -48px -48px;
+}
+.bg-Salmon {
+  background-position: -96px -48px;
+}
+.bg-Jellyfish {
+  background-position: 0 -96px;
+}
+.bg-Prawn {
+  background-position: -48px -96px;
 }
 
 .nickname {
   font-weight: 600;
-  color: #495057;
-  font-size: 16px;
+  color: #ffffff;
+  font-size: 24px;
+  transition: color 0.3s ease;
+  text-shadow:
+    2px 2px 4px rgba(0, 0, 0, 0.5),
+    0 0 10px rgba(255, 255, 255, 0.3);
+  filter: blur(0.3px);
+}
+
+.speaking .nickname {
+  color: #4caf50;
+  text-shadow:
+    2px 2px 4px rgba(0, 0, 0, 0.5),
+    0 0 15px rgba(76, 175, 80, 0.6);
+  filter: blur(0.2px);
 }
 
 .teacherBadge {
@@ -70,48 +139,36 @@
 }
 
 .resetButton {
-  width: 100%;
+  width: calc(100% - 20px);
   padding: 10px;
-  margin-bottom: 15px;
-  background-color: #fa5252;
+  margin: 10px;
+  background-color: rgba(250, 82, 82, 0.6);
   color: white;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.2s;
   font-weight: bold;
+  font-size: 17px;
 }
 
 .resetButton:hover {
-  background-color: #e03131;
+  background-color: rgba(224, 49, 49, 0.8);
 }
 
-.speaking {
-  animation: speak 1.5s ease-in-out infinite;
-  border: 2px solid #4caf50;
-  position: relative;
-}
-
-.speaking::before {
+.speaking .participantIcon::after {
   content: '';
   position: absolute;
-  width: 20px;
-  height: 20px;
-  background-color: #4caf50;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border: 3px solid #4caf50;
   border-radius: 50%;
-  left: -10px;
-  top: 50%;
-  transform: translateY(-50%);
-  box-shadow: 0 0 10px #4caf50;
+  animation: pulseBorder 1.5s infinite;
 }
 
-.speaking .nickname::after {
-  content: '🎙️';
-  margin-left: 5px;
-  font-size: 14px;
-}
-
-@keyframes speak {
+@keyframes pulseBorder {
   0% {
     box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4);
   }
@@ -121,34 +178,4 @@
   100% {
     box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
   }
-}
-
-.controls {
-  display: flex;
-  gap: 10px;
-}
-
-.muteIcon,
-.unmuteIcon {
-  font-size: 18px;
-  cursor: pointer;
-}
-
-.muteIcon {
-  color: #f44336;
-}
-
-.unmuteIcon {
-  color: #4caf50;
-}
-
-.muted {
-  opacity: 0.5;
-}
-
-.muteButton {
-  margin-left: 10px;
-  padding: 2px 5px;
-  font-size: 0.8em;
-  cursor: pointer;
 }
