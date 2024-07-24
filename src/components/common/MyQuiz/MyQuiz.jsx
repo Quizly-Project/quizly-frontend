@@ -43,7 +43,7 @@ const MyQuiz = () => {
   return (
     <>
       <div className={styles.myQuizContainer}>
-        <Text type="title" size="large" weight="bold" color="black">
+        <Text type="title" size="xlarge" weight="bold" color="black" align="center">
           내 퀴즈
         </Text>
         <SearchBar />

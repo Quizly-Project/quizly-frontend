@@ -4,7 +4,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12,79 +12,76 @@
 }
 
 .modalContent {
-  background-color: white;
-  padding: 30px;
-  border-radius: 8px;
+  background-color: #ffffff;
+  padding: 35px;
+  border-radius: 15px;
   width: 90%;
-  max-width: 500px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.buttonContainer {
-  margin-top: 30px;
+  max-width: 600px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
 .modalHeader {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 20px;
 }
 
 .closeButton {
   background: none;
   border: none;
-  font-size: 24px;
+  font-size: 28px;
   cursor: pointer;
-  color: #666;
-  padding: 10px;
+  color: #495057;
+  padding: 5px;
   line-height: 1;
+  transition: color 0.3s ease;
 }
 
 .closeButton:hover {
-  color: #000;
+  color: #1e88e5;
 }
 
 .divider {
   border: none;
-  border-top: 1px solid #e0e0e0;
-  margin: 0px 0 6px 0;
+  border-top: 2px solid #e9ecef;
+  margin: 20px 0;
 }
 
 .quizList {
-  margin-top: 20px;
-  max-height: 300px;
-  overflow-y: auto;
+  margin-top: 25px;
 }
 
 .quizItem {
   display: flex;
   align-items: center;
-  margin-top: 10px;
-  padding: 10px;
-  background: linear-gradient(to right, #f0f0f0, #ffffff);
-  border-radius: 8px;
-  transition:
-    transform 0.2s,
-    box-shadow 0.2s;
+  margin-top: 15px;
+  padding: 15px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  border-left: 4px solid #1e88e5;
 }
 
 .quizItem:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: translateX(5px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .quizNumber {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
-  background-color: #464c91;
+  width: 28px;
+  height: 28px;
+  background-color: #1e88e5;
   color: white;
   border-radius: 50%;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: bold;
-  margin-right: 10px;
+  margin-right: 15px;
   flex-shrink: 0;
 }
 
@@ -92,9 +89,26 @@
   flex-grow: 1;
 }
 
-.modalContent {
-  max-width: 600px;
-  width: 100%;
-  max-height: 80vh;
-  overflow-y: auto;
+.buttonContainer {
+  margin-top: 30px;
+  margin-bottom: 60px;
+  text-align: right;
+}
+
+/* 스크롤바 스타일링 */
+.modalContent::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modalContent::-webkit-scrollbar-track {
+  background: #f1f3f5;
+}
+
+.modalContent::-webkit-scrollbar-thumb {
+  background-color: #adb5bd;
+  border-radius: 4px;
+}
+
+.modalContent::-webkit-scrollbar-thumb:hover {
+  background-color: #868e96;
 }

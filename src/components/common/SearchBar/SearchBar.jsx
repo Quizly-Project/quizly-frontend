@@ -20,7 +20,7 @@ const SearchBar = () => {
       <InputField
         name="search"
         type="text"
-        placeholder="검색"
+        placeholder="🔍   검색"
         className={stylesInput.purpleSearch}
         register={register}
         errors={errors}

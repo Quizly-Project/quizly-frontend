@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import useAuthStore from '../../../store/authStore';
 import styles from './Sidebar.module.css';
-import Text from '../Text/Text';
 
 const Sidebar = ({ activeMenu, setActiveMenu }) => {
   const { user, logout } = useAuthStore();
@@ -10,25 +9,19 @@ const Sidebar = ({ activeMenu, setActiveMenu }) => {
   };
 
   const menuItems = [
-    { icon: '📦', text: '둘러보기' },
+    { icon: '🗂️', text: '둘러보기' },
     { icon: '✏️', text: '퀴즈 만들기' },
-    { icon: '🕒', text: '내 퀴즈' },
-    // { icon: '⚙️', text: '설정' },
+    { icon: '📔', text: '내 퀴즈' },
     { icon: '🚪', text: '로그아웃', onClick: handleLogout },
   ];
 
   return (
     <nav className={styles.sidebar}>
-      <Text
-        className={`${styles.username}`}
-        type="title"
-        color="white"
-        size="large"
-        weight="bold"
-      >
-        {user} 선생님
-      </Text>
-      <ul className={`${styles.menu}`}>
+      <div className={styles.userInfo}>
+      
+        <h2 className={styles.username}>{user} 선생님</h2>
+      </div>
+      <ul className={styles.menu}>
         {menuItems.map(({ icon, text, onClick }) => (
           <li
             key={text}
@@ -38,18 +31,15 @@ const Sidebar = ({ activeMenu, setActiveMenu }) => {
               onClick && onClick();
             }}
           >
-            <span className={`${styles.icon}`} role="img" aria-label={text}>
-              {icon}
-            </span>
-            <Text
-              color={activeMenu === text ? 'secondary' : 'white'}
-              weight="bold"
-            >
-              {text}
-            </Text>
+            <span className={styles.icon}>{icon}</span>
+            <span className={styles.text}>{text}</span>
           </li>
         ))}
       </ul>
+      <div className={styles.cardDecoration}></div>
+      <div className={styles.floatingElement}></div>
+      <div className={styles.floatingElement}></div>
+      <div className={styles.floatingElement}></div>
     </nav>
   );
 };
