@@ -46,6 +46,25 @@ const CharacterController = ({
   // Jump only once
   const [isJumped, setIsJumped] = useState(false);
 
+  const quantize = (value, min, max, bits = 8) => {
+    const range = max - min;
+    const step = range / (Math.pow(2, bits) - 1);
+    return Math.round((value - min) / step);
+  };
+
+  const quantizePosition = (position, bits = 8) => {
+    const ranges = {
+      x: { min: -100, max: 100 },
+      y: { min: -50, max: 50 },
+      z: { min: -50, max: 50 },
+    };
+    return {
+      x: quantize(position.x, ranges.x.min, ranges.x.max, bits),
+      y: quantize(position.y, ranges.y.min, ranges.y.max, bits),
+      z: quantize(position.z, ranges.z.min, ranges.z.max, bits),
+    };
+  };
+
   // 첫 렌더링 시 스폰 위치
   useEffect(() => {
     rigidbody.current.setTranslation(spawn);
@@ -179,7 +198,10 @@ const CharacterController = ({
   // 1/30초마다 수행할 작업을 정의하는 함수
   const performUpdate = () => {
     const newPos = rigidbody.current.translation();
-    socket.emit('iMove', { nickName: nickname, position: newPos }); // 보내줄 데이터 {nickName, {x, y, z}}
+    socket.emit('iMove', {
+      nickName: nickname,
+      position: quantizePosition(newPos),
+    }); // 보내줄 데이터 {nickName, {x, y, z}}
   };
 
   const handleCollision = data => {
