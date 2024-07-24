@@ -12,7 +12,7 @@ const SelectCreateQuiz = () => {
       type: '객관식',
       image: '/Image/multiple-choice.png',
       urlPath: 'multiple-choice',
-      description: '여러 개의 선택지 중 정답을 고르는 퀴즈',
+      description: 'O, X의 선택지 중 정답을 고르는 퀴즈',
     },
     {
       type: '도전 골든벨',

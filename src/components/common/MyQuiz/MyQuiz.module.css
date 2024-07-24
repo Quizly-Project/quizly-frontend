@@ -4,10 +4,6 @@
   margin: 0 auto;
 }
 
-.myQuizContainer > * {
-  /* margin-bottom: 20px; */
-}
-
 .myQuizContainer > *:last-child {
   margin-bottom: 0;
 }
