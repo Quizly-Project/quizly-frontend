@@ -115,25 +115,25 @@ export const createSocketHandlers = (
   // data: {nickName, {x, y, z}}
 
   // 1. render all
-  // const handleTheyMove = data => {
-  //   // console.log('they move', data);
-  //   setClientCoords(prevCoords => {
-  //     return { ...prevCoords, [data.nickName]: data.position };
-  //   });
-  // };
-
-  // 2. 30fps
   const handleTheyMove = data => {
+    // console.log('they move', data);
     setClientCoords(prevCoords => {
-      const newCoords = { ...prevCoords };
-      Object.entries(data).forEach(([key, value]) => {
-        if (value && value.nickName && value.position) {
-          newCoords[value.nickName] = dequantizePosition(value.position);
-        }
-      });
-      return newCoords;
+      return { ...prevCoords, [data.nickName]: data.position };
     });
   };
+
+  // 2. 30fps
+  // const handleTheyMove = data => {
+  //   setClientCoords(prevCoords => {
+  //     const newCoords = { ...prevCoords };
+  //     Object.entries(data).forEach(([key, value]) => {
+  //       if (value && value.nickName && value.position) {
+  //         newCoords[value.nickName] = value.position;
+  //       }
+  //     });
+  //     return newCoords;
+  //   });
+  // };
 
   // 다른 클라이언트가 연결 해제
   // data: {nickName}

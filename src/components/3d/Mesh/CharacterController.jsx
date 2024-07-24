@@ -77,7 +77,7 @@ const CharacterController = ({
 
     socket.emit('iMove', {
       nickName: nickname,
-      position: quantizePosition(myPos),
+      position: myPos,
     }); // 보내줄 데이터 {nickName, {x, y, z}}
   }, [myPos]);
 
