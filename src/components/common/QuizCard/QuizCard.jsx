@@ -3,7 +3,6 @@ import styles from './QuizCard.module.css';
 import Button from '../Button/Button.jsx';
 
 const QuizCard = ({ title, description, quizType, onClick, ...props }) => {
-  console.log(quizType);
   let typeString = '';
   switch (quizType) {
     case 1:
@@ -21,7 +20,17 @@ const QuizCard = ({ title, description, quizType, onClick, ...props }) => {
 
   return (
     <div className={styles.quizCard} onClick={onClick}>
-      <div className={styles.quizTypeTag}>{typeString}</div>
+      {typeString == 'O/X' && (
+        <div className={(styles.quizTypeTag, styles.typeRed)}>{typeString}</div>
+      )}
+      {typeString == '골든벨' && (
+        <div className={(styles.quizTypeTag, styles.typeGreen)}>
+          {typeString}
+        </div>
+      )}
+      {typeString == '기타' && (
+        <div className={styles.quizTypeTag}>{typeString}</div>
+      )}
       <h3 className={styles.quizTitle}>{title}</h3>
       <hr className={styles.divider} />
       <p className={styles.quizDescription}>{description}</p>

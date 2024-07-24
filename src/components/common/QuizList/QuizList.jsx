@@ -1,8 +1,6 @@
 import QuizCard from '../QuizCard/QuizCard';
 import styles from './QuizList.module.css';
 const QuizList = ({ quizzes, onClick }) => {
-  // if (quizzes[0].quizs[0].type) {
-  // }
   return (
     <div className={styles.quizGrid}>
       {quizzes.map((quiz, index) => {
