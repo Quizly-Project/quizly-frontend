@@ -1,4 +1,4 @@
-import { useQuantization } from "./quantization.js";
+import { useQuantization } from './quantization.js';
 
 export const createSocketHandlers = (
   setClientCoords,
