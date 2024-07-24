@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './QuizDetailModal.module.css';
+import Button from '../Button/Button.jsx';
 import Text from '../Text/Text.jsx';
 
 const QuizDetailModal = ({ quiz, onClose, onCreateRoom }) => {
@@ -15,34 +16,35 @@ const QuizDetailModal = ({ quiz, onClose, onCreateRoom }) => {
     <div className={styles.modalOverlay} onClick={handleOverlayClick}>
       <div className={styles.modalContent}>
         <div className={styles.modalHeader}>
-          <Text type="title" weight="bold" size="xlarge" color="primary">
+          <Text type="title" weight="bold" size="xlarge" color="black">
             {quiz.quizTitle}
           </Text>
           <button className={styles.closeButton} onClick={onClose}>
-            ×
+            ✕
           </button>
         </div>
+        <hr className={styles.divider} />
         <Text size="large" color="grey">
           {quiz.quizDescription}
         </Text>
-        <hr className={styles.divider} />
+
         <div className={styles.quizList}>
-          <Text type="subtitle" weight="bold" size="large" color="primary">
+          <Text type="subtitle" weight="bold" size="large" color="grey">
             문제 목록
           </Text>
           {quiz.quizs.map((question, index) => (
             <div key={question.quizId} className={styles.quizItem}>
               <span className={styles.quizNumber}>{index + 1}</span>
-              <Text size="medium" color="dark" className={styles.quizText}>
+              <Text size="medium" color="black" className={styles.quizText}>
                 {question.question}
               </Text>
             </div>
           ))}
         </div>
         <div className={styles.buttonContainer}>
-          <button className={styles.quizButton} onClick={onCreateRoom}>
+          <Button onClick={onCreateRoom} color="purple" align="right">
             퀴즈 방 만들기
-          </button>
+          </Button>
         </div>
       </div>
     </div>
