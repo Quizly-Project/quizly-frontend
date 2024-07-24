@@ -1,3 +1,5 @@
+import { useQuantization } from "./quantization.js";
+
 export const createSocketHandlers = (
   setClientCoords,
   setQuiz,
@@ -35,6 +37,10 @@ export const createSocketHandlers = (
   setQuizDuration,
   displayEndEventVisible
 ) => {
+  // quantization
+  console.log(useQuantization);
+  const dequantizePosition = useQuantization();
+
   /* ------- Socket events ------- */
   // 기존 접속중인 클라이언트의 위치 저장
   // data: [식별자: {nickName, {x, y, z}}, modelMapping, texture]
@@ -110,7 +116,7 @@ export const createSocketHandlers = (
       const newCoords = { ...prevCoords };
       Object.entries(data).forEach(([key, value]) => {
         if (value && value.nickName && value.position) {
-          newCoords[value.nickName] = value.position;
+          newCoords[value.nickName] = dequantizePosition(value.position);
         }
       });
       return newCoords;

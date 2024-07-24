@@ -13,6 +13,7 @@ import useInputFocusedStore from '../../../store/inputFocusedStore';
 import useQuizRoomStore from '../../../store/quizRoomStore';
 import spawnLocations from '../../../utils/spawnLocations';
 import useSocketStore from '../../../store/socketStore';
+import { useQuantization } from '../../../utils/quantization';
 
 const MOVEMENT_SPEED = 500;
 const JUMP_FORCE = 5;
@@ -45,6 +46,9 @@ const CharacterController = ({
   const [action, setAction] = useState('Idle_A');
   // Jump only once
   const [isJumped, setIsJumped] = useState(false);
+
+  // quantization
+  const quantizePosition = useQuantization();
 
   // 첫 렌더링 시 스폰 위치
   useEffect(() => {
@@ -179,7 +183,7 @@ const CharacterController = ({
   // 1/30초마다 수행할 작업을 정의하는 함수
   const performUpdate = () => {
     const newPos = rigidbody.current.translation();
-    socket.emit('iMove', { nickName: nickname, position: newPos }); // 보내줄 데이터 {nickName, {x, y, z}}
+    socket.emit('iMove', { nickName: nickname, position: quantizePosition(newPos) }); // 보내줄 데이터 {nickName, {x, y, z}}
   };
 
   const handleCollision = data => {
