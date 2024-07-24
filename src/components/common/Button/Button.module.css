@@ -71,5 +71,6 @@
 .align-right {
   display: flex;
   float: right;
+  margin-right: 20px;
   align-items: center; /* 수직 중앙 정렬 추가 */
 }

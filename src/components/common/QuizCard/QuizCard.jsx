@@ -4,39 +4,36 @@ import Button from '../Button/Button.jsx';
 
 const QuizCard = ({ title, description, quizType, onClick, ...props }) => {
   let typeString = '';
+  let typeClass = '';
   switch (quizType) {
     case 1:
       typeString = 'O/X';
+      typeClass = styles.typeRed;
       break;
-
     case 2:
       typeString = '골든벨';
+      typeClass = styles.typeGreen;
       break;
-
     default:
       typeString = '기타';
+      typeClass = styles.typeBlue;
       break;
   }
 
   return (
     <div className={styles.quizCard} onClick={onClick}>
-      {typeString == 'O/X' && (
-        <div className={(styles.quizTypeTag, styles.typeRed)}>{typeString}</div>
-      )}
-      {typeString == '골든벨' && (
-        <div className={(styles.quizTypeTag, styles.typeGreen)}>
-          {typeString}
-        </div>
-      )}
-      {typeString == '기타' && (
-        <div className={styles.quizTypeTag}>{typeString}</div>
-      )}
+      <div className={`${styles.quizTypeTag} ${typeClass}`}>{typeString}</div>
       <h3 className={styles.quizTitle}>{title}</h3>
-      <hr className={styles.divider} />
       <p className={styles.quizDescription}>{description}</p>
-      <Button color="purple" align="right">
-        퀴즈 보기 →
-      </Button>
+      <div className={styles.buttonWrapper}>
+        <Button color="blue" className={styles.quizButton}>
+          퀴즈 시작
+        </Button>
+      </div>
+      <div className={styles.cardDecoration}></div>
+      <div className={styles.floatingElement}></div>
+      <div className={styles.floatingElement}></div>
+      <div className={styles.floatingElement}></div>
     </div>
   );
 };

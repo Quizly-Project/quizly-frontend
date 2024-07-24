@@ -94,7 +94,7 @@ const Dashboard = () => {
   return (
     <>
       <div className={styles.dashboard}>
-        <Text type="title" color="black" size="large" weight="bold">
+        <Text type="title" color="black" size="xlarge" weight="bold" align="center">
           둘러보기
         </Text>
         <SearchBar />

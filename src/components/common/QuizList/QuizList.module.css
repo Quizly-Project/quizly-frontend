@@ -1,5 +1,21 @@
 .quizGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(3, 1fr);  /* 2열 고정 */
+  gap: 20px;
+  max-width: 1500px;  /* 최대 너비 설정 */
+  margin: 0 auto;  /* 중앙 정렬 */
+  padding: 0 20px;  /* 좌우 여백 추가 */
+}
+
+@media (max-width: 1024px) {
+  .quizGrid {
+    grid-template-columns: 1fr;  /* 화면이 작아지면 1열로 변경 */
+    max-width: 600px;  /* 최대 너비 조정 */
+  }
+}
+
+.quizCard {
+  width: 100%;  /* 카드의 너비를 그리드 셀에 맞춤 */
+  max-width: 500px;  /* 카드의 최대 너비 설정 */
+  margin: 0 auto;  /* 카드 중앙 정렬 */
 }
