@@ -17,6 +17,7 @@ import Test from './pages/Test.jsx';
 import ChatComponent from './components/common/ChatComponent/ChatComponent.jsx';
 import VoiceChat from './components/Game/LiveKit/VideoAudio.js';
 import QuizResult from './pages/QuizResult.jsx';
+import MainPage from './pages/MainPage/MainPage.jsx';
 
 const PrivateRoute = ({ children }) => {
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
@@ -53,7 +54,8 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route path="/" element={<Navigate to="/landing" />} />
+        {/* <Route path="/" element={<Navigate to="/landing" />} /> */}
+        <Route path="/" element={<MainPage />} />
         <Route path="/landing" element={<Landing />} />
         <Route path="/game" element={<Navigate to="/landing" />} />
         <Route path="/game/:code/:type" element={<GameContainer />} />

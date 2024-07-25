@@ -62,6 +62,9 @@
 .size-xlarge {
   font-size: 2.5em;
 }
+.size-xxlarge {
+  font-size: 4.0em;
+}
 
 .weight-normal {
   font-weight: normal;
