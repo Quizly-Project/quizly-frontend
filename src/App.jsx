@@ -8,7 +8,7 @@ import {
 import SignIn from './pages/SignIn.jsx';
 import SignUp from './pages/SignUp.jsx';
 import CreateQuiz from './pages/CreateQuiz/CreateQuiz.jsx';
-import Landing from './pages/Landing';
+import Landing from './pages/Landing/Landing.jsx';
 import TeacherQuizDashboard from './pages/TeacherQuizDashboard/TeacherQuizDashboard.jsx';
 import Layout from './components/layout/Layout/Layout.jsx';
 import useAuthStore from './store/authStore';

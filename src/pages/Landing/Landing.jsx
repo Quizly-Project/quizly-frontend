@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import InputField from '../components/common/InputField/InputField';
-import Button from '../components/common/Button/Button';
-import Text from '../components/common/Text/Text';
-import useSocketStore from '../store/socketStore';
+import InputField from '../../components/common/InputField/InputField';
+import Button from '../../components/common/Button/Button';
+import Text from '../../components/common/Text/Text';
+import useSocketStore from '../../store/socketStore';
+import styles from './Landing.module.css';
 
 const Landing = () => {
   const { socket, initSocket, isConnected, disconnectSocket } =
@@ -50,27 +51,31 @@ const Landing = () => {
   };
 
   return (
-    <div>
-      <Text type="title" weight="bold" size="large" align="center">
-        방 코드 입력
-      </Text>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <InputField
-          name="code"
-          type="text"
-          {...register('code', {
-            required: '방 코드를 입력해주세요.',
-          })}
-          errors={errors}
-          placeholder="방 코드를 입력하세요"
-          round={true}
-        />
-        <Button type="submit" size="large" wide={true} round={true}>
-          입장하기
-        </Button>
-      </form>
+    <div className={styles.landingContainer}>
+      <h1 className={styles.quizlyTitle}>Quizly</h1>
+      <div className={styles.quizTypeCard}>
+        <h3 className={styles.quizTypeTitle}>방 코드 입력</h3>
+        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+          <input
+            type="text"
+            {...register('code', {
+              required: '방 코드를 입력해주세요.',
+            })}
+            placeholder="방 코드를 입력하세요"
+            className={styles.input}
+          />
+          {errors.code && <p className={styles.error}>{errors.code.message}</p>}
+          <button type="submit" className={styles.button}>
+            입장하기
+          </button>
+        </form>
+        <div className={styles.cardDecoration}></div>
+        <div className={styles.floatingElement}></div>
+        <div className={styles.floatingElement}></div>
+      </div>
     </div>
   );
 };
+
 
 export default Landing;
