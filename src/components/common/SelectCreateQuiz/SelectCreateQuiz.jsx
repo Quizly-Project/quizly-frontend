@@ -9,7 +9,7 @@ const SelectCreateQuiz = () => {
 
   const quizTypes = [
     {
-      type: '객관식',
+      type: 'O/X 퀴즈',
       image: '/Image/multiple-choice.png',
       urlPath: 'multiple-choice',
       description: 'O, X의 선택지 중 정답을 고르는 퀴즈',
