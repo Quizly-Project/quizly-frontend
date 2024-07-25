@@ -83,6 +83,7 @@ const QuizResult = () => {
         <div className="result-cards">
           {results.map(info => (
             <div key={info.stuId} className="result-card">
+              <div className="cardDecoration"></div>
               <h3>{info.nickName}</h3>
               <p className="total-score">총점: {info.totalScore}</p>
               <div className="result-details">
