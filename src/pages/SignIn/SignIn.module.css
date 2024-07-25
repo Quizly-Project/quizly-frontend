@@ -1,0 +1,169 @@
+.signInContainer {
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.quizlyTitle {
+  font-size: 4rem;
+  font-weight: bold;
+  color: #1565c0;
+  text-align: center;
+  margin-bottom: 90px;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  position: relative;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  animation: float 3s ease-in-out infinite;
+}
+
+.quizlyTitle::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(to right, #1565c0, #64b5f6);
+  border-radius: 2px;
+}
+
+.quizlyTitle::before {
+  content: '?';
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  font-size: 3rem;
+  color: #64b5f6;
+  opacity: 0.5;
+  transform: rotate(15deg);
+}
+
+.quizTypeCard {
+  position: relative;
+  border: 3px solid #64b5f6;
+  border-radius: 20px;
+  padding: 40px 35px 65px;
+  margin: 15px;
+  background-color: #e8f5fe;
+  box-shadow: 0 10px 0 #42a5f5, 0 15px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  width: 95%;
+  max-width: 600px;
+}
+
+.quizTypeCard:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 15px 0 #42a5f5, 0 22px 26px rgba(0, 0, 0, 0.1);
+}
+
+.quizTypeTitle {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #1565c0;
+  font-size: 2.5em;
+  font-weight: bold;
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.8);
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.input {
+  width: 90%;
+  padding: 0.75rem;
+  border: 2px solid #64b5f6;
+  border-radius: 10px;
+  font-size: 1rem;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+}
+
+.input:focus {
+  border-color: #1565c0;
+  box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.25);
+  outline: none;
+}
+
+.error {
+  color: #d32f2f;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+.button {
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: white;
+  background-color: #1565c0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 40px;
+  width: 95%;
+}
+
+.button:hover {
+  background-color: #0d47a1;
+  transform: translateY(-2px);
+}
+
+.secondaryButton {
+  background-color: #64b5f6;
+  margin-top: 20px;
+  margin-left: 15px;
+}
+
+.secondaryButton:hover {
+  background-color: #42a5f5;
+}
+
+.cardDecoration {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 0px;
+  height: 80px;
+  background-color: rgba(33, 150, 243, 0.1);
+  border-radius: 0 20px 0 50%;
+  transform: rotate(45deg);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+.floatingElement {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background-color: rgba(33, 150, 243, 0.2);
+  border-radius: 50%;
+  animation: float 4s ease-in-out infinite;
+}
+
+.floatingElement:nth-child(1) {
+  top: 20%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.floatingElement:nth-child(2) {
+  bottom: 20%;
+  right: 10%;
+  animation-delay: 1s;
+}

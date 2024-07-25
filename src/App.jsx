@@ -5,7 +5,7 @@ import {
   Routes,
   Navigate,
 } from 'react-router-dom';
-import SignIn from './pages/SignIn.jsx';
+import SignIn from './pages/SignIn/SignIn.jsx';
 import SignUp from './pages/SignUp.jsx';
 import CreateQuiz from './pages/CreateQuiz/CreateQuiz.jsx';
 import Landing from './pages/Landing/Landing.jsx';
