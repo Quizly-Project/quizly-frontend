@@ -18,8 +18,16 @@ export default function Blackboard(props) {
   );
   const oMaterial = useMemo(
     () => ({
-      color: '#FF0000',
-      emissive: '#FF0000',
+      color: '#22C514',
+      emissive: '#22C514',
+      emissiveIntensity: 1.0,
+    }),
+    []
+  );
+  const xMaterial = useMemo(
+    () => ({
+      color: '#7DDA75',
+      emissive: '#7DDA75',
       emissiveIntensity: 1.0,
     }),
     []
@@ -159,7 +167,10 @@ export default function Blackboard(props) {
               position={[-20, -20, -30]}
             >
               {OX(displayedAnswer)}
-              <meshPhongMaterial attach="material" {...oMaterial} />
+              <meshPhongMaterial
+                attach="material"
+                {...(displayedAnswer === 'O' ? oMaterial : xMaterial)}
+              />
             </Text3D>
           </>
         ) : (
