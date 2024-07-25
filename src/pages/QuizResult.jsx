@@ -107,7 +107,7 @@ const QuizResult = () => {
                     <div key={idx} className="question-result">
                       <span className="question-number">Q{idx + 1}</span>
                       <span
-                        className={`user-answer ${printedAnswer === 'O' ? 'correct' : 'incorrect'}`}
+                        className={`user-answer ${result === 1 ? 'correct' : 'incorrect'}`}
                       >
                         {printedAnswer}
                       </span>
