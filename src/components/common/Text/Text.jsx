@@ -16,7 +16,7 @@ import '../../../styles/App.css';
  * @param {'left'|'center'|'right'} [props.align='left'] - 텍스트 정렬
  * @param {'title'|'subtitle'|'body'|'caption'} [props.type='body'] - 텍스트 유형
  * @param {'primary'|'secondary'|'error'|'success'|'white'} [props.color='primary'] - 텍스트 색상
- * @param {'small'|'medium'|'large'|'xlarge'} [props.size='medium'] - 텍스트 크기
+ * @param {'small'|'medium'|'large'|'xlarge'|'xxlarge'} [props.size='medium'] - 텍스트 크기
  * @param {'normal'|'bold'} [props.weight='normal'] - 텍스트 두께
  * @param {React.ElementType} [props.as='p'] - 렌더링할 HTML 요소
  * @param {string} [props.className] - 추가적인 CSS 클래스
@@ -67,7 +67,7 @@ Text.propTypes = {
     'grey',
     'whitegrey',
   ]),
-  size: PropTypes.oneOf(['small', 'medium', 'large', 'xlarge']),
+  size: PropTypes.oneOf(['small', 'medium', 'large', 'xlarge', 'xxlarge']),
   weight: PropTypes.oneOf(['normal', 'bold']),
   as: PropTypes.elementType,
   className: PropTypes.string,
