@@ -1,9 +1,10 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import {
   Sky,
   OrbitControls,
   CameraControls,
   Environment,
+  Text3D,
 } from '@react-three/drei';
 import { Physics } from '@react-three/rapier';
 import { Perf } from 'r3f-perf';
@@ -29,9 +30,11 @@ import LineConfetti from '../components/3d/Environment/LineConfetti.jsx';
 import BrokenBridge from '../components/3d/Environment/BrokenBridge.jsx';
 import Beachside from '../components/3d/Environment/Beachside.jsx';
 import useAudioStore from '../store/audioStore.js';
+import OXText from '../components/3d/Environment/OXText.jsx';
 
 // Effects
 import QuizResultEffects from '../components/3d/Effects/QuizResultEffects.jsx';
+import ShimmeringText from '../components/3d/Effects/ShimmeringText.jsx';
 
 // Character
 import CharacterController from '../components/3d/Mesh/CharacterController.jsx';
@@ -244,6 +247,24 @@ export default function Game({
     }
   });
 
+  // 분필 material
+  const oMaterial = useMemo(
+    () => ({
+      color: '#00ff00',
+      emissive: '#00ff00',
+      emissiveIntensity: 1.0,
+    }),
+    []
+  );
+  const xMaterial = useMemo(
+    () => ({
+      color: '#ff0000',
+      emissive: '#ff0000',
+      emissiveIntensity: 1.0,
+    }),
+    []
+  );
+
   // console.log(leftIslandBreak, rightIslandBreak, bridgeBreak);
 
   return (
@@ -297,7 +318,7 @@ export default function Game({
       {isStarted && !isQuestionActive && type === 1 && spotlight === '2' && (
         <XEffects />
       )}
-      {type === 1 && <YesNo rotation-y={Math.PI} />}
+      {/* {type === 1 && <YesNo rotation-y={Math.PI} />} */}
 
       <QuizResultEffects
         isStarted={isStarted}
@@ -310,8 +331,8 @@ export default function Game({
       />
       <StaticMaterials scale={2} position-z={-20} rotation-y={Math.PI} />
 
-      <Physics>
-        <Floor width={200} height={200} />
+      <Physics debug>
+        {/* <Floor width={200} height={200} /> */}
         {type === 2 && (
           <Beachside
             rotation-y={-Math.PI / 2}
@@ -322,6 +343,8 @@ export default function Game({
 
         {type === 1 && (
           <>
+            <OXText />
+
             {leftIslandBreak ? (
               <BrokenLand rotation-y={Math.PI} />
             ) : (

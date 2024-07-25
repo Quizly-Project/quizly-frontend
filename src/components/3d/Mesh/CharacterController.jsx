@@ -226,7 +226,7 @@ const CharacterController = ({
         colliders={false}
         canSleep={false}
         enabledRotations={[false, false, false]}
-        gravityScale={isBreak ? 20 : 1}
+        gravityScale={isBreak ? 4 : 1}
       >
         {/* collider 내 position: 모델으로부터의 상대적 위치 */}
         <CapsuleCollider args={[0.2, 2.2]} position={[0, 1.25, 0]} />
