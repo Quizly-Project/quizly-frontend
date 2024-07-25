@@ -28,7 +28,7 @@ const ExplosionConfetti = forwardRef(function ExplosionConfetti(
     amount = 100,
     rate = 3, //be careful with this number. Can freze your app
     radius = 20,
-    areaWidth = 50,
+    areaWidth = 80,
     areaHeight = 20,
     fallingHeight = 10,
     fallingSpeed = 15,
@@ -76,7 +76,7 @@ const ExplosionConfetti = forwardRef(function ExplosionConfetti(
       particle.rotation.y = Math.random() * 360;
       particle.rotation.z = Math.random() * 360;
 
-      const size = Math.random() * 2 + 10;
+      const size = Math.random() * 2 + 30;
       particle.scale.set(size, size, size);
 
       particle.rotateSpeedX = Math.random() * 0.8 - 0.4;

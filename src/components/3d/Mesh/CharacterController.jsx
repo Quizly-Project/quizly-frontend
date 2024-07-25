@@ -14,7 +14,7 @@ import useQuizRoomStore from '../../../store/quizRoomStore';
 import spawnLocations from '../../../utils/spawnLocations';
 import useSocketStore from '../../../store/socketStore';
 
-const MOVEMENT_SPEED = 500;
+const MOVEMENT_SPEED = 800;
 const JUMP_FORCE = 5;
 const MAX_LINVEL = 5;
 const JUMP_LIMIT = 11.8;
