@@ -1,11 +1,14 @@
 .quiz-result {
   max-width: 1200px;
+  max-height: 85vh;
+  overflow-y: auto;
   margin: 0 auto;
   padding: 2rem;
   font-family: 'Arial', sans-serif;
   color: #333;
   background-color: #f8f9fa;
   border-radius: 15px;
+  scrollbar-width: none;
 }
 
 .title,
@@ -172,7 +175,7 @@
 .button-container {
   display: flex;
   justify-content: center;
-  margin-top: 2rem;
+  margin-top: 1rem;
   margin-bottom: 1rem;
 }
 
@@ -180,7 +183,7 @@
   background-color: #2196f3;
   color: white;
   border: none;
-  padding: 10px 20px;
+  padding: 20px 30px;
   border-radius: 25px;
   font-weight: bold;
   font-size: 1em;
