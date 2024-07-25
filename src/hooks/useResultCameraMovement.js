@@ -116,7 +116,7 @@ export const useResultCameraMovement = (
           }
           setBridgeBreak(false);
           stopIsBreak();
-        }, 1000); // 브릿지가 1초 후에 파괴되므로, 총 2초 후에 리셋
+        }, 10000); // 브릿지가 1초 후에 파괴되므로, 총 2초 후에 리셋
 
         // 컴포넌트 언마운트 시 타이머 클리어 (옵션)
         return () => {
@@ -140,12 +140,13 @@ export const useResultCameraMovement = (
         turnOffCamera();
       };
 
+      // 카메라 무빙
       gsap
         .timeline()
         .to(orbitControls.current.target, {
           duration: 2,
           x: answerPosition.x,
-          y: answerPosition.y,
+          y: answerPosition.y + 40,
           z: answerPosition.z - 90,
           onUpdate: () => orbitControls.current.update(),
         })
@@ -154,7 +155,7 @@ export const useResultCameraMovement = (
           {
             duration: 2,
             x: answerPosition.x,
-            y: answerPosition.y,
+            y: answerPosition.y + 40,
             z: answerPosition.z,
             onUpdate: () => orbitControls.current.update(),
           },
@@ -162,13 +163,36 @@ export const useResultCameraMovement = (
         )
         .call(onAnswerPositionReached)
         .to({}, { duration: 0.1 }) // 대기
+        // .to(
+        //   orbitControls.current.target,
+        //   {
+        //     duration: 2,
+        //     x: incorrectAnswerLookAt.x,
+        //     y: incorrectAnswerLookAt.y,
+        //     z: incorrectAnswerLookAt.z,
+        //     onUpdate: () => orbitControls.current.update(),
+        //   },
+        //   `+=${delayBetweenMoves}`
+        // )
+        // .to(
+        //   camera.position,
+        //   {
+        //     duration: 2,
+        //     x: incorrectAnswerPosition.x,
+        //     y: incorrectAnswerPosition.y,
+        //     z: incorrectAnswerPosition.z,
+        //     onUpdate: () => orbitControls.current.update(),
+        //   },
+        //   '<'
+        // )
         .to(
+          // 맵 전체 뷰
           orbitControls.current.target,
           {
             duration: 2,
-            x: incorrectAnswerLookAt.x,
-            y: incorrectAnswerLookAt.y,
-            z: incorrectAnswerLookAt.z,
+            x: 0,
+            y: 50, // 중심점을 보도록 y를 0으로 설정
+            z: 10, // 중심점을 보도록 z를 0으로 설정
             onUpdate: () => orbitControls.current.update(),
           },
           `+=${delayBetweenMoves}`
@@ -177,9 +201,9 @@ export const useResultCameraMovement = (
           camera.position,
           {
             duration: 2,
-            x: incorrectAnswerPosition.x,
-            y: incorrectAnswerPosition.y,
-            z: incorrectAnswerPosition.z,
+            x: 0,
+            y: 60,
+            z: 80, // 카메라를 더 멀리 위치시킴
             onUpdate: () => orbitControls.current.update(),
           },
           '<'
@@ -208,29 +232,53 @@ export const useResultCameraMovement = (
           '<'
         )
         .call(onCorrectPositionReached)
-        .to(
-          orbitControls.current.target,
-          {
-            duration: 2,
-            x: 0,
-            y: CAMERA_TILT,
-            z: -CAMERA_UP,
-            onUpdate: () => orbitControls.current.update(),
-          },
-          `+=${delayBetweenMoves}`
-        )
-        .to(
-          camera.position,
-          {
-            duration: 2,
-            x: 0,
-            y: CAMERA_TILT,
-            z: CAMERA_TILT,
-            onUpdate: () => orbitControls.current.update(),
-          },
-          '<'
-        )
         .call(onOriginalPositionReached);
+      // .to(
+      //   orbitControls.current.target,
+      //   {
+      //     duration: 2,
+      //     x: 0,
+      //     y: CAMERA_TILT,
+      //     z: -CAMERA_UP,
+      //     onUpdate: () => orbitControls.current.update(),
+      //   },
+      //   `+=${delayBetweenMoves}`
+      // )
+      // .to(
+      //   camera.position,
+      //   {
+      //     duration: 2,
+      //     x: 0,
+      //     y: CAMERA_TILT,
+      //     z: CAMERA_TILT,
+      //     onUpdate: () => orbitControls.current.update(),
+      //   },
+      //   '<'
+      // )
+      // .call(onOriginalPositionReached);
+      // .to(
+      //   // 맵 전체 뷰
+      //   orbitControls.current.target,
+      //   {
+      //     duration: 2,
+      //     x: 0,
+      //     y: 50, // 중심점을 보도록 y를 0으로 설정
+      //     z: 10, // 중심점을 보도록 z를 0으로 설정
+      //     onUpdate: () => orbitControls.current.update(),
+      //   },
+      //   `+=${delayBetweenMoves}`
+      // )
+      // .to(
+      //   camera.position,
+      //   {
+      //     duration: 2,
+      //     x: 0,
+      //     y: 70,
+      //     z: 80, // 카메라를 더 멀리 위치시킴
+      //     onUpdate: () => orbitControls.current.update(),
+      //   },
+      //   '<'
+      // );
     }
   }, [
     camera,
@@ -254,13 +302,14 @@ export const useResultCameraMovement = (
     const blackboardPosition = new Vector3(0, 50, -30);
     const delayBetweenMoves = 0.3; // 칠판에서 줌아웃 딜레이 시간
 
+    // 카메라 무빙 시작
     gsap
       .timeline()
       // 칠판 줌인
       .to(orbitControls.current.target, {
         duration: DURATION,
         x: blackboardPosition.x,
-        y: blackboardPosition.y,
+        y: blackboardPosition.y + 40, // 10
         z: blackboardPosition.z - 90,
         onUpdate: () => orbitControls.current.update(),
       })
@@ -269,7 +318,7 @@ export const useResultCameraMovement = (
         {
           duration: DURATION,
           x: blackboardPosition.x,
-          y: blackboardPosition.y,
+          y: blackboardPosition.y + 40,
           z: blackboardPosition.z,
           onUpdate: () => orbitControls.current.update(),
         },
@@ -277,12 +326,13 @@ export const useResultCameraMovement = (
       )
       // 칠판 줌아웃
       .to(
+        // 맵 전체 뷰
         orbitControls.current.target,
         {
-          duration: DURATION * 1.3,
+          duration: 2,
           x: 0,
-          y: CAMERA_TILT,
-          z: -CAMERA_UP,
+          y: 50,
+          z: 10,
           onUpdate: () => orbitControls.current.update(),
         },
         `+=${delayBetweenMoves}`
@@ -290,10 +340,10 @@ export const useResultCameraMovement = (
       .to(
         camera.position,
         {
-          duration: DURATION * 1.3,
+          duration: 2,
           x: 0,
-          y: CAMERA_TILT,
-          z: CAMERA_TILT,
+          y: 60,
+          z: 80,
           onUpdate: () => orbitControls.current.update(),
         },
         '<'

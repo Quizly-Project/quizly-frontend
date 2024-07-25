@@ -248,7 +248,7 @@ export default function Game({
 
   return (
     <>
-      <Perf />
+      {/* <Perf /> */}
       <Environment
         background
         files={'/Environment/puresky.hdr'}
@@ -263,7 +263,7 @@ export default function Game({
           enableZoom={true}
           enablePan={true}
           minDistance={5}
-          maxDistance={100}
+          // maxDistance={100}
         />
       ) : isStarted && !isQuestionActive && isCameraOn ? (
         <OrbitControls
@@ -272,7 +272,7 @@ export default function Game({
           enableZoom={true}
           enablePan={true}
           minDistance={5}
-          maxDistance={80}
+          // maxDistance={80}
         />
       ) : (
         <CameraControls ref={cameraControls} />
@@ -308,7 +308,7 @@ export default function Game({
         clientCoords={clientCoords}
         nickname={nickname}
       />
-      <StaticMaterials position-z={-20} rotation-y={Math.PI} />
+      <StaticMaterials scale={2} position-z={-20} rotation-y={Math.PI} />
 
       <Physics>
         <Floor width={200} height={200} />
