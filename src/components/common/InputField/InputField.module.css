@@ -50,11 +50,12 @@
   position: relative;
   width: 100%;
   max-width: 300px;
+  margin-left: 45px;
 }
 
 /* 검색 아이콘 */
 .purpleSearchContainer::before {
-  content: '🔍';
+  /* content: ''; */
   position: absolute;
   left: 15px;
   top: 40%;
@@ -62,10 +63,10 @@
   color: #717171;
   font-size: 16px;
 }
-
+/* 
 .purpleSearchContainer .purpleSearch {
-  padding-left: 40px;
-}
+  padding-left: px;
+} */
 
 .errorMessage {
   color: #d9534f;

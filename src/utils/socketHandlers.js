@@ -68,6 +68,24 @@ export const createSocketHandlers = (
     });
   };
 
+  const dequantize = (value, min, max, bits = 8) => {
+    const range = max - min;
+    const step = range / (Math.pow(2, bits) - 1);
+    return value * step + min;
+  };
+
+  const dequantizePosition = (position, bits = 8) => {
+    const ranges = {
+      x: { min: -100, max: 100 },
+      y: { min: -50, max: 50 },
+      z: { min: -50, max: 50 },
+    };
+    return {
+      x: dequantize(position.x, ranges.x.min, ranges.x.max, bits),
+      y: dequantize(position.y, ranges.y.min, ranges.y.max, bits),
+      z: dequantize(position.z, ranges.z.min, ranges.z.max, bits),
+    };
+  };
   // 다른 클라이언트 입장
   // data: {nickName, {0, 0, 0}}
   const handleNewClientPosition = data => {
@@ -110,7 +128,7 @@ export const createSocketHandlers = (
       const newCoords = { ...prevCoords };
       Object.entries(data).forEach(([key, value]) => {
         if (value && value.nickName && value.position) {
-          newCoords[value.nickName] = value.position;
+          newCoords[value.nickName] = dequantizePosition(value.position);
         }
       });
       return newCoords;
