@@ -3,92 +3,109 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 100%;
-  max-width: 400px;
-  padding: 12px;
-  text-align: center;
+  width: 90%;
+  max-width: 500px;
+  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  animation: float 3s ease-in-out infinite;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .inputField {
   width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-  color: #333;
-  background-color: #fff;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-  transition: border-color 0.2s ease-in-out;
+  padding: 15px 20px;
+  border: 2px solid #3498db;
+  border-radius: 25px;
+  font-size: 18px;
+  color: #2c3e50;
+  background-color: white;
+  transition: all 0.3s ease-in-out;
+  margin-bottom: 20px;
+  box-sizing: border-box;
 }
 
 .inputField:focus {
-  border-color: #464c91;
   outline: none;
+  border-color: #2980b9;
+  box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
 }
 
-.errorMessage {
-  color: #d9534f;
-  font-size: 14px;
-  margin-top: 4px;
-}
-/* errorMessage가 비어 있을 때 (에러 메시지가 없을 때) */
-.errorMessage:empty {
-  visibility: hidden;
+.inputField::placeholder {
+  color: #bdc3c7;
 }
 
-/* 기존 스타일에 추가 */
-.inputFieldSmall {
-  padding: 4px 8px;
-  font-size: 14px;
-}
-
-.inputFieldMedium {
-  padding: 8px 12px;
-  font-size: 16px;
-}
-
-.inputFieldLarge {
-  padding: 12px 16px;
+.gameButton {
+  padding: 12px 30px;
   font-size: 18px;
+  color: white;
+  background-color: #3498db;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 10px rgba(52, 152, 219, 0.3);
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+  align-self: center;
 }
 
-.textarea {
+.gameButton:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(41, 128, 185, 0.4);
+}
+
+.gameButton:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 5px rgba(41, 128, 185, 0.4);
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(-50%, -50%); }
+  50% { transform: translate(-50%, calc(-50% - 10px)); }
+}
+
+.gameButton::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
   width: 100%;
-  max-width: 800px;
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-  color: #333;
-  background-color: #fff;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-  transition: border-color 0.2s ease-in-out;
-  resize: none; /* 사용자가 크기 조정할 수 없도록 설정 */
+  height: 100%;
+  background: radial-gradient(circle, rgba(255,255,255,.3) 0%, rgba(255,255,255,.1) 100%);
+  transition: all .5s ease;
+  opacity: 0;
 }
 
-.textareaSmall {
-  height: 70px; /* 작은 크기의 높이 설정 */
+.gameButton:hover::before {
+  top: -50%;
+  opacity: 1;
 }
 
-.textareaMedium {
-  height: 100px; /* 중간 크기의 높이 설정 */
+@keyframes bubble {
+  0% { transform: translateY(0) scale(0); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateY(-50px) scale(1); opacity: 0; }
 }
 
-.textareaLarge {
-  height: 200px; /* 큰 크기의 높이 설정 */
+.gameButton::after {
+  content: '●';
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  font-size: 10px;
+  color: rgba(255,255,255,0.5);
+  animation: bubble 2s infinite;
+  opacity: 0;
 }
 
-.round {
-  border-radius: 20px; /* 큰 값으로 설정하여 둥근 모서리로 만듦 */
-}
-
-.center {
-  display: flex;
-  justify-content: center;
-}
-
-.label {
-  white-space: nowrap;
-  width: 100%;
-  max-width: 40px;
+.gameButton:hover::after {
+  opacity: 1;
 }
