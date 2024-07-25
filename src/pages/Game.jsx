@@ -310,8 +310,8 @@ export default function Game({
       />
       <StaticMaterials scale={2} position-z={-20} rotation-y={Math.PI} />
 
-      <Physics>
-        <Floor width={200} height={200} />
+      <Physics debug>
+        {/* <Floor width={200} height={200} /> */}
         {type === 2 && (
           <Beachside
             rotation-y={-Math.PI / 2}
