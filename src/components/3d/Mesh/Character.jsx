@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo } from 'react';
+import React, { useEffect, useRef, useMemo, useState } from 'react';
 import { useGLTF, Html, useAnimations } from '@react-three/drei';
 import Arrow3D from '../Environment/Arrow3D';
 import useQuizRoomStore from '../../../store/quizRoomStore';
@@ -41,6 +41,21 @@ const Character = React.memo(
 
     useGLTF.preload(`/Character/${path}`);
 
+    const [statusDimensions, setStatusDimensions] = useState({
+      width: 200,
+      height: 80,
+    });
+
+    useEffect(() => {
+      if (writeStatus && writeStatus !== 'isWriting') {
+        const newHeight = Math.min(300, Math.max(80, writeStatus.length * 1.5));
+        const newWidth = Math.min(400, Math.max(200, writeStatus.length * 8));
+        setStatusDimensions({ width: newWidth, height: newHeight });
+      } else {
+        setStatusDimensions({ width: 200, height: 80 });
+      }
+    }, [writeStatus]);
+
     useEffect(() => {
       actions[actionType].reset().fadeIn(0.5).play();
 
@@ -57,6 +72,10 @@ const Character = React.memo(
     useEffect(() => {
       console.log('Character rendered', selectedStudent, nickname);
     }, [selectedStudent, nickname]);
+
+    useEffect(() => {
+      console.log(`Character ${nickname} status:`, writeStatus);
+    }, [nickname, writeStatus]);
 
     return (
       <group ref={group} dispose={null} scale={characterScale}>
@@ -80,7 +99,14 @@ const Character = React.memo(
             ) : null}
             {type === 2 && (
               <Html position={[0, 2.5, 0]} center distanceFactor={60}>
-                <div className="status-bubble">
+                <div
+                  className="status-bubble"
+                  style={{
+                    width: `${statusDimensions.width}px`,
+                    height: `${statusDimensions.height}px`,
+                    transform: `translateY(-${statusDimensions.height}px)`,
+                  }}
+                >
                   <div className="status-text">
                     {writeStatus === 'isWriting' ? (
                       <div className="typing-indicator">
