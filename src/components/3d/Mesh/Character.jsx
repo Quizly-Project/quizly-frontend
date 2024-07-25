@@ -5,6 +5,19 @@ import useQuizRoomStore from '../../../store/quizRoomStore';
 import CryingEmojiConfetti from '../Effects/CryingEmojiConfetti';
 import Emoji from '../Effects/Emoji';
 
+
+// 캐릭터별 색상 정의
+const characterColors = {
+  M_Turtle: '#90EE90',    // 연한 초록
+  M_Tuna: '#ADD8E6',      // 연한 파랑
+  M_Seagull: '#F0F8FF',   // 앨리스 블루 (하늘색)
+  M_Sardine: '#F0E68C',   // 카키 (연한 노랑)
+  M_Salmon: '#FFA07A',    // 연한 연어색
+  M_Prawn: '#FFB3BA',     // 연한 분홍
+  M_Octopus: '#DDA0DD',   // 자주색 (연한 보라)
+  M_JellyFish: '#FFB6C1',   // 연한 분홍
+};
+
 const Character = React.memo(
   ({
     path,
@@ -77,6 +90,8 @@ const Character = React.memo(
       console.log(`Character ${nickname} status:`, writeStatus);
     }, [nickname, writeStatus]);
 
+    const boardColor = characterColors[matName] || '#FFFFFF';
+
     return (
       <group ref={group} dispose={null} scale={characterScale}>
         <group name="Scene">
@@ -105,6 +120,7 @@ const Character = React.memo(
                     width: `${statusDimensions.width}px`,
                     height: `${statusDimensions.height}px`,
                     transform: `translateY(-${statusDimensions.height}px)`,
+                    borderColor: boardColor,
                   }}
                 >
                   <div className="status-text">
