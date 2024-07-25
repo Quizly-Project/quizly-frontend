@@ -16,6 +16,14 @@ export default function Blackboard(props) {
     }),
     []
   );
+  const oMaterial = useMemo(
+    () => ({
+      color: '#FF0000',
+      emissive: '#FF0000',
+      emissiveIntensity: 1.0,
+    }),
+    []
+  );
 
   const fullText = props.text.question;
   const [displayedText, setDisplayedText] = useState('');
@@ -133,21 +141,34 @@ export default function Blackboard(props) {
     <group {...props} dispose={null}>
       {isAnswerDisplayed ? (
         type === 1 ? (
-          <Text3D
-            scale={26}
-            font="/fonts/UhBee_Regular.json"
-            position={[-20, -30, 73]}
-          >
-            {OX(displayedAnswer)}
-            <meshPhongMaterial attach="material" {...chalkMaterial} />
-          </Text3D>
+          <>
+            {lines.map((line, index) => (
+              <Text3D
+                key={index}
+                scale={15}
+                font="/fonts/UhBee_Regular.json"
+                position={[-170, 100 - index * 40, -30]}
+              >
+                {line}
+                <meshPhongMaterial attach="material" {...chalkMaterial} />
+              </Text3D>
+            ))}
+            <Text3D
+              scale={50}
+              font="/fonts/UhBee_Regular.json"
+              position={[-20, -20, -30]}
+            >
+              {OX(displayedAnswer)}
+              <meshPhongMaterial attach="material" {...oMaterial} />
+            </Text3D>
+          </>
         ) : (
           answerLines.map((line, index) => (
             <Text3D
               key={index}
-              scale={7}
+              scale={15}
               font="/fonts/UhBee_Regular.json"
-              position={[-80, 20 - index * 22, 73]}
+              position={[-760, 100 - index * 40, -30]}
             >
               {line}
               <meshPhongMaterial attach="material" {...chalkMaterial} />
@@ -158,9 +179,9 @@ export default function Blackboard(props) {
         lines.map((line, index) => (
           <Text3D
             key={index}
-            scale={8}
+            scale={15}
             font="/fonts/UhBee_Regular.json"
-            position={[-90, 20 - index * 22, 73]}
+            position={[-170, 100 - index * 40, -30]}
           >
             {line}
             <meshPhongMaterial attach="material" {...chalkMaterial} />
