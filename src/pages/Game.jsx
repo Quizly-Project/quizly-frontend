@@ -100,7 +100,7 @@ export default function Game({
 
   const CAMERA_UP = 10;
   const CAMERA_TILT = 20;
-  const DURATION = 5;
+  const DURATION = 1.5;
 
   const setTeacherView = useCallback(
     (currentSelectedStudent, currentClientCoords) => {
@@ -114,18 +114,18 @@ export default function Game({
           const studentPos = currentClientCoords[currentSelectedStudent];
           targetPosition = {
             x: studentPos.x,
-            y: studentPos.y + CAMERA_UP,
-            z: studentPos.z,
+            y: studentPos.y + CAMERA_UP + 15,
+            z: studentPos.z + 20,
           };
           cameraPosition = {
             x: studentPos.x,
-            y: studentPos.y + CAMERA_UP,
-            z: studentPos.z + CAMERA_TILT,
+            y: studentPos.y + CAMERA_UP + 20,
+            z: studentPos.z + CAMERA_TILT + 30,
           };
         } else {
           // 선생님 기본 시점
-          targetPosition = { x: 0, y: CAMERA_TILT, z: -CAMERA_UP };
-          cameraPosition = { x: 0, y: CAMERA_TILT, z: CAMERA_TILT };
+          targetPosition = { x: 0, y: CAMERA_TILT + 15, z: -CAMERA_UP + 20 };
+          cameraPosition = { x: 0, y: CAMERA_TILT + 20, z: CAMERA_TILT + 30 };
         }
 
         // GSAP를 사용하여 부드럽게 애니메이션
@@ -215,7 +215,7 @@ export default function Game({
     if (isTeacher) {
       setTeacherView(selectedStudent, clientCoords);
     }
-  }, [isTeacher, setTeacherView]);
+  }, [selectedStudent]);
 
   // 선생님 시점 + 이동 후
   useEffect(() => {
@@ -246,24 +246,6 @@ export default function Game({
       updateStudentCamera();
     }
   });
-
-  // 분필 material
-  const oMaterial = useMemo(
-    () => ({
-      color: '#00ff00',
-      emissive: '#00ff00',
-      emissiveIntensity: 1.0,
-    }),
-    []
-  );
-  const xMaterial = useMemo(
-    () => ({
-      color: '#ff0000',
-      emissive: '#ff0000',
-      emissiveIntensity: 1.0,
-    }),
-    []
-  );
 
   // console.log(leftIslandBreak, rightIslandBreak, bridgeBreak);
 

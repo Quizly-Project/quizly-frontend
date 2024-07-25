@@ -14,8 +14,8 @@ const XEffects = () => {
       <ExplosionConfetti
         position-x={60}
         rate={2}
-        fallingHeight={30}
-        amount={50}
+        fallingHeight={70}
+        amount={40}
         isExploding
       />
       {/* <LineConfetti
