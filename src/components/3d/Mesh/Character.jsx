@@ -1,8 +1,21 @@
-import React, { useEffect, useRef, useMemo } from 'react';
+import React, { useEffect, useRef, useMemo, useState } from 'react';
 import { useGLTF, Html, useAnimations } from '@react-three/drei';
 import Arrow3D from '../Environment/Arrow3D';
 import useQuizRoomStore from '../../../store/quizRoomStore';
 import Emoji from '../Effects/Emoji';
+
+
+// 캐릭터별 색상 정의
+const characterColors = {
+  M_Turtle: '#90EE90', // 연한 초록
+  M_Tuna: '#483D8B', // 연한 파랑
+  M_Seagull: '#FFD700', // 금색 (골드)
+  M_Sardine: '#87CEFA', // 밝은 하늘색
+  M_Salmon: '#FFA07A', // 연한 연어색
+  M_Prawn: '#FFB3BA', // 연한 분홍
+  M_Octopus: '#DDA0DD', // 자주색 (연한 보라)
+  M_JellyFish: '#FFB6C1', // 연한 분홍
+};
 
 const Character = React.memo(
   ({
@@ -40,6 +53,21 @@ const Character = React.memo(
 
     useGLTF.preload(`/Character/${path}`);
 
+    const [statusDimensions, setStatusDimensions] = useState({
+      width: 200,
+      height: 80,
+    });
+
+    useEffect(() => {
+      if (writeStatus && writeStatus !== 'isWriting') {
+        const newHeight = Math.min(300, Math.max(80, writeStatus.length * 1.5));
+        const newWidth = Math.min(400, Math.max(200, writeStatus.length * 8));
+        setStatusDimensions({ width: newWidth, height: newHeight });
+      } else {
+        setStatusDimensions({ width: 200, height: 80 });
+      }
+    }, [writeStatus]);
+
     useEffect(() => {
       actions[actionType].reset().fadeIn(0.5).play();
 
@@ -56,6 +84,12 @@ const Character = React.memo(
     useEffect(() => {
       console.log('Character rendered', selectedStudent, nickname);
     }, [selectedStudent, nickname]);
+
+    useEffect(() => {
+      console.log(`Character ${nickname} status:`, writeStatus);
+    }, [nickname, writeStatus]);
+
+    const boardColor = characterColors[matName] || '#FFFFFF';
 
     return (
       <group ref={group} dispose={null} scale={characterScale}>
@@ -79,7 +113,15 @@ const Character = React.memo(
             ) : null}
             {type === 2 && (
               <Html position={[0, 2.5, 0]} center distanceFactor={60}>
-                <div className="status-bubble">
+                <div
+                  className="status-bubble"
+                  style={{
+                    width: `${statusDimensions.width}px`,
+                    height: `${statusDimensions.height}px`,
+                    transform: `translateY(-${statusDimensions.height}px)`,
+                    borderColor: boardColor,
+                  }}
+                >
                   <div className="status-text">
                     {writeStatus === 'isWriting' ? (
                       <div className="typing-indicator">
