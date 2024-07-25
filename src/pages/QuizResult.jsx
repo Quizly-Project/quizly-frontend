@@ -18,8 +18,19 @@ const QuizResult = () => {
       setIsLoading(true);
       try {
         const response = await getQuizResult(`${code}`);
+
+        response.map(item => {
+          console.log(item);
+          item.selectOption = item.selectOption
+            .slice(1, -1)
+            .split(', ')
+            .map(items => `${items}`);
+          console.log(item.selectOption);
+          console.log('결과 : ', item.result);
+        });
         const parsedResults = response.map(item => ({
           ...item,
+
           selectOption:
             typeof item.selectOption === 'string'
               ? item.selectOption
@@ -75,19 +86,37 @@ const QuizResult = () => {
               <h3>{info.nickName}</h3>
               <p className="total-score">총점: {info.totalScore}</p>
               <div className="result-details">
-                {info.result.map((result, idx) => (
-                  <div key={idx} className="question-result">
-                    <span className="question-number">Q{idx + 1}</span>
-                    <span
-                      className={`user-answer ${result ? 'correct' : 'incorrect'}`}
-                    >
-                      {info.selectOption[idx]}
-                    </span>
-                    <span className="correct-answer">
-                      정답: {result ? info.selectOption[idx] : '?'}
-                    </span>
-                  </div>
-                ))}
+                {info.result.map((result, idx) => {
+                  const myAnswer = info.selectOption[idx];
+                  let printedAnswer = myAnswer;
+                  switch (myAnswer) {
+                    case '1':
+                      printedAnswer = 'O';
+                      break;
+                    case '2':
+                      printedAnswer = 'X';
+                      break;
+                    case '0':
+                      printedAnswer = '미응답';
+                      break;
+                    default:
+                      printedAnswer = myAnswer;
+                      break;
+                  }
+                  return (
+                    <div key={idx} className="question-result">
+                      <span className="question-number">Q{idx + 1}</span>
+                      <span
+                        className={`user-answer ${printedAnswer === 'O' ? 'correct' : 'incorrect'}`}
+                      >
+                        {printedAnswer}
+                      </span>
+                      {/* <span className="correct-answer">
+                      정답: {result ? info.result[idx] : info.result[idx]}
+                    </span> */}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           ))}

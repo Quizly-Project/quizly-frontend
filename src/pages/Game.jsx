@@ -269,7 +269,7 @@ export default function Game({
 
   return (
     <>
-      {/* <Perf /> */}
+      <Perf debug />
       <Environment
         background
         files={'/Environment/puresky.hdr'}
