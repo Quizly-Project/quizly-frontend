@@ -63,9 +63,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 1; /* 3줄로 제한 */
+  -webkit-line-clamp: 1; 
   -webkit-box-orient: vertical;
-  max-height: 4.5em; /* 대략 3줄의 높이, 필요에 따라 조정 가능 */
+  max-height: 4.5em; 
 }
 
 .buttonWrapper {
