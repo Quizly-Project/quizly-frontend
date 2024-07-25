@@ -1,10 +1,8 @@
 .rankingContainer {
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
   height: 400px;
-  width: 100%;
-  padding: 20px;
   position: fixed;
   top: 40%;
   left: 50%;

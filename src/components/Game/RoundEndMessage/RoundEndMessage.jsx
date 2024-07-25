@@ -29,7 +29,7 @@ const RoundEndMessage = ({ message, onComplete, show }) => {
       const timer = setTimeout(() => {
         setVisible(false);
         turnOnCamera();
-      }, 2000);
+      }, 1000);
 
       return () => {
         clearTimeout(timer);
