@@ -1,19 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import VideoAudio from '../LiveKit/VideoAudio.tsx';
 import LiveKit from '../LiveKit/LiveKit.tsx';
 import styles from './FinalTopThreeParticipants.module.css';
 import RemoteVideoDisplay from '../RemoteVideoDisplay/RemoteVideoDisplay.tsx';
 import useAudioStore from '../../../store/audioStore.js';
 
-const FinalTopThreeParticipants = ({
-  quizResult,
-  isStarted,
-  participants,
-  hideTopThree,
-}) => {
+const FinalTopThreeParticipants = React.memo(({ quizResult, participants }) => {
   const { currRank } = quizResult;
-  const [isVisible, setIsVisible] = useState(true);
-  const [isExiting, setIsExiting] = useState(false);
   const [revealedCards, setRevealedCards] = useState([]);
   const revealTimersRef = useRef([]);
 
@@ -34,16 +27,16 @@ const FinalTopThreeParticipants = ({
   const rankOrder = [1, 0, 2];
   const revealOrder = [2, 1, 0];
 
-  const startRevealProcess = () => {
+  const startRevealProcess = useCallback(() => {
     console.log('startRevealProcess');
-    const revealInterval = 2000;
+    const revealInterval = 1800;
 
     revealOrder.forEach((order, index) => {
       const timer = setTimeout(
         () => {
           setRevealedCards(prev => {
             const newRevealedCards = [...prev, order];
-            if (newRevealedCards.length === 3) {
+            if (order === 0) {
               stopDrumroll();
               playFirstPlace();
             }
@@ -54,7 +47,7 @@ const FinalTopThreeParticipants = ({
       );
       revealTimersRef.current.push(timer);
     });
-  };
+  }, [playFirstPlace, stopDrumroll]);
 
   useEffect(() => {
     initializeDrumroll();
@@ -71,17 +64,15 @@ const FinalTopThreeParticipants = ({
     initializeDrumroll,
     initializeFirstPlace,
     playDrumroll,
+    startRevealProcess,
     stopDrumroll,
     stopFirstPlace,
   ]);
 
   return (
-    <div
-      className={`${styles.rankingContainer} ${isExiting ? styles.exiting : ''} ${!isVisible ? styles.hidden : ''}`}
-    >
+    <div className={styles.rankingContainer}>
       {rankOrder.map((order, index) => {
         const participant = sortedParticipants[order];
-
         if (!participant) return null;
 
         const participantData = participants.find(
@@ -94,7 +85,7 @@ const FinalTopThreeParticipants = ({
         return (
           <div
             key={participant.nickName}
-            className={`${styles.rankCard} ${styles[`rank${order + 1}`]} ${isRevealed ? styles.reveal : styles.drumroll}`}
+            className={`${styles.rankCard} ${styles[`rank${order + 1}`]} ${isRevealed ? styles.reveal : styles.hidden}`}
             style={{
               order: index,
             }}
@@ -110,6 +101,6 @@ const FinalTopThreeParticipants = ({
       })}
     </div>
   );
-};
+});
 
 export default FinalTopThreeParticipants;

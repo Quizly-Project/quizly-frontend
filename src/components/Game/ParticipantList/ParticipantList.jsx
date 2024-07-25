@@ -24,12 +24,13 @@ const ParticipantList = ({
       <ul className={styles.list}>
         {participants.map(participant => {
           const iconClass = participant ? styles[participant.icon] : '';
-
           return (
             <li
               key={participant.nickName}
               className={`${styles.participant} ${participant.nickName === selectedStudent ? styles.selected : ''} ${participant.isTeacher ? styles.teacher : ''} ${currentSpeakers.includes(participant.nickName) ? styles.speaking : ''}`}
-              onClick={() => isTeacher && onSelectStudent(participant.nickName)}
+              onClick={() => {
+                return isTeacher && onSelectStudent(participant.nickName);
+              }}
             >
               <div className={styles.participantInfo}>
                 <div className={`${styles.participantIcon} ${iconClass}`}></div>

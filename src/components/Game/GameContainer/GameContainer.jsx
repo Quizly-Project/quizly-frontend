@@ -132,6 +132,8 @@ const GameContainer = () => {
         type: type * 1,
         isStarted: false,
         isFinished: false,
+        isQuestionActive: false,
+        showTopThree: false,
       });
     } else {
       setQuizRoom({
@@ -140,6 +142,8 @@ const GameContainer = () => {
         type: type * 1,
         isStarted: false,
         isFinished: false,
+        isQuestionActive: false,
+        showTopThree: false,
       });
     }
   }, [isTeacher, code, type, nickName, setQuizRoom]);

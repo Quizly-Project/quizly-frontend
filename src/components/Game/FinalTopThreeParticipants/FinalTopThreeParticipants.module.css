@@ -1,20 +1,17 @@
 .rankingContainer {
-  display: flex;
+  display: inline-flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
   height: 400px;
-  padding: 20px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  position: fixed;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   perspective: 1000px;
   transform-style: preserve-3d;
-  transition:
-    transform 0.5s ease,
-    opacity 0.5s ease;
-  transform: translateY(0);
+  transition: opacity 0.5s ease;
   opacity: 1;
+  z-index: 1000;
 }
 
 .rankingContainer.exiting {
@@ -51,71 +48,178 @@
 }
 
 .rankCard {
-  width: 180px;
-  padding: 20px;
+  width: 220px;
+  height: 100%;
+  padding: 20px 20px 30px;
   margin: 0 10px;
   border-radius: 15px;
   text-align: center;
   transition: all 0.5s ease;
   transform-style: preserve-3d;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  background: linear-gradient(45deg, #464c91, #465caa);
-  opacity: 0;
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  opacity: 1;
   animation:
     dropIn 1s ease-out forwards,
     float 3s ease-in-out infinite 1s;
-}
-
-.rank1 {
-  height: 330px;
-  /* background: linear-gradient(45deg, #ffa500, #ffd700); */
-  z-index: 3;
-  transform: translateZ(40px);
-  animation-delay: 0s, 1s;
-}
-
-.rank2 {
-  height: 300px;
-  /* background: linear-gradient(45deg, #a9a9a9, #c0c0c0); */
-  z-index: 2;
-  transform: translateZ(20px);
-  animation-delay: 0.2s, 1.2s;
-}
-
-.rank3 {
-  height: 270px;
-  /* background: linear-gradient(45deg, #cd7f32, #b8860b); */
-  z-index: 1;
-  transform: translateZ(0);
-  animation-delay: 0.4s, 1.4s;
+  position: relative;
+  overflow: hidden;
 }
 
 .rankCard:hover {
   animation-play-state: paused;
-  transform: rotateY(0deg) rotateX(0deg) scale(1.05) translateY(-10px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+  transform: translateY(-10px) scale(1.05);
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.2);
 }
+
+.rank1 {
+  height: 330px;
+  z-index: 3;
+  transform: translateZ(40px);
+  animation-delay: 0s, 1s;
+  background: linear-gradient(45deg, #ffe066, #ffd700);
+}
+
+.rank2 {
+  height: 300px;
+  z-index: 2;
+  transform: translateZ(20px);
+  animation-delay: 0.2s, 1.2s;
+  background: linear-gradient(45deg, #e0e0e0, #c0c0c0);
+}
+
+.rank3 {
+  height: 270px;
+  z-index: 1;
+  transform: translateZ(0);
+  animation-delay: 0.4s, 1.4s;
+  background: linear-gradient(45deg, #deb887, #cd7f32);
+}
+
+.rank1 .nickname,
+.rank1 .score {
+  color: #000;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.rank2 .nickname,
+.rank2 .score {
+  color: #333;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.rank3 .nickname,
+.rank3 .score {
+  color: #000;
+  text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.rankCard:hover .nickname {
+  color: #fff;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+.medal {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  width: 60px;
+  height: 60px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: 2;
+  filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.3));
+  transition: all 0.3s ease;
+}
+
+.rankCard:hover .medal {
+  filter: drop-shadow(0 8px 8px rgba(0, 0, 0, 0.4));
+  transform: scale(1.1) rotate(5deg);
+}
+
 .medalIcon {
   position: relative;
   width: 180px;
   height: 180px;
   margin: 0 auto;
+  transition: transform 0.3s ease;
 }
 
-.medal {
-  position: absolute;
-  top: 0;
-  right: calc(50% - 30px);
-  width: 60px;
-  height: 55px;
-  background-size: contain;
-  z-index: 2;
+.medalIcon:hover {
+  transform: translateY(-5px);
 }
 
 .characterIcon {
   width: 100%;
   height: 100%;
   background-size: contain;
+  border-radius: 50%;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.rankCard:hover .characterIcon {
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+  transform: scale(1.05);
+}
+
+.nickname {
+  font-size: 24px;
+  font-weight: bold;
+  color: #ffffff;
+  margin: 20px 0 10px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+  transform: translateZ(10px);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.rankCard:hover .nickname {
+  color: #ffeb3b;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+.score {
+  font-size: 22px;
+  font-weight: bold;
+  color: #ffffff;
+  margin-top: 10px;
+  transform: translateZ(5px);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.score::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 30px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  z-index: -1;
+}
+
+.hidden {
+  display: none;
+}
+
+.reveal {
+  display: block;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .gold {
@@ -130,18 +234,55 @@
   background-image: url('/src/assets/Bronze.svg');
 }
 
-.nickname {
-  font-size: 24px;
-  color: white;
-  margin: 10px 0;
-  transform: translateZ(10px);
+.bg-Seagull,
+.bg-Sardine,
+.bg-Turtle,
+.bg-Tuna,
+.bg-Octopus,
+.bg-Salmon,
+.bg-Jellyfish,
+.bg-Prawn {
+  width: 180px;
+  height: 180px;
+  background-image: url('/src/assets/icon_sprites.png');
+  transform: translateZ(30px);
+  transition: transform 0.3s ease;
 }
 
-.score {
-  font-size: 22px;
-  font-weight: bold;
-  color: white;
-  transform: translateZ(5px);
+.rankCard:hover .bg-Seagull,
+.rankCard:hover .bg-Sardine,
+.rankCard:hover .bg-Turtle,
+.rankCard:hover .bg-Tuna,
+.rankCard:hover .bg-Octopus,
+.rankCard:hover .bg-Salmon,
+.rankCard:hover .bg-Jellyfish,
+.rankCard:hover .bg-Prawn {
+  transform: translateZ(40px) scale(1.1);
+}
+
+.bg-Seagull {
+  background-position: -10px -10px;
+}
+.bg-Sardine {
+  background-position: -210px -10px;
+}
+.bg-Turtle {
+  background-position: -10px -210px;
+}
+.bg-Tuna {
+  background-position: -210px -210px;
+}
+.bg-Octopus {
+  background-position: -410px -10px;
+}
+.bg-Salmon {
+  background-position: -410px -210px;
+}
+.bg-Jellyfish {
+  background-position: -10px -410px;
+}
+.bg-Prawn {
+  background-position: -210px -410px;
 }
 
 @keyframes dropOut {
@@ -171,25 +312,62 @@
   animation-delay: 0.2s;
 }
 
-@keyframes drumroll {
-  0%,
-  100% {
-    transform: translateY(0) rotateY(-5deg) rotateX(5deg);
+@media (max-width: 768px) {
+  .rankingContainer {
+    flex-direction: column;
+    height: auto;
   }
-  25% {
-    transform: translateY(-5px) rotateY(-5deg) rotateX(5deg);
-  }
-  75% {
-    transform: translateY(5px) rotateY(-5deg) rotateX(5deg);
+
+  .rankCard {
+    width: 80%;
+    margin: 10px 0;
   }
 }
 
-.rankCard.drumroll {
-  animation: drumroll 0.1s ease-in-out infinite;
+.bg-Seagull {
+  width: 180px;
+  height: 180px;
+  background: url('/src/assets/icon_sprites.png') -10px -10px;
 }
 
-.rankCard.reveal {
-  animation:
-    dropIn 1s ease-out forwards,
-    float 3s ease-in-out infinite 1s;
+.bg-Sardine {
+  width: 180px;
+  height: 180px;
+  background: url('/src/assets/icon_sprites.png') -210px -10px;
+}
+
+.bg-Turtle {
+  width: 180px;
+  height: 180px;
+  background: url('/src/assets/icon_sprites.png') -10px -210px;
+}
+
+.bg-Tuna {
+  width: 180px;
+  height: 180px;
+  background: url('/src/assets/icon_sprites.png') -210px -210px;
+}
+
+.bg-Octopus {
+  width: 180px;
+  height: 180px;
+  background: url('/src/assets/icon_sprites.png') -410px -10px;
+}
+
+.bg-Salmon {
+  width: 180px;
+  height: 180px;
+  background: url('/src/assets/icon_sprites.png') -410px -210px;
+}
+
+.bg-Jellyfish {
+  width: 180px;
+  height: 180px;
+  background: url('/src/assets/icon_sprites.png') -10px -410px;
+}
+
+.bg-Prawn {
+  width: 180px;
+  height: 180px;
+  background: url('/src/assets/icon_sprites.png') -210px -410px;
 }

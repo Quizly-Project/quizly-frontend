@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useMemo } from 'react';
 import { useGLTF, Html, useAnimations } from '@react-three/drei';
 import Arrow3D from '../Environment/Arrow3D';
 import useQuizRoomStore from '../../../store/quizRoomStore';
-import CryingEmojiConfetti from '../Effects/CryingEmojiConfetti';
 import Emoji from '../Effects/Emoji';
 
 const Character = React.memo(
@@ -95,20 +94,15 @@ const Character = React.memo(
                 </div>
               </Html>
             )}
-            {isStarted &&
+            {/* {isStarted &&
               !isQuestionActive &&
               !isResultDisplayed &&
               !isCorrectAnswerer &&
               type === 2 &&
               writeStatus !== 'isWriting' && (
-                <Emoji position={[-1, 1, 0]} scale={1.5} />
-              )}
-            <Html
-              position={[0, -0.5, 0]}
-              center
-              distanceFactor={10}
-              scale={400}
-            >
+                <Emoji position={[-1.5, 5, 0]} scale={1.5} />
+              )} */}
+            <Html position={[0, -1.2, 0]} center distanceFactor={10} scale={1}>
               <div className="name-tag">
                 {getRankEmoji && (
                   <span className="crown-icon">{getRankEmoji}</span>

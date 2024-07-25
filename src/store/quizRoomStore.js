@@ -163,19 +163,20 @@ const useQuizRoomStore = create((set, get) => ({
     })),
 
   resetAllParticipantsWriteAnswer: () =>
-    set(state => ({
-      quizRoom: {
-        ...state.quizRoom,
-        participants: Object.fromEntries(
-          Object.entries(state.quizRoom.participants).map(
-            ([nickName, participant]) => [
+    set(state => {
+      const participants = state.quizRoom?.participants || {};
+      return {
+        quizRoom: {
+          ...state.quizRoom,
+          participants: Object.fromEntries(
+            Object.entries(participants).map(([nickName, participant]) => [
               nickName,
               { ...participant, userAnswer: '' },
-            ]
-          )
-        ),
-      },
-    })),
+            ])
+          ),
+        },
+      };
+    }),
 
   displayTopThree: () =>
     set(state => ({

@@ -106,6 +106,7 @@ export default function Blackboard(props) {
 
   const lines = splitText(displayedText, maxLineLength);
   const answerLines = splitText(displayedAnswer, maxLineLength);
+  // console.log(answerLines);
 
   const OX = text => {
     if (text === '1') return 'O';
@@ -174,17 +175,19 @@ export default function Blackboard(props) {
             </Text3D>
           </>
         ) : (
-          answerLines.map((line, index) => (
-            <Text3D
-              key={index}
-              scale={15}
-              font="/fonts/UhBee_Regular.json"
-              position={[-760, 100 - index * 40, -30]}
-            >
-              {line}
-              <meshPhongMaterial attach="material" {...chalkMaterial} />
-            </Text3D>
-          ))
+          answerLines.map((line, index) => {
+            return (
+              <Text3D
+                key={index}
+                scale={15}
+                font="/fonts/UhBee_Regular.json"
+                position={[-170, 100 - index * 40, -30]}
+              >
+                {line}
+                <meshPhongMaterial attach="material" {...chalkMaterial} />
+              </Text3D>
+            );
+          })
         )
       ) : (
         lines.map((line, index) => (
