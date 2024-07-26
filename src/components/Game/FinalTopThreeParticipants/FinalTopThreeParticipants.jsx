@@ -4,6 +4,7 @@ import LiveKit from '../LiveKit/LiveKit.tsx';
 import styles from './FinalTopThreeParticipants.module.css';
 import RemoteVideoDisplay from '../RemoteVideoDisplay/RemoteVideoDisplay.tsx';
 import useAudioStore from '../../../store/audioStore.js';
+import MyCameraOtherVoice from '../MyCameraOtherVoice/MyCameraOtherVoice.tsx';
 
 const FinalTopThreeParticipants = React.memo(({ quizResult, participants }) => {
   const { currRank } = quizResult;
