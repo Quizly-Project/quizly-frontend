@@ -20,13 +20,13 @@ const QuizResult = () => {
         const response = await getQuizResult(`${code}`);
 
         response.map(item => {
-          console.log(item);
+          // console.log(item);
           item.selectOption = item.selectOption
             .slice(1, -1)
             .split(', ')
             .map(items => `${items}`);
-          console.log(item.selectOption);
-          console.log('결과 : ', item.result);
+          // console.log(item.selectOption);
+          // console.log('결과 : ', item.result);
         });
         const parsedResults = response.map(item => ({
           ...item,

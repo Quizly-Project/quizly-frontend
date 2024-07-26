@@ -20,7 +20,7 @@ const useSocketStore = create((set, get) => ({
       });
 
       socket.on('connect', () => {
-        console.log('Socket connected');
+        // console.log('Socket connected');
         set({ isConnected: true });
 
         if (storedData) {
@@ -37,7 +37,7 @@ const useSocketStore = create((set, get) => ({
       });
 
       socket.on('disconnect', () => {
-        console.log('Socket disconnected');
+        // console.log('Socket disconnected');
         set({
           socket: null,
           isConnected: false,

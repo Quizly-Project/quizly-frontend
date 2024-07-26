@@ -183,7 +183,7 @@ export default function Game({
   // 종료 시 결과 카메라 무빙
   useEffect(() => {
     if (isStarted && !isQuestionActive && isCameraOn) {
-      console.log('결과', isAnswerDisplayed);
+      // console.log('결과', isAnswerDisplayed);
       setResultView();
     }
   }, [isStarted, isQuestionActive, isCameraOn, setResultView]);

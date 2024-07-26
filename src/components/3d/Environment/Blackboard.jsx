@@ -50,7 +50,7 @@ export default function Blackboard(props) {
   } = useAudioStore();
 
   useEffect(() => {
-    console.log('props.text', props.text);
+    // console.log('props.text', props.text);
   }, [props.text]);
 
   useEffect(() => {

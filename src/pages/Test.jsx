@@ -12,7 +12,7 @@ const Test = () => {
     if (socket) {
       socket.emit('createRoom', { quizGroup: 2 });
       socket.on('roomCode', code => {
-        console.log('Room code received:', code);
+        // console.log('Room code received:', code);
         setCreatedRoomCode(code);
       });
     }

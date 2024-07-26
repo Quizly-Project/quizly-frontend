@@ -39,7 +39,7 @@ export const createSocketHandlers = (
   // 기존 접속중인 클라이언트의 위치 저장
   // data: [식별자: {nickName, {x, y, z}}, modelMapping, texture]
   const handleEveryonePosition = data => {
-    console.log('everyone pos', data);
+    // console.log('everyone pos', data);
     const { userlocations, clientInfo, quizCnt } = data;
     setParticipants(clientInfo);
     setQuizCnt(quizCnt);
@@ -89,7 +89,7 @@ export const createSocketHandlers = (
   // 다른 클라이언트 입장
   // data: {nickName, {0, 0, 0}}
   const handleNewClientPosition = data => {
-    console.log('new client pos', data);
+    // console.log('new client pos', data);
     const { clientInfo, userlocations } = data;
     setParticipants(clientInfo);
     addParticipant({ nickName: userlocations.nickName, score: 0 });
@@ -138,7 +138,7 @@ export const createSocketHandlers = (
   // 다른 클라이언트가 연결 해제
   // data: {nickName}
   const handleSomeoneExit = data => {
-    console.log('someone exit', data);
+    // console.log('someone exit', data);
     const { nickName, clientInfo } = data;
     setParticipants(clientInfo);
     removeParticipant(nickName);
@@ -150,11 +150,11 @@ export const createSocketHandlers = (
   };
 
   const handleQuiz = data => {
-    console.log('퀴즈 시작', data);
+    // console.log('퀴즈 시작', data);
     const { currentQuizIndex, quiz } = data;
     hideAnswer();
     setQuiz(quiz);
-    console.log('퀴즈quiz', quiz);
+    // console.log('퀴즈quiz', quiz);
     hideTopThree();
     startQuiz();
     activateQuestion();
@@ -168,12 +168,12 @@ export const createSocketHandlers = (
   };
 
   const handleTimerStart = duration => {
-    console.log('타이머 시작', duration);
+    // console.log('타이머 시작', duration);
     setQuizDuration(duration);
   };
 
   const handleTimeOut = data => {
-    console.log('타이머 종료', data);
+    // console.log('타이머 종료', data);
     const options = ['무응답', 'O', 'X', '4'];
 
     deactivateQuestion();
@@ -200,7 +200,7 @@ export const createSocketHandlers = (
     }
 
     if (data.quizEndVal) endQuiz(); // 스토어에 정의된 endQuiz 액션 사용
-    console.log('quizEndVal', data.quizEndVal);
+    // console.log('quizEndVal', data.quizEndVal);
   };
 
   const handleQuizEnd = data => {
@@ -227,7 +227,7 @@ export const createSocketHandlers = (
   };
 
   const handleUpdateWriteStatus = data => {
-    console.log('write status', data);
+    // console.log('write status', data);
 
     // 객체의 첫 번째 (유일한) 키-값 쌍을 추출
     const [nickName, statusObj] = Object.entries(data)[0];

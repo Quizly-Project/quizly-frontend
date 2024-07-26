@@ -51,10 +51,10 @@ const ShortAnswerForm = () => {
         type: '2', // Assuming '2' is the type for short answer questions
       })),
     };
-    console.log(formattedData);
+    // console.log(formattedData);
     try {
       const result = await createQuiz(formattedData);
-      console.log(result);
+      // console.log(result);
       navigate('/dashboard'); // Navigate to quiz detail page
     } catch (err) {
       setError(

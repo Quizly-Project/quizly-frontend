@@ -45,7 +45,7 @@ const MultipleChoiceForm = () => {
 
   const onSubmit = async data => {
     setIsSubmitting(true);
-    console.log('퀴즈생성', data);
+    // console.log('퀴즈생성', data);
     const formattedData = {
       ...data,
       creator: user,
@@ -67,11 +67,11 @@ const MultipleChoiceForm = () => {
       }),
     };
 
-    console.log(formattedData);
+    // console.log(formattedData);
 
     try {
       const result = await createQuiz(formattedData);
-      console.log(result);
+      // console.log(result);
       navigate(`/dashboard`); // 퀴즈 상세 페이지로 이동
     } catch (err) {
       setError(
