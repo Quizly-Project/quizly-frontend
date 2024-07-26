@@ -4,7 +4,6 @@ import Arrow3D from '../Environment/Arrow3D';
 import useQuizRoomStore from '../../../store/quizRoomStore';
 import Emoji from '../Effects/Emoji';
 
-
 // 캐릭터별 색상 정의
 const characterColors = {
   M_Turtle: '#90EE90', // 연한 초록
@@ -91,6 +90,14 @@ const Character = React.memo(
 
     const boardColor = characterColors[matName] || '#FFFFFF';
 
+    const getBadgeContent = () => {
+      if (isCorrectAnswerer) return '🏆';
+      if (rank[0]?.nickName === nickname) return '👑';
+      if (rank[1]?.nickName === nickname) return '🥈';
+      if (rank[2]?.nickName === nickname) return '🥉';
+      return '🌟'; // 기본 뱃지
+    };
+
     return (
       <group ref={group} dispose={null} scale={characterScale}>
         <group name="Scene">
@@ -122,6 +129,39 @@ const Character = React.memo(
                     borderColor: boardColor,
                   }}
                 >
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      border: '10px solid #ddd',
+                      borderRadius: '12px',
+                      pointerEvents: 'none',
+                    }}
+                  />
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '-15px',
+                      right: '-15px',
+                      backgroundColor: boardColor,
+                      color: 'white',
+                      borderRadius: '50%',
+                      width: '60px', // 크기 증가
+                      height: '60px', // 크기 증가
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '36px', // 폰트 크기 증가
+                      boxShadow: '0 3px 6px rgba(0,0,0,0.2)',
+                      zIndex: 10,
+                      border: '3px solid white', // 테두리 추가
+                    }}
+                  >
+                    {getBadgeContent()}
+                  </div>
                   <div className="status-text">
                     {writeStatus === 'isWriting' ? (
                       <div className="typing-indicator">
