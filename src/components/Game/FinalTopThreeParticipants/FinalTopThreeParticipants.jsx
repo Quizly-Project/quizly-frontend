@@ -29,7 +29,7 @@ const FinalTopThreeParticipants = React.memo(({ quizResult, participants }) => {
   const revealOrder = [2, 1, 0];
 
   const startRevealProcess = useCallback(() => {
-    console.log('startRevealProcess');
+    // console.log('startRevealProcess');
     const revealInterval = 1800;
 
     revealOrder.forEach((order, index) => {

@@ -17,7 +17,7 @@ const MyQuiz = () => {
     const fetchResults = async () => {
       try {
         const response = await getMyQuiz(`${user}`);
-        console.log(response);
+        // console.log(response);
         setMyQuizzes(response || []);
       } catch (err) {
         console.error('Failed to fetch my quiz', err);
@@ -37,13 +37,19 @@ const MyQuiz = () => {
 
   const handleCreateRoom = () => {
     // 퀴즈 방 만들기 로직
-    console.log('퀴즈 방 만들기');
+    // console.log('퀴즈 방 만들기');
   };
 
   return (
     <>
       <div className={styles.myQuizContainer}>
-        <Text type="title" size="xlarge" weight="bold" color="black" align="center">
+        <Text
+          type="title"
+          size="xlarge"
+          weight="bold"
+          color="black"
+          align="center"
+        >
           내 퀴즈
         </Text>
         <SearchBar />

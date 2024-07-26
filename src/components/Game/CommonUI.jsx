@@ -41,13 +41,13 @@ const CommonUI = ({
   };
 
   useEffect(() => {
-    console.log('isStarted', isStarted);
-    console.log('isQuestionActive', isQuestionActive);
-    console.log('isFinished', isFinished);
-    console.log('quizIndex', quizIndex);
-    console.log('quizCnt', quizCnt);
-    console.log('quizResult', quizResult);
-    console.log('showTopThree', showTopThree);
+    // console.log('isStarted', isStarted);
+    // console.log('isQuestionActive', isQuestionActive);
+    // console.log('isFinished', isFinished);
+    // console.log('quizIndex', quizIndex);
+    // console.log('quizCnt', quizCnt);
+    // console.log('quizResult', quizResult);
+    // console.log('showTopThree', showTopThree);
     if ((isStarted || isFinished) && !isQuestionActive && isEndEventVisible)
       setShowCompletion(true);
   }, [isStarted, isFinished, isQuestionActive, isEndEventVisible]);

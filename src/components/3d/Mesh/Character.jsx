@@ -84,11 +84,11 @@ const Character = React.memo(
     const characterScale = isCorrectAnswerer ? 7 : 4;
 
     useEffect(() => {
-      console.log('Character rendered', selectedStudent, nickname);
+      // console.log('Character rendered', selectedStudent, nickname);
     }, [selectedStudent, nickname]);
 
     useEffect(() => {
-      console.log(`Character ${nickname} status:`, writeStatus);
+      // console.log(`Character ${nickname} status:`, writeStatus);
     }, [nickname, writeStatus]);
 
     const boardColor = characterColors[matName] || '#FFFFFF';

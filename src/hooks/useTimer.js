@@ -11,7 +11,7 @@ export const useTimer = () => {
   const { updateIsTimerStarted } = useQuizRoomStore();
 
   const startTimer = useCallback(duration => {
-    console.log('Timer started with duration:', duration);
+    // console.log('Timer started with duration:', duration);
     percentRef.current = 100;
     durationRef.current = duration;
     startTimeRef.current = Date.now();
@@ -33,7 +33,7 @@ export const useTimer = () => {
       });
 
       if (percentRef.current <= 0) {
-        console.log('Timer reached 0');
+        // console.log('Timer reached 0');
         clearInterval(intervalIdRef.current);
         setTimer({ percent: 0, remainingTime: 0 });
         updateIsTimerStarted(false);
@@ -50,7 +50,7 @@ export const useTimer = () => {
   }, []);
 
   const stopTimer = useCallback(() => {
-    console.log('Timer stopped');
+    // console.log('Timer stopped');
     if (intervalIdRef.current) {
       clearInterval(intervalIdRef.current);
     }

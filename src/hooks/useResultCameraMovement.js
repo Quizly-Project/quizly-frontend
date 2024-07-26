@@ -22,12 +22,10 @@ export const useResultCameraMovement = (
   turnOffCamera
 ) => {
   const setResultView = useCallback(() => {
-    console.log(orbitControls.current);
+    // console.log(orbitControls.current);
     if (!orbitControls.current) {
-      console.log('리턴해버렸어...');
       return;
     }
-    console.log('ㅎㅇ 여기 찍혀야돼');
 
     const answerPosition = new Vector3(0, 50, -30);
     const incorrectLeftIsland = new Vector3(-130, 40, 0);
@@ -40,7 +38,7 @@ export const useResultCameraMovement = (
     const correctRightIslandLooAt = new Vector3(60, CAMERA_TILT, CAMERA_UP);
 
     const onAnswerPositionReached = () => {
-      console.log('정답 위치에 도달했습니다.');
+      // console.log('정답 위치에 도달했습니다.');
       displayAnswer();
     };
 
@@ -156,7 +154,7 @@ export const useResultCameraMovement = (
       }
 
       const onIncorrectPositionReached = () => {
-        console.log('오답 위치에 도달했습니다.');
+        // console.log('오답 위치에 도달했습니다.');
 
         // 섬 파괴 효과 시작
         if (spotlight === '1') {
@@ -192,12 +190,12 @@ export const useResultCameraMovement = (
       };
 
       const onCorrectPositionReached = () => {
-        console.log('정답자 위치에 도달했습니다.');
+        // console.log('정답자 위치에 도달했습니다.');
         playTwinkleSound();
       };
 
       const onOriginalPositionReached = () => {
-        console.log('원래 위치로 돌아왔습니다.');
+        // console.log('원래 위치로 돌아왔습니다.');
         displayTopThree();
         setBridgeBreak(false);
         setLeftIslandBreak(false);

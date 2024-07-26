@@ -6,7 +6,7 @@ const authAPI = {
   login: async (username, password) => {
     try {
       const response = await api.post('/login', { username, password });
-      console.log(response);
+      // console.log(response);
       const nickname = response.headers.get('username');
       const token = response.headers.get('access');
       return { ...response.data, nickname, token };
@@ -45,13 +45,13 @@ const useAuthStore = create(
       login: async (username, password) => {
         try {
           const data = await authAPI.login(username, password);
-          console.log(data);
+          // console.log(data);
           set({
             user: data.nickname,
             isAuthenticated: true,
             token: data.token,
           });
-          console.log(data.nickname);
+          // console.log(data.nickname);
           api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
           return true;
         } catch (error) {
