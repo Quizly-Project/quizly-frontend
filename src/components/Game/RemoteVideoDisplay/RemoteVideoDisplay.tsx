@@ -1,26 +1,30 @@
-// RemoteVideoDisplay.tsx
 import React from 'react';
 import VideoComponent from '../LiveKit/components/VideoComponent';
-import AudioComponent from '../LiveKit/components/AudioComponent'; // Update import statement
 import { useLiveKitStore } from '../../../store/liveKitStore';
-import useQuizRoomStore from '../../../store/quizRoomStore';
 
-const RemoteVideoDisplay: React.FC<{ participantId: string }> = ({
+interface RemoteVideoDisplayProps {
+  participantId: string;
+}
+
+const RemoteVideoDisplay: React.FC<RemoteVideoDisplayProps> = ({
   participantId,
 }) => {
-  const remoteVideoTrack = useLiveKitStore(state =>
-    state.remoteVideoTracks.get(participantId)
-  );
+  const localTrack = useLiveKitStore(state => state.localTrack);
+  const remoteVideoTracks = useLiveKitStore(state => state.remoteVideoTracks);
+  const room = useLiveKitStore(state => state.room);
 
-  // console.log('remoteVideoTrack', participantId, remoteVideoTrack);
+  const isLocal = room?.localParticipant.identity === participantId;
+  const videoTrack = isLocal
+    ? localTrack
+    : remoteVideoTracks.get(participantId);
 
-  if (!remoteVideoTrack) return null;
+  if (!videoTrack) return null;
 
   return (
     <VideoComponent
-      track={remoteVideoTrack}
+      track={videoTrack}
       participantIdentity={participantId}
-      local={false}
+      local={isLocal}
     />
   );
 };
