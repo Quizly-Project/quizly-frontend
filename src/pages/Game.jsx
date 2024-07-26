@@ -251,7 +251,7 @@ export default function Game({
 
   return (
     <>
-      <Perf debug />
+      {/* <Perf /> */}
       <Environment
         background
         files={'/Environment/puresky.hdr'}
@@ -266,7 +266,7 @@ export default function Game({
           enableZoom={true}
           enablePan={true}
           minDistance={5}
-          // maxDistance={100}
+          maxDistance={100}
         />
       ) : isStarted && !isQuestionActive && isCameraOn ? (
         <OrbitControls
@@ -275,7 +275,7 @@ export default function Game({
           enableZoom={true}
           enablePan={true}
           minDistance={5}
-          // maxDistance={80}
+          maxDistance={100}
         />
       ) : (
         <CameraControls ref={cameraControls} />
@@ -313,7 +313,7 @@ export default function Game({
       />
       <StaticMaterials scale={2} position-z={-20} rotation-y={Math.PI} />
 
-      <Physics debug>
+      <Physics>
         {/* <Floor width={200} height={200} /> */}
         {type === 2 && (
           <Beachside
