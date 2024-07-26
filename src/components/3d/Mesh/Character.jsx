@@ -54,16 +54,19 @@ const Character = React.memo(
 
     const [statusDimensions, setStatusDimensions] = useState({
       width: 200,
-      height: 80,
+      height: 110,
     });
 
     useEffect(() => {
       if (writeStatus && writeStatus !== 'isWriting') {
-        const newHeight = Math.min(300, Math.max(80, writeStatus.length * 1.5));
+        const newHeight = Math.min(
+          300,
+          Math.max(110, writeStatus.length * 1.5)
+        );
         const newWidth = Math.min(400, Math.max(200, writeStatus.length * 8));
         setStatusDimensions({ width: newWidth, height: newHeight });
       } else {
-        setStatusDimensions({ width: 200, height: 80 });
+        setStatusDimensions({ width: 200, height: 110 });
       }
     }, [writeStatus]);
 
@@ -118,7 +121,7 @@ const Character = React.memo(
                 color="#ffd700"
               />
             ) : null}
-            {type === 2 && (
+            {type === 2 && isStarted && (
               <Html position={[0, 2.5, 0]} center distanceFactor={60}>
                 <div
                   className="status-bubble"
