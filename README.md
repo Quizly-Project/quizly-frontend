@@ -1,7 +1,9 @@
 # Quizly Frontend
 
 <div align="center">
-<img width="329" alt="Quizly Logo" src="https://github.com/Quizly-Project/.github/raw/main/profile/img/logo.png">
+<!-- <img width="329" alt="Quizly Logo" src="https://github.com/Quizly-Project/.github/raw/main/profile/img/logo.png"> -->
+
+![header](https://capsule-render.vercel.app/api?type=waving&color=auto&height=200&section=header&text=Quizly&fontSize=50&animation=twinkling&text-color=black)
 
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FQuizly-Project%2Fquizly-frontend&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 
