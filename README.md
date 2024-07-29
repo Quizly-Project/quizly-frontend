@@ -209,6 +209,8 @@ quizly-frontend
 
 프로젝트의 전체 구조는 [STRUCTURE.md](./STRUCTURE.md)에서 확인할 수 있습니다.
 
+<br/>
+
 ## 환경 변수 설정
 
 `.env` 파일을 생성하고 다음 변수를 설정하세요:
