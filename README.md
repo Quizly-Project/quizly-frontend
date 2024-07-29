@@ -207,6 +207,8 @@ quizly-frontend
 └── vite.config.js
 ```
 
+프로젝트의 전체 구조는 [STRUCTURE.md](./STRUCTURE.md)에서 확인할 수 있습니다.
+
 ## 환경 변수 설정
 
 `.env` 파일을 생성하고 다음 변수를 설정하세요:
@@ -214,7 +216,5 @@ quizly-frontend
 ```
 VITE_API_URL=http://localhost:8080
 VITE_SOCKET_URL=http://localhost:3000
-VITE_CHAT_API_URL = http://localhost:3002
+VITE_CHAT_API_URL=http://localhost:3002
 ```
-
-프로젝트의 전체 구조는 [STRUCTURE.md](./STRUCTURE.md)에서 확인할 수 있습니다.
