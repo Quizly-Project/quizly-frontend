@@ -9,15 +9,17 @@
 
 # Quizly: 3D 상호작용 기반의 몰입형 퀴즈 풀이 서비스
 
-> **크래프톤 정글 5기 '나만의 무기 만들기' 프로젝트** <br/> **개발기간: 2024.06.21 ~ 2024.07.27**
+> **크래프톤 정글 5기 '나만의 무기 만들기' 프로젝트** <br/> ![Quizly_poster](https://github.com/user-attachments/assets/7d6ea6c0-00d2-4e29-ae24-be9c292dc885)
+**개발기간: 2024.06.21 ~ 2024.07.27**
 
 ## 프로젝트 소개 영상
 
 [![Quizly 프로젝트 소개 영상](https://img.youtube.com/vi/YOUR_VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
 
-## 프로젝트 설명 포스터
+## 프로젝트 설명 포스터!
 
-<img width="600" alt="Quizly Project Poster" src="https://github.com/Quizly-Project/.github/raw/main/profile/img/poster.png">
+
+<img alt="Quizly Project Poster" src="https://github.com/user-attachments/assets/a4b8ea05-d0f3-4f37-840a-1423b14fc2a3">
 
 ## 팀 소개
 
