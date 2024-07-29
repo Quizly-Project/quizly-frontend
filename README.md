@@ -98,11 +98,11 @@ $ npm run dev
 
 ## 화면 구성 📺
 
-|                        메인 페이지                        |                          퀴즈 로비                          |
+|                        메인페이지                        |                          퀴즈 로비           |
 | :-------------------------------------------------------: | :---------------------------------------------------------: |
-| <img width="329" src="path_to_main_page_screenshot.png"/> | <img width="329" src="path_to_quiz_lobby_screenshot.png"/>  |
+| <img src="https://github.com/user-attachments/assets/78bcd5e9-f38b-4d21-835e-734bd3b69a67"/> | <img src="https://github.com/user-attachments/assets/a3cdaaa7-be61-4965-a419-fb07b582ea14"/>  |
 |                       3D 퀴즈 환경                        |                         결과 페이지                         |
-|  <img width="329" src="path_to_3d_quiz_screenshot.png"/>  | <img width="329" src="path_to_result_page_screenshot.png"/> |
+|  <img src="https://github.com/user-attachments/assets/edb040ac-3137-4b89-9c01-9440f93ee180"/>  | <img src="https://github.com/user-attachments/assets/07abe0e5-2133-40c2-b904-7e9fc71ab4fd"/> |
 
 ---
 
