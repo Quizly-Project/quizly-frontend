@@ -7,19 +7,26 @@
 
 </div>
 
+<br/>
+
 # Quizly: 3D 상호작용 기반의 몰입형 퀴즈 풀이 서비스
 
 <br> **크래프톤 정글 5기 '나만의 무기 만들기' 프로젝트** <br/>
 **개발기간: 2024.06.21 ~ 2024.07.27(5주차)**
 
+<br/>
+
 ## 프로젝트 소개 영상
 
 [![Quizly 프로젝트 소개 영상](https://img.youtube.com/vi/YOUR_VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
 
+<br/>
+
 ## 프로젝트 설명 포스터!
 
-
 <img alt="Quizly Project Poster" src="https://github.com/user-attachments/assets/a4b8ea05-d0f3-4f37-840a-1423b14fc2a3">
+
+<br/>
 
 ## 팀 소개
 
@@ -28,9 +35,13 @@
 | <img width="160px" src="https://github.com/hyunS00.png" /> | <img width="160px" src="https://github.com/NoNoise2022.png" /> | <img width="160px" src="https://github.com/yoo20370.png" /> | <img width="160px" src="https://github.com/jjr7181.png" /> | <img width="160px" src="https://github.com/yunnn426.png" /> |
 |           [@hyunS00](https://github.com/hyunS00)           |         [@NoNoise2022](https://github.com/NoNoise2022)         |          [@yoo20370](https://github.com/yoo20370)           |           [@jjr7181](https://github.com/jjr7181)           |          [@yunnn426](https://github.com/yunnn426)           |
 
+<br/>
+
 ## 프로젝트 소개
 
 Quizly는 3D 환경에서 실시간 상호작용을 통해 즐겁고 효과적인 학습 경험을 제공하는 퀴즈 플랫폼입니다. 사용자들은 몰입감 있는 3D 공간에서 다양한 퀴즈에 참여하고, 실시간으로 다른 참가자들과 경쟁할 수 있습니다.
+
+<br/>
 
 ## 시작 가이드
 
@@ -44,6 +55,8 @@ $ npm run dev
 ```
 
 ---
+
+<br/>
 
 ## Stacks 🐈
 
@@ -95,6 +108,8 @@ $ npm run dev
 
 ---
 
+<br/>
+
 ## 화면 구성 📺
 
 |                        메인페이지                        |                          퀴즈 로비                           |
@@ -115,6 +130,8 @@ $ npm run dev
 
 ---
 
+<br/>
+
 ## 주요 기능 📦
 
 ### ⭐️ 3D 환경에서의 실시간 퀴즈 참여
@@ -131,6 +148,8 @@ $ npm run dev
 - Socket.io를 활용한 실시간 점수 업데이트 및 순위 표시
 
 ---
+
+<br/>
 
 ## 아키텍처
 
