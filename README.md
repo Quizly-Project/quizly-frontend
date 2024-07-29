@@ -28,18 +28,11 @@
 
 ## 프로젝트 소개
 
-Quizly는 3D 환경에서 실시간 상호작용을 통해 즐겁고 효과적인 학습 경험을 제공하는 혁신적인 퀴즈 플랫폼입니다. 사용자들은 몰입감 있는 3D 공간에서 다양한 퀴즈에 참여하고, 실시간으로 다른 참가자들과 경쟁할 수 있습니다.
+Quizly는 3D 환경에서 실시간 상호작용을 통해 즐겁고 효과적인 학습 경험을 제공하는 퀴즈 플랫폼입니다. 사용자들은 몰입감 있는 3D 공간에서 다양한 퀴즈에 참여하고, 실시간으로 다른 참가자들과 경쟁할 수 있습니다.
 
 ## 시작 가이드
 
-### Requirements
-
-For building and running the application you need:
-
-- [Node.js 14.19.3](https://nodejs.org/ca/blog/release/v14.19.3/)
-- [Npm 9.2.0](https://www.npmjs.com/package/npm/v/9.2.0)
-
-### Installation
+### 설치
 
 ```bash
 $ git clone https://github.com/Quizly-Project/quizly-frontend.git
@@ -134,29 +127,42 @@ $ npm run dev
 
 Quizly는 프론트엔드, 백엔드, 실시간 통신 서버, 그리고 화상 통화 서버로 구성된 복합적인 아키텍처를 가지고 있습니다. 각 컴포넌트는 다음과 같은 역할을 합니다:
 
-- **프론트엔드**: React와 Three.js를 사용하여 3D 퀴즈 환경과 사용자 인터페이스를 구현
-- **백엔드**: Spring Boot를 사용하여 RESTful API 제공 및 데이터 관리
-- **실시간 통신 서버**: Nest.js와 Socket.io를 사용하여 실시간 퀴즈 상호작용 구현
+- **[프론트엔드](https://github.com/Quizly-Project/quizly-frontend)**: React와 Three.js를 사용하여 3D 퀴즈 환경과 사용자 인터페이스를 구현
+- **[백엔드](https://github.com/Quizly-Project/quizly-Spring)**: Spring Boot를 사용하여 RESTful API 제공 및 데이터 관리
+- **[실시간 통신 서버](https://github.com/Quizly-Project/quizly-Nest)**: Nest.js와 Socket.io를 사용하여 실시간 퀴즈 상호작용 구현
 - **화상 통화 서버**: LiveKit을 사용하여 참가자 간 화상 통화 기능 제공
 
 이러한 구조를 통해 Quizly는 몰입감 있는 3D 퀴즈 경험과 실시간 상호작용을 효과적으로 제공합니다.
 
 ### 디렉토리 구조
 
-```bash
+```
 quizly-frontend
-├── README.md
+├── public/
+│   ├── Character/
+│   ├── Environment/
+│   ├── Image/
+│   ├── Sounds/
+│   └── fonts/
+├── src/
+│   ├── api/
+│   ├── assets/
+│   ├── components/
+│   │   ├── 3d/
+│   │   ├── Game/
+│   │   └── common/
+│   ├── hooks/
+│   ├── pages/
+│   ├── store/
+│   ├── styles/
+│   └── utils/
+├── .eslintrc.cjs
+├── .prettierrc
+├── index.html
 ├── package.json
-├── src
-│   ├── components
-│   │   ├── 3d
-│   │   ├── Game
-│   │   └── common
-│   ├── pages
-│   ├── hooks
-│   ├── store
-│   ├── styles
-│   └── utils
-├── public
+├── README.md
+├── tsconfig.json
 └── vite.config.js
 ```
+
+프로젝트의 전체 구조는 [STRUCTURE.md](./STRUCTURE.md)에서 확인할 수 있습니다.
