@@ -43,16 +43,28 @@ Quizly는 3D 환경에서 실시간 상호작용을 통해 즐겁고 효과적�
 
 <br/>
 
-## 시작 가이드
+## 설치 및 실행 방법
 
-### 설치
+1. 저장소 클론
+   ```bash
+   git clone https://github.com/Quizly-Project/quizly-frontend.git
+   cd quizly-frontend
+   ```
 
-```bash
-$ git clone https://github.com/Quizly-Project/quizly-frontend.git
-$ cd quizly-frontend
-$ npm install
-$ npm run dev
-```
+2. 의존성 설치
+   ```bash
+   npm install
+   ```
+
+3. 개발 서버 실행
+   ```bash
+   npm run dev
+   ```
+
+4. 빌드
+   ```bash
+   npm run build
+   ```
 
 ---
 
@@ -193,6 +205,16 @@ quizly-frontend
 ├── README.md
 ├── tsconfig.json
 └── vite.config.js
+```
+
+## 환경 변수 설정
+
+`.env` 파일을 생성하고 다음 변수를 설정하세요:
+
+```
+VITE_API_URL=http://localhost:8080
+VITE_SOCKET_URL=http://localhost:3000
+VITE_CHAT_API_URL = http://localhost:3002
 ```
 
 프로젝트의 전체 구조는 [STRUCTURE.md](./STRUCTURE.md)에서 확인할 수 있습니다.
