@@ -60,49 +60,49 @@ $ npm run dev
 
 ## Stacks 🐈
 
-### Core
+**Core**
 
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
 
-### 3D Rendering
+**3D Rendering**
 
 ![Three.js](https://img.shields.io/badge/Three.js-000000?style=for-the-badge&logo=three.js&logoColor=white)
 ![React Three Fiber](https://img.shields.io/badge/React_Three_Fiber-2A2A2A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![React Three Drei](https://img.shields.io/badge/React_Three_Drei-2A2A2A?style=for-the-badge&logo=react&logoColor=61DAFB)
 
-### State Management
+**State Management**
 
 ![Zustand](https://img.shields.io/badge/Zustand-2A2A2A?style=for-the-badge&logo=react&logoColor=61DAFB)
 
-### Routing
+**Routing**
 
 ![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
 
-### Real-time Communication
+**Real-time Communication**
 
 ![Socket.io](https://img.shields.io/badge/Socket.io-010101?style=for-the-badge&logo=socket.io&logoColor=white)
 ![LiveKit](https://img.shields.io/badge/LiveKit-2A2A2A?style=for-the-badge&logo=webrtc&logoColor=white)
 
-### Form Management
+**Form Management**
 
 ![React Hook Form](https://img.shields.io/badge/React_Hook_Form-EC5990?style=for-the-badge&logo=react-hook-form&logoColor=white)
 
-### HTTP
+**HTTP**
 
 ![Axios](https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white)
 
-### Animation
+**Animation**
 
 ![GSAP](https://img.shields.io/badge/GSAP-88CE02?style=for-the-badge&logo=greensock&logoColor=white)
 ![React Spring](https://img.shields.io/badge/React_Spring-2A2A2A?style=for-the-badge&logo=react&logoColor=61DAFB)
 
-### Development Tools
+**Development Tools**
 
 ![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white)
 ![Prettier](https://img.shields.io/badge/Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=black)
 
-### Environment
+**Environment**
 
 ![npm](https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white)
 
