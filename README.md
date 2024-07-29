@@ -97,13 +97,21 @@ $ npm run dev
 
 ## 화면 구성 📺
 
-|                        메인페이지                        |                          퀴즈 로비           |
-| :-------------------------------------------------------: | :---------------------------------------------------------: |
-| <img src="https://github.com/user-attachments/assets/78bcd5e9-f38b-4d21-835e-734bd3b69a67"/> | <img src="https://github.com/user-attachments/assets/a3cdaaa7-be61-4965-a419-fb07b582ea14"/>  |
-|                       3D 퀴즈 풀이                         |                         실시간 순위                         |
-| <img src="https://github.com/user-attachments/assets/f533ef61-1149-42c0-a8ab-f3c7d53eec97"/>  | <img src="https://github.com/user-attachments/assets/badc723c-5ea4-4694-9a52-8c03fe8c3fff"/> |
-|                       최종 순위 (화상 카메라)                        |                   퀴즈 결과                    |
-| <img src="https://github.com/user-attachments/assets/1ce8a23f-9b88-450c-82ec-b7b3a54f3cbe"/>  | <img src="https://github.com/user-attachments/assets/18da76ff-a3a1-4bae-a6f4-b6c2f057c8a7"/> |
+|                        메인페이지                        |                          퀴즈 로비                           |
+| :-------------------------------------------------------: | :----------------------------------------------------------: |
+| <img width="400" src="https://github.com/user-attachments/assets/78bcd5e9-f38b-4d21-835e-734bd3b69a67"/> | <img width="400" src="https://github.com/user-attachments/assets/a3cdaaa7-be61-4965-a419-fb07b582ea14"/> |
+
+|                         O/X 퀴즈                          |                         도전골든벨                          |
+| :-------------------------------------------------------: | :----------------------------------------------------------: |
+| <img width="400" src="https://github.com/user-attachments/assets/f533ef61-1149-42c0-a8ab-f3c7d53eec97"/> | <img width="400" src="https://github.com/user-attachments/assets/bbdb27bf-b620-4ff7-a596-2a045c8ac277"/> |
+
+|                        실시간 순위                        |                   최종 순위 (화상 카메라)                    |
+| :-------------------------------------------------------: | :----------------------------------------------------------: |
+| <img width="400" src="https://github.com/user-attachments/assets/badc723c-5ea4-4694-9a52-8c03fe8c3fff"/> | <img width="400" src="https://github.com/user-attachments/assets/1ce8a23f-9b88-450c-82ec-b7b3a54f3cbe"/> |
+
+|                        퀴즈 결과                         |
+| :-------------------------------------------------------: |
+| <img width="400" src="https://github.com/user-attachments/assets/18da76ff-a3a1-4bae-a6f4-b6c2f057c8a7"/> |                                                              |
 
 ---
 
