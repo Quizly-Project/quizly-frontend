@@ -75,7 +75,7 @@ $ npm run dev
 
 ![React Hook Form](https://img.shields.io/badge/React_Hook_Form-EC5990?style=for-the-badge&logo=react-hook-form&logoColor=white)
 
-### HTTP Client
+### HTTP
 
 ![Axios](https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white)
 
@@ -88,7 +88,6 @@ $ npm run dev
 
 ![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white)
 ![Prettier](https://img.shields.io/badge/Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=black)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 
 ### Environment
 
@@ -101,8 +100,10 @@ $ npm run dev
 |                        메인페이지                        |                          퀴즈 로비           |
 | :-------------------------------------------------------: | :---------------------------------------------------------: |
 | <img src="https://github.com/user-attachments/assets/78bcd5e9-f38b-4d21-835e-734bd3b69a67"/> | <img src="https://github.com/user-attachments/assets/a3cdaaa7-be61-4965-a419-fb07b582ea14"/>  |
-|                       3D 퀴즈 환경                        |                         결과 페이지                         |
-|  <img src="https://github.com/user-attachments/assets/edb040ac-3137-4b89-9c01-9440f93ee180"/>  | <img src="https://github.com/user-attachments/assets/07abe0e5-2133-40c2-b904-7e9fc71ab4fd"/> |
+|                       3D 퀴즈 풀이                         |                         실시간 순위                         |
+| <img src="https://github.com/user-attachments/assets/f533ef61-1149-42c0-a8ab-f3c7d53eec97"/>  | <img src="https://github.com/user-attachments/assets/badc723c-5ea4-4694-9a52-8c03fe8c3fff"/> |
+|                       최종 순위 (화상 카메라)                        |                   퀴즈 결과                    |
+| <img src="https://github.com/user-attachments/assets/1ce8a23f-9b88-450c-82ec-b7b3a54f3cbe"/>  | <img src="https://github.com/user-attachments/assets/18da76ff-a3a1-4bae-a6f4-b6c2f057c8a7"/> |
 
 ---
 
