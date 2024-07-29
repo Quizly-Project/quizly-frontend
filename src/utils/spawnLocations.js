@@ -5,7 +5,7 @@ const spawnLocations = matName => {
     z: 0,
   };
 
-  console.log('matmat', matName);
+  // console.log('matmat', matName);
   switch (matName) {
     case 'M_Turtle':
       spawn = {

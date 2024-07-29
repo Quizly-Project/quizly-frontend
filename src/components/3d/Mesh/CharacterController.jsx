@@ -205,9 +205,9 @@ const CharacterController = ({
   };
 
   const handleCollision = data => {
-    console.log('충돌', data);
+    // console.log('충돌', data);
     const { x, y, z } = data;
-    console.log('x', x, 'y', y, 'z', z);
+    // console.log('x', x, 'y', y, 'z', z);
     rigidbody.current.setTranslation({ x: x * 1, y: y * 1, z: z * 1 });
   };
 

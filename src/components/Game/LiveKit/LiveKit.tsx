@@ -70,12 +70,12 @@ const LiveKit = () => {
   }, []);
 
   async function joinRoom() {
-    console.log(roomRef);
+    // console.log(roomRef);
     if (roomRef.current) {
-      console.log('already joined');
+      // console.log('already joined');
       return;
     }
-    console.log('join room');
+    // console.log('join room');
 
     const newRoom = new Room();
     roomRef.current = newRoom;
@@ -120,11 +120,11 @@ const LiveKit = () => {
       } else {
         setCurrentSpeakers([]);
       }
-      console.log('Active speakers:', speakers);
+      // console.log('Active speakers:', speakers);
     });
 
     try {
-      console.log('livKit: roomCOde, nickName', roomCode, nickName);
+      // console.log('livKit: roomCOde, nickName', roomCode, nickName);
       const token = await getToken(roomCode, nickName);
       await newRoom.connect(LIVEKIT_URL, token);
       await newRoom.localParticipant.enableCameraAndMicrophone();
@@ -144,7 +144,7 @@ const LiveKit = () => {
   }
 
   async function leaveRoom() {
-    console.log('leave');
+    // console.log('leave');
     if (roomRef.current) {
       await roomRef.current.disconnect();
       roomRef.current = null;
@@ -155,7 +155,7 @@ const LiveKit = () => {
   }
 
   async function getToken(roomName: string, participantName: string) {
-    console.log('getToken', roomName, participantName);
+    // console.log('getToken', roomName, participantName);
     const response = await fetch(APPLICATION_SERVER_URL + 'token', {
       method: 'POST',
       headers: {

@@ -21,7 +21,7 @@ const Landing = () => {
 
   const handleCheckRoom = useCallback(
     response => {
-      console.log(response);
+      // console.log(response);
       if (response.success) {
         // 방이 존재하면 해당 방으로 이동
         navigate(`/game/${roomCode}/${response.quizType}`);
@@ -35,16 +35,16 @@ const Landing = () => {
   );
 
   useEffect(() => {
-    console.log('랜딩페이지', isConnected, roomCode);
+    // console.log('랜딩페이지', isConnected, roomCode);
     if (isConnected && roomCode) {
-      console.log(roomCode);
+      // console.log(roomCode);
       socket.emit('checkRoom', roomCode, handleCheckRoom);
     }
   }, [isConnected, roomCode, socket, handleCheckRoom]);
 
   const onSubmit = data => {
     setRoomCode(data.code);
-    console.log('커넥트', isConnected);
+    // console.log('커넥트', isConnected);
     if (!isConnected) {
       initSocket();
     }
@@ -76,6 +76,5 @@ const Landing = () => {
     </div>
   );
 };
-
 
 export default Landing;

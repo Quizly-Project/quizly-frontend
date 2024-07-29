@@ -10,6 +10,7 @@ const TopThreeParticipants = ({
   const { currRank } = quizResult;
   const [isVisible, setIsVisible] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
+  const [showDelayed, setShowDelayed] = useState(false);
 
   const sortedParticipants = currRank
     .sort((a, b) => b.totalScore - a.totalScore)
@@ -18,27 +19,28 @@ const TopThreeParticipants = ({
   const medals = ['silver', 'gold', 'bronze'];
   const rankOrder = [1, 0, 2]; // 2등, 1등, 3등 순서
 
-  // console.log('topthree', sortedParticipants);
   useEffect(() => {
-    // console.log('TopThreeParticipants', isStarted);
-    // console.log('TopThreeParticipants isVisible', isVisible);
-    // console.log('TopThreeParticipants isExiting', isExiting);
+    let timer;
     if (isStarted) {
       setIsExiting(false);
       setIsVisible(true);
+      timer = setTimeout(() => {
+        setShowDelayed(true);
+      }, 2500); // 3초 후에 컴포넌트를 표시합니다.
     } else {
       if (isVisible) {
         setIsExiting(true);
-        const timer = setTimeout(() => {
+        setShowDelayed(false);
+        timer = setTimeout(() => {
           setIsVisible(false);
           hideTopThree();
         }, 500);
-        return () => clearTimeout(timer);
       }
     }
-  }, [isStarted, isVisible]);
+    return () => clearTimeout(timer);
+  }, [isStarted, isVisible, hideTopThree]);
 
-  if (!isVisible && !isExiting) return null;
+  if ((!isVisible && !isExiting) || !showDelayed) return null;
 
   return (
     <div

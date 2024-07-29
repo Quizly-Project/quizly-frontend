@@ -20,7 +20,7 @@ export default function StaticMaterials(props) {
       // 액션이 끝났을 때 이벤트 리스너
       const onFinished = e => {
         if (e.action === action) {
-          console.log('others animation finished');
+          // console.log('others animation finished');
           // 여기에 액션이 끝났을 때 수행할 작업을 추가할 수 있습니다
         }
       };

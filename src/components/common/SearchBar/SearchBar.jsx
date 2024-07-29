@@ -12,7 +12,7 @@ const SearchBar = () => {
   } = useForm();
 
   const onSubmit = data => {
-    console.log(data.target.value);
+    // console.log(data.target.value);
   };
 
   return (

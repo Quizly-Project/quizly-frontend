@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import QuizStartButton from '../QuizStartButton';
+import QuizStartButton from '../QuizStartButton/QuizStartButton';
 import StudentResults from '../StudentResult/StudentResult';
 
 import useQuizRoomStore from '../../../store/quizRoomStore';
@@ -52,19 +52,13 @@ const TeacherUI = ({
       {!isQuestionActive &&
         (isFinished ? (
           <div className={styles.startButtonContainer}>
-            <QuizStartButton
-              toggleQuizStart={handleClick}
-              className={styles.quizStartButton}
-            >
+            <QuizStartButton toggleQuizStart={handleClick}>
               종료
             </QuizStartButton>
           </div>
         ) : (
           <div className={styles.startButtonContainer}>
-            <QuizStartButton
-              toggleQuizStart={handleClickQuizStart}
-              className={styles.quizStartButton}
-            >
+            <QuizStartButton toggleQuizStart={handleClickQuizStart}>
               퀴즈 시작
             </QuizStartButton>
           </div>

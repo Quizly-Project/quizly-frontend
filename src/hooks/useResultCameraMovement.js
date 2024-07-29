@@ -22,34 +22,112 @@ export const useResultCameraMovement = (
   turnOffCamera
 ) => {
   const setResultView = useCallback(() => {
-    if (!orbitControls.current) return;
+    // console.log(orbitControls.current);
+    if (!orbitControls.current) {
+      return;
+    }
 
+    const answerPosition = new Vector3(0, 50, -30);
+    const incorrectLeftIsland = new Vector3(-130, 40, 0);
+    const incorrectRightIsland = new Vector3(130, 40, 0);
+    const incorrectLeftIslandLookAt = new Vector3(-60, 20, 0);
+    const incorrectRightIslandLooAt = new Vector3(60, 20, 0);
+    const correctLeftIsland = new Vector3(-60, CAMERA_TILT, 50);
+    const correctRightIsland = new Vector3(60, CAMERA_TILT, 50);
+    const correctLeftIslandLookAt = new Vector3(-60, CAMERA_TILT, CAMERA_UP);
+    const correctRightIslandLooAt = new Vector3(60, CAMERA_TILT, CAMERA_UP);
+
+    const onAnswerPositionReached = () => {
+      // console.log('정답 위치에 도달했습니다.');
+      displayAnswer();
+    };
+
+    // 골든벨
     if (type === 2) {
-      const centerPosition = new Vector3(0, CAMERA_TILT * 3, CAMERA_TILT * 2);
-      const centerLookAt = new Vector3(0, -CAMERA_TILT, 0);
       const delayBetweenMoves = 1;
+
       gsap
         .timeline()
-        .to({}, { duration: 1 }) // 2초 대기
+        .to(orbitControls.current.target, {
+          duration: 2,
+          x: answerPosition.x,
+          y: answerPosition.y + 40,
+          z: answerPosition.z - 90,
+          onUpdate: () => orbitControls.current.update(),
+        })
         .to(
+          camera.position,
+          {
+            duration: 2,
+            x: answerPosition.x,
+            y: answerPosition.y + 40,
+            z: answerPosition.z,
+            onUpdate: () => orbitControls.current.update(),
+          },
+          '<'
+        )
+        .call(onAnswerPositionReached)
+        .to({}, { duration: 0.1 }) // 대기
+        .to(
+          camera.position,
+          {
+            // 왼쪽 출발
+            duration: 4,
+            x: -50, // 오른쪽으로 이동
+            y: answerPosition.y - 35,
+            z: answerPosition.z + 50,
+          },
+          `+=${delayBetweenMoves}`
+        )
+        .to(
+          orbitControls.current.target,
+          {
+            // 카메라가 이동하는 동안 중앙을 바라보도록
+            duration: 4,
+            x: 0,
+            y: answerPosition.y - 20,
+            z: answerPosition.z - 400,
+            onUpdate: () => orbitControls.current.update(),
+          },
+          '<'
+        )
+        .to(camera.position, {
+          // 오른쪽 도착
+          duration: 4,
+          x: 50, // 오른쪽으로 이동
+          y: answerPosition.y - 35,
+          z: answerPosition.z + 50,
+        })
+        .to(
+          orbitControls.current.target,
+          {
+            // 카메라가 이동하는 동안 중앙을 바라보도록
+            duration: 4,
+            x: 0,
+            y: answerPosition.y - 20,
+            z: answerPosition.z - 400,
+            onUpdate: () => orbitControls.current.update(),
+          },
+          '<'
+        )
+        .to(
+          // 맵 전체 뷰
           orbitControls.current.target,
           {
             duration: 2,
             x: 0,
-            y: CAMERA_TILT,
-            z: -CAMERA_UP,
+            y: 50,
+            z: 10,
             onUpdate: () => orbitControls.current.update(),
-          },
-          `+=${delayBetweenMoves}`
+          }
         )
-        .call(displayAnswer)
         .to(
           camera.position,
           {
             duration: 2,
             x: 0,
-            y: CAMERA_TILT,
-            z: CAMERA_TILT,
+            y: 60,
+            z: 80,
             onUpdate: () => orbitControls.current.update(),
           },
           '<'
@@ -57,15 +135,6 @@ export const useResultCameraMovement = (
         .call(displayTopThree);
     } else {
       const delayBetweenMoves = 1;
-      const answerPosition = new Vector3(0, 50, -30);
-      const incorrectLeftIsland = new Vector3(-130, 40, 0);
-      const incorrectRightIsland = new Vector3(130, 40, 0);
-      const incorrectLeftIslandLookAt = new Vector3(-60, 20, 0);
-      const incorrectRightIslandLooAt = new Vector3(60, 20, 0);
-      const correctLeftIsland = new Vector3(-60, CAMERA_TILT, 50);
-      const correctRightIsland = new Vector3(60, CAMERA_TILT, 50);
-      const correctLeftIslandLookAt = new Vector3(-60, CAMERA_TILT, CAMERA_UP);
-      const correctRightIslandLooAt = new Vector3(60, CAMERA_TILT, CAMERA_UP);
 
       let incorrectAnswerPosition,
         correctAnswerPosition,
@@ -84,13 +153,8 @@ export const useResultCameraMovement = (
         correctAnswerLookAt = correctRightIslandLooAt;
       }
 
-      const onAnswerPositionReached = () => {
-        console.log('정답 위치에 도달했습니다.');
-        displayAnswer();
-      };
-
       const onIncorrectPositionReached = () => {
-        console.log('오답 위치에 도달했습니다.');
+        // console.log('오답 위치에 도달했습니다.');
 
         // 섬 파괴 효과 시작
         if (spotlight === '1') {
@@ -126,12 +190,12 @@ export const useResultCameraMovement = (
       };
 
       const onCorrectPositionReached = () => {
-        console.log('정답자 위치에 도달했습니다.');
+        // console.log('정답자 위치에 도달했습니다.');
         playTwinkleSound();
       };
 
       const onOriginalPositionReached = () => {
-        console.log('원래 위치로 돌아왔습니다.');
+        // console.log('원래 위치로 돌아왔습니다.');
         displayTopThree();
         setBridgeBreak(false);
         setLeftIslandBreak(false);
@@ -302,6 +366,22 @@ export const useResultCameraMovement = (
     const blackboardPosition = new Vector3(0, 50, -30);
     const delayBetweenMoves = 0.3; // 칠판에서 줌아웃 딜레이 시간
 
+    // O/X
+    let CAMERA_Y = 60;
+    let CAMERA_Z = 80;
+    let TARGET_Y = 50;
+    if (type === 1) {
+      CAMERA_Y = 60;
+      CAMERA_Z = 80;
+      TARGET_Y = 50;
+    }
+    // 골든벨
+    else {
+      CAMERA_Y = 60;
+      CAMERA_Z = 60;
+      TARGET_Y = 53;
+    }
+
     // 카메라 무빙 시작
     gsap
       .timeline()
@@ -329,9 +409,9 @@ export const useResultCameraMovement = (
         // 맵 전체 뷰
         orbitControls.current.target,
         {
-          duration: 2,
+          duration: DURATION,
           x: 0,
-          y: 50,
+          y: TARGET_Y,
           z: 10,
           onUpdate: () => orbitControls.current.update(),
         },
@@ -340,10 +420,10 @@ export const useResultCameraMovement = (
       .to(
         camera.position,
         {
-          duration: 2,
+          duration: DURATION,
           x: 0,
-          y: 60,
-          z: 80,
+          y: CAMERA_Y,
+          z: CAMERA_Z,
           onUpdate: () => orbitControls.current.update(),
         },
         '<'

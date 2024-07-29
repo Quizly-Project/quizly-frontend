@@ -132,6 +132,8 @@ const GameContainer = () => {
         type: type * 1,
         isStarted: false,
         isFinished: false,
+        isQuestionActive: false,
+        showTopThree: false,
       });
     } else {
       setQuizRoom({
@@ -140,6 +142,8 @@ const GameContainer = () => {
         type: type * 1,
         isStarted: false,
         isFinished: false,
+        isQuestionActive: false,
+        showTopThree: false,
       });
     }
   }, [isTeacher, code, type, nickName, setQuizRoom]);
@@ -211,14 +215,14 @@ const GameContainer = () => {
   );
 
   const handleNickNameBtn = input => {
-    console.log('input:', input);
+    // console.log('input:', input);
     setNickName(input);
     updateQuizRoom(prevRoom => ({ ...prevRoom, nickName: input }));
   };
 
   /* ------- Socket events ------- */
   const handleClickQuizStart = () => {
-    console.log('퀴즈 시작');
+    // console.log('퀴즈 시작');
     const roomCode = code;
     socket.emit('start', roomCode);
   };
@@ -307,12 +311,12 @@ const GameContainer = () => {
       return;
 
     joinAttempted.current = true;
-    console.log('Attempting to join room', code, nickName);
+    // console.log('Attempting to join room', code, nickName);
 
     try {
       const response = await new Promise((resolve, reject) => {
         socket.emit('joinRoom', { roomCode: code, nickName }, response => {
-          console.log('Received response from server:', response);
+          // console.log('Received response from server:', response);
           if (response.success) {
             resolve(response);
           } else {
@@ -326,7 +330,7 @@ const GameContainer = () => {
         );
       });
 
-      console.log('Successfully joined room', response);
+      // console.log('Successfully joined room', response);
       setIsJoined(true);
 
       if (response.message === 'User already connected, positions sent') {
@@ -342,7 +346,7 @@ const GameContainer = () => {
   }, [socket, isConnected, code, nickName, isJoined, setClientCoords]);
 
   useEffect(() => {
-    console.log('체크:', isConnected, code, nickName);
+    // console.log('체크:', isConnected, code, nickName);
     if (isConnected && code && nickName) {
       joinRoom();
     }
@@ -355,7 +359,7 @@ const GameContainer = () => {
   }, [initSocket, isConnected]);
 
   useEffect(() => {
-    console.log('showLiveKit, localTrack:', showLiveKit, localTrack);
+    // console.log('showLiveKit, localTrack:', showLiveKit, localTrack);
   }, [showLiveKit, localTrack]);
 
   useEffect(() => {

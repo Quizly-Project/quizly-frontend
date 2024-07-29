@@ -29,7 +29,7 @@ export default function Bridge(props) {
     // 액션 종료 리스너
     const onFinished = e => {
       if (e.action === action) {
-        console.log('Animation finished');
+        // console.log('Animation finished');
         // 애니메이션을 첫 프레임으로 리셋하고 정지
         action.reset();
         action.stop();
