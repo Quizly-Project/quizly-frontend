@@ -20,7 +20,7 @@
 
 ## 프로젝트 소개 영상
 
-[![Quizly 프로젝트 소개 영상](https://img.youtube.com/vi/YOUR_VIDEO_ID/0.jpg)](https://www.youtube.com/watch?v=YOUR_VIDEO_ID)
+[![Quizly 프로젝트 소개 영상](https://img.youtube.com/vi/sUz-6YQ4_yQ/0.jpg)](https://youtu.be/sUz-6YQ4_yQ)
 
 <br/>
 
