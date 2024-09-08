@@ -175,10 +175,10 @@ const CharacterController = ({
     const newPos = rigidbody.current.translation();
 
     // 전역 좌표 업데이트
-    if (detectMovement(myPos, newPos)) {
-      setMyPos(newPos);
-      updateClientCoords(nickname, newPos);
-    }
+    // if (detectMovement(myPos, newPos)) {
+    //   setMyPos(newPos);
+    //   updateClientCoords(nickname, newPos);
+    // }
 
     // 바라보는 방향으로 고개 돌리기
     if (changeRotation) {
@@ -198,10 +198,15 @@ const CharacterController = ({
   // 1/30초마다 수행할 작업을 정의하는 함수
   const performUpdate = () => {
     const newPos = rigidbody.current.translation();
-    socket.emit('iMove', {
-      nickName: nickname,
-      position: quantizePosition(newPos),
-    }); // 보내줄 데이터 {nickName, {x, y, z}}
+    if (detectMovement(myPos, newPos)) {
+      setMyPos(newPos);
+      updateClientCoords(nickname, newPos);
+      console.log('전송됨');
+      socket.emit('iMove', {
+        nickName: nickname,
+        position: quantizePosition(newPos),
+      }); // 보내줄 데이터 {nickName, {x, y, z}}
+    }
   };
 
   const handleCollision = data => {
